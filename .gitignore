@@ -1,0 +1,84 @@
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+# Local History for Visual Studio Code
+.history/
+
+# SERVER
+server/.env
+server/node_modules
+
+#employee-client-react
+# Logs
+employee-client-react/logs
+employee-client-react/*.log
+employee-client-react/npm-debug.log*
+employee-client-react/yarn-debug.log*
+employee-client-react/yarn-error.log*
+employee-client-react/pnpm-debug.log*
+employee-client-react/lerna-debug.log*
+
+employee-client-react/node_modules
+employee-client-react/dist
+employee-client-react/dist-ssr
+employee-client-react/*.local
+
+# Editor directories and files
+employee-client-react/.vscode/*
+employee-client-react/!.vscode/extensions.json
+employee-client-react/.idea
+employee-client-react/.DS_Store
+employee-client-react/*.suo
+employee-client-react/*.ntvs*
+employee-client-react/*.njsproj
+employee-client-react/*.sln
+employee-client-react/*.sw?
+
+
+# hr-client-angular
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# Compiled output
+hr-client-angular//dist
+hr-client-angular//tmp
+hr-client-angular//out-tsc
+hr-client-angular//bazel-out
+
+# Node
+hr-client-angular//node_modules
+hr-client-angular/npm-debug.log
+hr-client-angular/yarn-error.log
+
+# IDEs and editors
+hr-client-angular/.idea/
+hr-client-angular/.project
+hr-client-angular/.classpath
+hr-client-angular/.c9/
+hr-client-angular/*.launch
+hr-client-angular/.settings/
+hr-client-angular/*.sublime-workspace
+
+# Visual Studio Code
+hr-client-angular/.vscode/*
+hr-client-angular/!.vscode/settings.json
+hr-client-angular/!.vscode/tasks.json
+hr-client-angular/!.vscode/launch.json
+hr-client-angular/!.vscode/extensions.json
+hr-client-angular/.history/*
+
+# Miscellaneous
+hr-client-angular//.angular/cache
+hr-client-angular/.sass-cache/
+hr-client-angular//connect.lock
+hr-client-angular//coverage
+hr-client-angular//libpeerconnection.log
+hr-client-angular/testem.log
+hr-client-angular//typings
+
+# System files
+hr-client-angular/.DS_Store
+hr-client-angular/Thumbs.db
