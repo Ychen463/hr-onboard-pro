@@ -5,6 +5,7 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+.DS_Store
 # Local History for Visual Studio Code
 .history/
 
@@ -43,13 +44,13 @@ employee-client-react/*.sw?
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Compiled output
-hr-client-angular//dist
-hr-client-angular//tmp
-hr-client-angular//out-tsc
-hr-client-angular//bazel-out
+hr-client-angular/dist
+hr-client-angular/tmp
+hr-client-angular/out-tsc
+hr-client-angular/bazel-out
 
 # Node
-hr-client-angular//node_modules
+hr-client-angular/node_modules
 hr-client-angular/npm-debug.log
 hr-client-angular/yarn-error.log
 
@@ -71,13 +72,13 @@ hr-client-angular/!.vscode/extensions.json
 hr-client-angular/.history/*
 
 # Miscellaneous
-hr-client-angular//.angular/cache
+hr-client-angular/.angular/cache
 hr-client-angular/.sass-cache/
-hr-client-angular//connect.lock
-hr-client-angular//coverage
-hr-client-angular//libpeerconnection.log
+hr-client-angular/connect.lock
+hr-client-angular/coverage
+hr-client-angular/libpeerconnection.log
 hr-client-angular/testem.log
-hr-client-angular//typings
+hr-client-angular/typings
 
 # System files
 hr-client-angular/.DS_Store
