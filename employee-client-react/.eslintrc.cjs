@@ -2,7 +2,8 @@ module.exports = {
   root: true,
   env: { browser: true, es2020: true },
   extends: [
-    'eslint:recommended',
+    'airbnb',
+    // 'eslint:recommended',
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
@@ -17,5 +18,17 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    'no-console': 'off',
+    // Adjust or add this rule
+    'import/extensions': ['error', 'ignorePackages', {
+      js: 'always', // or 'never' depending on your preference
+      jsx: 'always',
+      ts: 'always',
+      tsx: 'always',
+    }],
+    // Allow absolute paths
+    'import/no-absolute-path': 'off',
+    // You might need to adjust or disable this rule if your build tool handles resolution
+    'import/no-unresolved': 'off',
   },
 }

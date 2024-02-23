@@ -1,7 +1,7 @@
-import express from "express";
-import cors from "cors";
+import express from 'express';
+import cors from 'cors';
 // import cookieParser from "cookie-parser";
-import morgan from "morgan";
+import morgan from 'morgan';
 
 // import routers
 // import UserRouter from "./routers/UserRouter.js";
@@ -14,9 +14,9 @@ const app = express();
 // enable cors
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: 'http://localhost:3000',
     credentials: true, // enable cookies for cors
-  })
+  }),
 );
 // enable cookies for express
 // app.use(cookieParser());
@@ -25,7 +25,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // enable morgan for logging
-app.use(morgan(":method :url :status :response-time ms"));
+app.use(morgan(':method :url :status :response-time ms'));
 // enable static files
 // app.use(express.static("views"));
 
@@ -35,9 +35,9 @@ app.use(morgan(":method :url :status :response-time ms"));
 // app.use("/types", TypeRouter);
 // app.use("/products", ProductRouter);
 
-app.all("*", (_req, res) => {
-  console.log("Wrong route!");
-  return res.redirect("/404page.html");
+app.all('*', (_req, res) => {
+  console.log('Wrong route!');
+  return res.redirect('/404page.html');
 });
 
 export default app;
