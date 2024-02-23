@@ -1,9 +1,9 @@
-import jwt from "jsonwebtoken";
-import path from "path";
-import * as dotenv from "dotenv";
+import jwt from 'jsonwebtoken';
+import path from 'path';
+import * as dotenv from 'dotenv';
 
-const __dirname = import.meta.dirname;
-dotenv.config(path.join(__dirname, "../.env"));
+const { dirname } = import.meta;
+dotenv.config(path.join(dirname, '../.env'));
 
 // to be decided, what to put as arguments for token
 const generateToken = (userId, email, userRole) => {
@@ -11,8 +11,8 @@ const generateToken = (userId, email, userRole) => {
     { userId, email, userRole },
     process.env.ACCESS_TOKEN_SECRET,
     {
-      expiresIn: "7d",
-    }
+      expiresIn: '7d',
+    },
   );
   return token;
 };
