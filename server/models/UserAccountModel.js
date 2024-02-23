@@ -4,7 +4,7 @@ const userAccountSchema = new mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   registrationTokenId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'RegistrationTokenModel',
+    ref: 'RegistrationToken',
   },
   username: {
     type: String,
@@ -27,6 +27,6 @@ const userAccountSchema = new mongoose.Schema({
   },
 });
 
-const UserAccount = mongoose.model('User', userAccountSchema);
+const UserAccount = mongoose.model('UserAccount', userAccountSchema);
 
 export default UserAccount;
