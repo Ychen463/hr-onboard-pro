@@ -1,15 +1,19 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-underscore-dangle */
 import express from 'express';
 import cors from 'cors';
-// import cookieParser from "cookie-parser";
 import morgan from 'morgan';
-
-// import routers
+import path from 'path';
+import RegistrationTokenRouter from './routers/RegistrationTokenRouter.js';
 // import UserRouter from "./routers/UserRouter.js";
 // import BrandRouter from "./routers/BrandRouter.js";
 // import TypeRouter from "./routers/TypeRouter.js";
 // import ProductRouter from "./routers/ProductRouter.js";
 
 const app = express();
+app.use(express.json()); // 用于解析JSON请求体
+
+const __dirname = path.resolve();
 
 // enable cors
 app.use(
@@ -30,7 +34,7 @@ app.use(morgan(':method :url :status :response-time ms'));
 // app.use(express.static("views"));
 
 // set routes
-// app.use("/user", UserRouter);
+app.use('/api', RegistrationTokenRouter);
 // app.use("/brands", BrandRouter);
 // app.use("/types", TypeRouter);
 // app.use("/products", ProductRouter);
