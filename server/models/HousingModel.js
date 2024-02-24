@@ -11,9 +11,7 @@ const HousingSchema = new Schema({
     phoneNumber: { type: String },
     email: { type: String },
   },
-  capacity: { type: Number },
   residents: [{ type: Schema.Types.ObjectId, ref: 'UserAccount' }],
-  isFull: { type: Boolean },
   facilityInfo: {
     beds: { type: Number },
     mattresses: { type: Number },

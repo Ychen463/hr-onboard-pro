@@ -71,11 +71,10 @@ const login = async (req, res) => {
       return res.status(422).json({ message: 'Invalid password credentials' });
     }
     // Generate login JWT
-    const userRole = 'employee';
     const jwtToken = generateJWtToken(
       userAccount._id,
       userAccount.username,
-      userRole,
+      userAccount.userRole,
     );
     res.status(200).json({
       message: `User: ${userAccount.username} login successful`,
