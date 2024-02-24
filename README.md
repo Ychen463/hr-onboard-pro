@@ -34,14 +34,27 @@ Replace [feature-name] with a meaningful name for the feature or task.
 
     `git push origin feature/[feature-name]`
 
-7. Keep the Feature Branch Updated: Regularly, team members should merge changes from the dev branch into their feature branch to keep it updated. This helps in reducing merge conflicts later. They can do this by:
+7. **Pull Requests**
 
-    - Switching to their feature branch:
+    Once your feature is compeleted and unit tests have been performed and documented, a Pull Request should be generated on Github. Before generating a new PR, ensure that your current feature branch's head is up to date with the remote dev branch's head to 
+    avoid merging older code or running into merge conflicts. The Rebasing Strategy is most commonly used.
+    - Checkout your local dev branch
+
+        `git checkout dev`
+    - Perform a "git pull" to ensure your local dev branch is synced with the remote dev branch
+
+        `git pull origin dev`
+    - Checkout your feature branch
 
         `git checkout feature/[feature-name]`
-    - Merging the dev branch:
-        
-        `git merge dev`
+    - Perform a "git rebase" to rebase the head of your current feature branch to align with your now updated local dev branch
+
+        `git rebase dev`
+    - Commit and push, then your local feature branch and remote feature branch are up to date with the remote dev branch.
+
+        `git commit`
+
+        `git push origin feature/[feature-name]`
 
 8. Code Reviews and Pull Requests: Once a feature is completed, team members should push their final changes to their feature branch and then open a pull request (PR) in GitHub to merge their feature branch into the dev branch. This PR should be reviewed by the team lead for code quality, functionality, and adherence to project standards. Please ensure that team members are filling out the description field on their PRs to describe what they accomplished with this PR.
 
