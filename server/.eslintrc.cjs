@@ -30,5 +30,8 @@ module.exports = {
       ts: 'always',
       tsx: 'always',
     }],
+    'consistent-return': 'off',
+    'no-underscore-dangle': 'off',
+    'prefer-destructuring': ['error', { object: true, array: false }],
   },
 };

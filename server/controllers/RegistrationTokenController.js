@@ -1,5 +1,3 @@
-/* eslint-disable consistent-return */
-/* eslint-disable import/prefer-default-export */
 import RegistrationToken from '../models/RegistrationTokenModel.js';
 import generateRegisterToken from '../utils/generateRegisterToken.js';
 import sendEmail from '../utils/sendEmail.js';

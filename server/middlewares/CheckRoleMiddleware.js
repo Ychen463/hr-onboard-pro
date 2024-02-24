@@ -1,4 +1,3 @@
-// eslint-disable-next-line consistent-return
 const checkRole = (allowedRoles) => (req, res, next) => {
   const userRole = req.user?.userRole;
 

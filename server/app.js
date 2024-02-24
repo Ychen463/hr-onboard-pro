@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-underscore-dangle */
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -13,6 +11,7 @@ import UserAccountRouter from './routers/UserAccountRouter.js';
 const app = express();
 app.use(express.json()); // 用于解析JSON请求体
 
+// eslint-disable-next-line no-unused-vars
 const __dirname = path.resolve();
 
 // enable cors

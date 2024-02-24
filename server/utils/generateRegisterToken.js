@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken';
 import path from 'path';
 import * as dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
 
-const { dirname } = import.meta;
-dotenv.config(path.join(dirname, '../.env'));
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.join(dirname, '../.env') });
 
 const generateRegisterToken = (userFirstName, userLastName, email, userRole) => {
   const token = jwt.sign(

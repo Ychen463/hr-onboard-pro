@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/named */
 import express from 'express';
 import { generateRegiToken, updateTokenStatus, getTokenStatus } from '../controllers/RegistrationTokenController.js';
 import validateToken from '../middlewares/RegistrationMiddlewares/RegistrationTokenMiddleware.js';

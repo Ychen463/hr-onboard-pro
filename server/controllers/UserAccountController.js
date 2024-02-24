@@ -1,8 +1,3 @@
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable consistent-return */
-/* eslint-disable import/no-extraneous-dependencies */
 import bcrypt from 'bcrypt';
 import generateJWtToken from '../utils/generateJWTSecret.js';
 import UserAccount from '../models/UserAccountModel.js';
@@ -28,7 +23,7 @@ const register = async (req, res) => {
       return res.status(409).json({ message: 'Register Username already exists' });
     }
     // eslint-disable-next-line no-multi-spaces
-    const  registrationEmail  = req.user.registrationEmail;
+    const  { registrationEmail } = req.user;
     const savedUserAccount = await UserAccount.create({
       username,
       email,
