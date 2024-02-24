@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import path from 'path';
 import RegistrationTokenRouter from './routers/RegistrationTokenRouter.js';
 import UserAccountRouter from './routers/UserAccountRouter.js';
+import HousingRouter from './routers/HousingRouter.js';
 // import BrandRouter from "./routers/BrandRouter.js";
 // import TypeRouter from "./routers/TypeRouter.js";
 // import ProductRouter from "./routers/ProductRouter.js";
@@ -35,6 +36,7 @@ app.use(morgan(':method :url :status :response-time ms'));
 // set routes
 app.use('/api', RegistrationTokenRouter);
 app.use('/api', UserAccountRouter);
+app.use('/api', HousingRouter);
 
 // app.use("/types", TypeRouter);
 // app.use("/products", ProductRouter);
