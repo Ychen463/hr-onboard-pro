@@ -47,6 +47,7 @@ const seedUserAccounts = async () => {
       password: await bcrypt.hash('password123', SALT_ROUNDS),
       email: 'john.doe@example.com',
       userRole: 'employee',
+      onboardingStatus: 'Not Started',
     },
     // add more account users
   ];
@@ -63,7 +64,7 @@ const seedUserAccounts = async () => {
 const seedOnboardings = async () => {
   const onboardings = [{
     userAccountId: new mongoose.Types.ObjectId(),
-    applicationStatus: 'Not Started',
+    onboardingStatus: 'Not Started',
     rejFeedback: '',
     personalInfo: {
       firstName: 'John',

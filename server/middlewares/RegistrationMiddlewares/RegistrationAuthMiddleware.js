@@ -23,9 +23,9 @@ const RegiJwtVerifyToken = (req, res, next) => {
     req.user.registrationEmail = decoded.email;
 
     req.user.userRole = decoded.userRole;
-    next();
+    return next();
   } catch (error) {
-    res.status(500).json({ message: 'Error Authentication', error: error.message });
+    return res.status(500).json({ message: 'Error Authentication', error: error.message });
   }
 };
 

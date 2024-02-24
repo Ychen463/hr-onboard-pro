@@ -80,7 +80,7 @@ const emergencyContactSchema = new Schema({
 
 const onboardingSchema = new Schema({
   userAccountId: { type: Schema.Types.ObjectId, ref: 'UserAccountModel' },
-  applicationStatus: String,
+  onboardingStatus: String,
   rejFeedback: String,
   personalInfo: personalInfoSchema,
   citizenshipStatus: citizenshipStatusSchema,

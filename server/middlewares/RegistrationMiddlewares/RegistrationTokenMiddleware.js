@@ -11,23 +11,21 @@ const validateToken = async (req, res, next) => {
     if (!tokenRecord) {
       return res.status(404).json({ message: 'Token not found' });
     }
-
     if (tokenRecord.tokenStatus !== 'Unused') {
       return res.status(400).json({ message: 'Token is already used or expired' });
     }
     if (tokenRecord.usedDatetime) {
       return res.status(400).json({ message: 'Token is already used' });
     }
-
     const timeElapsed = currentTime - tokenRecord.createdDatetime;
     if (timeElapsed > threeHoursInMilliseconds) {
       tokenRecord.tokenStatus = 'Expired';
       await tokenRecord.save();
       return res.status(400).json({ message: 'Token has expired' });
     }
-    next();
+    return next();
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 export default validateToken;

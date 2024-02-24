@@ -8,11 +8,10 @@ const checkRole = (allowedRoles) => (req, res, next) => {
   }
 
   if (allowedRoles.includes(userRole)) {
-    next();
-  } else {
-    return res.status(403).json({
-      message: 'Access denied. You do not have permission to perform this action.',
-    });
+    return next();
   }
+  return res.status(403).json({
+    message: 'Access denied. You do not have permission to perform this action.',
+  });
 };
 export default checkRole;

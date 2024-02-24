@@ -33,14 +33,14 @@ const generateRegiToken = async (req, res) => {
                    <p>This link will expire in 3 hours.</p>`,
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       message: 'Registration Token generated successfully',
       registrationLink: savedTokenInfo.registrationLink,
       userFirstName,
       userLastName,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -59,9 +59,9 @@ const updateTokenStatus = async (req, res) => {
     if (!updatedToken) {
       return res.status(404).json({ message: 'Token not found' });
     }
-    res.json({ message: 'Token updated successfully', updatedToken });
+    return res.json({ message: 'Token updated successfully', updatedToken });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 const getTokenStatus = async (req, res) => {
@@ -79,7 +79,7 @@ const getTokenStatus = async (req, res) => {
       await tokenRecord.save(); // Saved 'Expired' Status
     }
 
-    res.json({
+    return res.status(201).json({
       token: tokenRecord.token,
       status: tokenRecord.tokenStatus,
       userFirstName: tokenRecord.userFirstName,
@@ -89,7 +89,7 @@ const getTokenStatus = async (req, res) => {
       usedDatetime: tokenRecord.usedDatetime,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 

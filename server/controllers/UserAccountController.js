@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable import/no-extraneous-dependencies */
+>>>>>>> b76bceac (partial Onboarding, rebase with dev)
 import bcrypt from 'bcrypt';
 import generateJWtToken from '../utils/generateJWTSecret.js';
 import UserAccount from '../models/UserAccountModel.js';
@@ -22,8 +27,12 @@ const register = async (req, res) => {
     if (userNameExists) {
       return res.status(409).json({ message: 'Register Username already exists' });
     }
+<<<<<<< HEAD
     // eslint-disable-next-line no-multi-spaces
     const  { registrationEmail } = req.user;
+=======
+    const { registrationEmail } = req.user;
+>>>>>>> b76bceac (partial Onboarding, rebase with dev)
     const savedUserAccount = await UserAccount.create({
       username,
       email,
@@ -77,13 +86,13 @@ const login = async (req, res) => {
       userAccount.username,
       userRole,
     );
-    res.status(200).json({
+    return res.status(200).json({
       message: `User: ${userAccount.username} login successful`,
       username: userAccount.username,
       jwtToken,
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error logging in', error: error.message });
+    return res.status(500).json({ message: 'Error logging in', error: error.message });
   }
 };
 // VALIDATE SESSION
