@@ -1,3 +1,10 @@
-import * as crypto from 'crypto';
+import jwt from 'jsonwebtoken';
 
-console.log(crypto.randomBytes(64).toString('hex'));
+const generateJwtToken = (id, username, role) => {
+  const token = jwt.sign({ id, username, role }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: '72h',
+  });
+  return token;
+};
+
+export default generateJwtToken;

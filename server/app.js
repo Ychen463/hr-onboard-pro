@@ -5,7 +5,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import path from 'path';
 import RegistrationTokenRouter from './routers/RegistrationTokenRouter.js';
-// import UserRouter from "./routers/UserRouter.js";
+import UserAccountRouter from './routers/UserAccountRouter.js';
 // import BrandRouter from "./routers/BrandRouter.js";
 // import TypeRouter from "./routers/TypeRouter.js";
 // import ProductRouter from "./routers/ProductRouter.js";
@@ -35,7 +35,8 @@ app.use(morgan(':method :url :status :response-time ms'));
 
 // set routes
 app.use('/api', RegistrationTokenRouter);
-// app.use("/brands", BrandRouter);
+app.use('/api', UserAccountRouter);
+
 // app.use("/types", TypeRouter);
 // app.use("/products", ProductRouter);
 
