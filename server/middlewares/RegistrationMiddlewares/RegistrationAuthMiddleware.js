@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import jwt from 'jsonwebtoken';
 import validator from 'validator';
 
@@ -9,7 +8,6 @@ const RegiJwtVerifyToken = (req, res, next) => {
       req.headers.authorization
       && req.headers.authorization.split(' ')[0] === 'Bearer'
     ) {
-      // eslint-disable-next-line prefer-destructuring
       token = req.headers.authorization.split(' ')[1];
     }
     if (!token || validator.isEmpty(token)) {

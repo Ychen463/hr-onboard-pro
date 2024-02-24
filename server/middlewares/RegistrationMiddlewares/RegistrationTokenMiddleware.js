@@ -1,7 +1,5 @@
-/* eslint-disable consistent-return */
 import RegistrationToken from '../../models/RegistrationTokenModel.js';
 
-// eslint-disable-next-line import/prefer-default-export
 const validateToken = async (req, res, next) => {
   const { token } = req.params;
   const currentTime = new Date();

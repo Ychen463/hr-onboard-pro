@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/named */
 import express from 'express';
 import { register, login, validateSession } from '../controllers/UserAccountController.js';
 import RegiJwtVerifyToken from '../middlewares/RegistrationMiddlewares/RegistrationAuthMiddleware.js';
