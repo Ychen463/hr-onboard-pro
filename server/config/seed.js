@@ -44,11 +44,11 @@ const seedRegistrationTokens = async () => {
 const seedUserAccounts = async () => {
   const userAccounts = [
     {
-      registrationTokenId: new mongoose.Types.ObjectId(),
+      registrationEmail: 'aaa@aa.com',
       username: 'john.doe',
       password: await bcrypt.hash('password123', SALT_ROUNDS),
       email: 'john.doe@example.com',
-      role: 'employee',
+      userRole: 'employee',
     },
     // add more account users
   ];

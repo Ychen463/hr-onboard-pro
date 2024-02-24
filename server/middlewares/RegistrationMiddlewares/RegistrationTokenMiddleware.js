@@ -1,8 +1,8 @@
 /* eslint-disable consistent-return */
-import RegistrationToken from '../models/RegistrationTokenModel.js';
+import RegistrationToken from '../../models/RegistrationTokenModel.js';
 
 // eslint-disable-next-line import/prefer-default-export
-export const validateToken = async (req, res, next) => {
+const validateToken = async (req, res, next) => {
   const { token } = req.params;
   const currentTime = new Date();
   const threeHoursInMilliseconds = 3 * 60 * 60 * 1000; // 3h
@@ -32,3 +32,4 @@ export const validateToken = async (req, res, next) => {
     res.status(500).json({ message: error.message });
   }
 };
+export default validateToken;

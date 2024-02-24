@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 
 const userAccountSchema = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
-  registrationTokenId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'RegistrationToken',
+  registrationEmail: {
+    type: String,
+    required: true,
+    unique: true,
   },
   username: {
     type: String,
@@ -20,7 +20,7 @@ const userAccountSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  role: {
+  userRole: {
     type: String,
     enum: ['employee', 'HR'],
     required: true,

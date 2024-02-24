@@ -7,8 +7,8 @@ import sendEmail from '../utils/sendEmail.js';
 const generateRegiToken = async (req, res) => {
   try {
     const { userFirstName, userLastName, email } = req.body;
-    const userEmailExists = await RegistrationToken.findOne({ email }).lean().exec();
     // Registration Email should not be used before
+    const userEmailExists = await RegistrationToken.findOne({ email }).lean().exec();
     if (userEmailExists) {
       return res.status(409).json({ message: 'Register Email already exists' });
     }
