@@ -1,7 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import bcrypt from 'bcrypt';
 import generateLoginToken from '../utils/generateLoginToken.js';
-
 import UserAccount from '../models/UserAccountModel.js';
 import RegistrationToken from '../models/RegistrationTokenModel.js';
 import Housing from '../models/HousingModel.js';

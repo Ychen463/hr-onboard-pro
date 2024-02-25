@@ -8,8 +8,8 @@ const router = express.Router();
 
 // @todo: implement authorization: only HR can generate token
 // router.post('/registrationToken', jwtVerifyToken, checkRole(['HR']), generateRegiToken);
-router.post('/registrationToken', jwtVerifyToken, checkRole(['HR']), generateRegiToken);
-router.patch('/registrationToken/:token', validateToken, updateTokenStatus);
-router.get('/registrationToken/:token', getTokenStatus);
+router.post('/', jwtVerifyToken, checkRole(['HR']), generateRegiToken);
+router.patch('/:token', validateToken, updateTokenStatus);
+router.get('/:token', getTokenStatus);
 
 export default router;
