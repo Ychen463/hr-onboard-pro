@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
-const userAccountSchema = new mongoose.Schema({
+const { Schema } = mongoose;
+const userAccountSchema = new Schema({
   registrationEmail: {
     type: String,
     required: true,
@@ -25,10 +26,16 @@ const userAccountSchema = new mongoose.Schema({
     enum: ['employee', 'HR'],
     required: true,
   },
-  OnboardingStatus: {
+  onboardingStatus: {
     type: String,
     default: 'Not Started',
   },
+  visaStatus: {
+    type: String,
+    default: 'Not Applicable',
+  },
+  housingId: { type: Schema.Types.ObjectId, ref: 'Housing', required: true },
+
 });
 
 const UserAccount = mongoose.model('UserAccount', userAccountSchema);

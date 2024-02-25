@@ -2,12 +2,13 @@ import RegistrationToken from '../../models/RegistrationTokenModel.js';
 
 const validateToken = async (req, res, next) => {
   const { token } = req.params;
+  console.log('TokenRecord: ', req.params);
+
   const currentTime = new Date();
   const threeHoursInMilliseconds = 3 * 60 * 60 * 1000; // 3h
 
   try {
     const tokenRecord = await RegistrationToken.findOne({ token });
-
     if (!tokenRecord) {
       return res.status(404).json({ message: 'Token not found' });
     }

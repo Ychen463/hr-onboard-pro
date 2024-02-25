@@ -47,6 +47,7 @@ const generateRegiToken = async (req, res) => {
 const updateTokenStatus = async (req, res) => {
   try {
     const { token } = req.params;
+    console.log('REQ:', req);
     const statusUpdate = {
       tokenStatus: 'Used',
       usedDatetime: Date.now(),
@@ -67,6 +68,7 @@ const updateTokenStatus = async (req, res) => {
 const getTokenStatus = async (req, res) => {
   try {
     const { token } = req.params;
+
     const tokenRecord = await RegistrationToken.findOne({ token });
     if (!tokenRecord) {
       return res.status(404).json({ message: 'Token not found' });

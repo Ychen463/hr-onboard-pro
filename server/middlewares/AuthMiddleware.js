@@ -14,6 +14,7 @@ const jwtVerifyToken = (req, res, next) => {
       message: `${req.headers.authorization} No token provided`,
     });
   }
+
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     if (!decoded.id || !validator.isMongoId(decoded.id)) {
@@ -21,6 +22,11 @@ const jwtVerifyToken = (req, res, next) => {
         message: 'Invalid token',
       });
     }
+    if (!req.user) req.user = {};
+    const { id: userId, username, userRole } = decoded;
+    req.user.userId = userId;
+    req.user.username = username;
+    req.user.userRole = userRole;
     return next();
   } catch (error) {
     return res.status(401).json({

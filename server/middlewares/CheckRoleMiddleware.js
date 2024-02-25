@@ -1,6 +1,5 @@
 const checkRole = (allowedRoles) => (req, res, next) => {
   const userRole = req.user?.userRole;
-
   if (!userRole) {
     return res.status(401).json({
       message: 'User role is not defined.',

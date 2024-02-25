@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
@@ -48,6 +49,8 @@ const seedUserAccounts = async () => {
       email: 'john.doe@example.com',
       userRole: 'employee',
       onboardingStatus: 'Not Started',
+      visaStatus: 'Not Applicable',
+      housingId: new mongoose.Types.ObjectId(),
     },
     // add more account users
   ];
@@ -64,6 +67,7 @@ const seedUserAccounts = async () => {
 const seedOnboardings = async () => {
   const onboardings = [{
     userAccountId: new mongoose.Types.ObjectId(),
+    registrationEmail: 'abc@abc.com',
     onboardingStatus: 'Not Started',
     rejFeedback: '',
     personalInfo: {
@@ -124,6 +128,7 @@ const seedOnboardings = async () => {
       email: 'emergency@example.com',
       relationship: 'Family',
     }],
+    visaId: new mongoose.Types.ObjectId(),
   }];
 
   try {
@@ -229,36 +234,35 @@ const seedVisas = async () => {
       onboardingId: new mongoose.Types.ObjectId(),
       docs: {
         optReceipt: {
-          optReceiptId: 'optReceipt123',
+          optReceiptId: '1234-optreceipt',
           docUrl: 'http://example.com/optReceipt.pdf',
           rejFeedback: '',
           createdDatetime: new Date(),
           status: 'Pending',
         },
         optEAD: {
-          optEADId: 'optEAD123',
+          optReceiptId: '1234-optead',
           docUrl: 'http://example.com/optEAD.pdf',
           rejFeedback: '',
           createdDatetime: new Date(),
           status: 'Await',
         },
         i983: {
-          i983Id: 'i983123',
+          i983Id: '1234-i983',
           docUrls: ['http://example.com/i983.pdf'],
           rejFeedback: '',
           createdDatetime: new Date(),
           status: 'Pending',
         },
         i20: {
-          i20Id: 'i20123',
+          optReceiptId: '1234-i20',
           docUrl: 'http://example.com/i20.pdf',
           rejFeedback: '',
           createdDatetime: new Date(),
           status: 'Approved',
         },
       },
-      overallStatus: 'Pending',
-      nextStep: 'Submit i20',
+      overallStatus: 'AllDocs-Await',
     },
   ];
 
