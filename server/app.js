@@ -6,8 +6,7 @@ import RegistrationTokenRouter from './routers/RegistrationTokenRouter.js';
 import UserAccountRouter from './routers/UserAccountRouter.js';
 import OnboardingRouter from './routers/OnboardingRouter.js';
 
-// import TypeRouter from "./routers/TypeRouter.js";
-// import ProductRouter from "./routers/ProductRouter.js";
+import HousingRouter from './routers/HousingRouter.js';
 
 const app = express();
 app.use(express.json());
@@ -37,6 +36,10 @@ app.use(morgan(':method :url :status :response-time ms'));
 app.use('/api', RegistrationTokenRouter);
 app.use('/api', UserAccountRouter);
 app.use('/api', OnboardingRouter);
+app.use('/api', HousingRouter);
+
+// app.use("/types", TypeRouter);
+// app.use("/products", ProductRouter);
 
 app.all('*', (_req, res) => {
   console.log('Wrong route!');
