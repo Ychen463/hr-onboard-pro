@@ -13,10 +13,10 @@ import UserProfile from '../models/UserProfileModel.js';
 const getHouseInfo = async (req, res) => {
   // req passed jwtVerifyToken check
   // extract house ObjectID from req body
-  const { houseId } = req.body;
+  const { houseID } = req.params;
 
   try {
-    const house = await Housing.findById(houseId).lean().exec();
+    const house = await Housing.findById(houseID).lean().exec();
 
     // Check if the house with the exists, if not, return 422 response
     if (!house) {
@@ -80,6 +80,7 @@ const createNewHouse = async (req, res) => {
 };
 
 // get summary information of all houses
+// Name, address, landlord info and resident number
 // may need pagination, but currently not
 const getHousesSummary = async (req, res) => {
   try {
@@ -100,10 +101,10 @@ const getHousesSummary = async (req, res) => {
 // TODO: Check if we have better solution to present resident info for who do not have a profile yet
 // Current solution: if no profile found for an account, send empty object
 const getUserHousing = async (req, res) => {
-  const { userID } = req.params;
-
+  const { userId } = req.user;
+  console.log(req.user);
   try {
-    const account = await UserAccount.findById(userID).select('housingId').lean().exec();
+    const account = await UserAccount.findById(userId).select('housingId').lean().exec();
     const house = await Housing.findById(account.housingId).select('address residents').lean().exec();
     // Check if the house with the exists, if not, return 422 response
     if (!house) {
