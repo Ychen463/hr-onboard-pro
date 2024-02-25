@@ -39,13 +39,10 @@ const getCurrentStep = async (req, res) => {
       currentStep = steps[currentIndex];
       nextStep = currentIndex + 1 < steps.length ? steps[currentIndex + 1] : null;
     }
-
     // Constructing the response message based on the current step
     let responseMessage = `Current step: ${currentStep}.`;
     if (nextStep) {
       responseMessage += ` Next step: ${nextStep}.`;
-    } else {
-      responseMessage += ' All steps approved.';
     }
 
     return res.status(200).json({
@@ -215,16 +212,31 @@ const updateVisaDecision = async (req, res) => {
     };
     if (decision.includes('Rejected')) {
       update[`docs.${docType}.rejFeedback`] = rejFeedback || 'No feedback provided.';
-      update[`docs.${docType}.visaStatus`] = visaStatus;
+      update[`docs.${docType}.status`] = visaStatus;
       update.visaStatus = visaStatus;
     }
+
     const updatedVisa = await Visa.findOneAndUpdate(
       { userAccountId },
       update,
       { new: true },
     ).exec();
+    // Determine and update the next document, if applicable
+    const nextIndex = index + 1;
+    if (nextIndex < docTypes.length) { // Ensure there is a next document
+      const nextDocType = docTypes[nextIndex];
+      const nextDocTypeName = docTypeNames[nextIndex];
+      // Set the next document's status to "Await"
 
-    if (!updatedVisa) {
+      update[`docs.${nextDocType}.status`] = `${nextDocTypeName}-Await`;
+    }
+    // Perform the update operation
+    const updatedNextVisa = await Visa.findOneAndUpdate(
+      { userAccountId },
+      update,
+      { new: true },
+    ).exec();
+    if (!updatedNextVisa) {
       return res.status(404).json({ message: 'Visa record not found.' });
     }
     await UserAccount.findOneAndUpdate(
