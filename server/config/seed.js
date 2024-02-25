@@ -208,9 +208,7 @@ const seedHousing = async () => {
         phoneNumber: '123-456-7890',
         email: 'johndoe@example.com',
       },
-      capacity: 4,
       residents: [], // Assuming no residents initially
-      isFull: false,
       facilityInfo: {
         beds: 4, mattresses: 4, tables: 1, chairs: 4,
       },
@@ -223,9 +221,7 @@ const seedHousing = async () => {
         phoneNumber: '123-456-7890',
         email: 'johndoe@example.com',
       },
-      capacity: 4,
       residents: [account[0]], // Assuming this house has one resident
-      isFull: false,
       facilityInfo: {
         beds: 4, mattresses: 4, tables: 1, chairs: 4,
       },

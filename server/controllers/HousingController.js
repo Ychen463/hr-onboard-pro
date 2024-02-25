@@ -8,7 +8,7 @@ import UserProfile from '../models/UserProfileModel.js';
 // TODO: Check if we have better solution to present resident info for who do not have a profile yet
 // If this house has residents, their legal full name, phone number, email, and car
 // information are needed
-// These information are in user profile document
+// Email is in account. Other information are in user profile document
 // Current solution: if no profile found for an account, send only the account email
 const getHouseInfo = async (req, res) => {
   // req passed jwtVerifyToken check
@@ -54,6 +54,11 @@ const createNewHouse = async (req, res) => {
   } = req.body;
 
   // for now, we allow any of these fields to be empty
+  if (!(name && address && landlord && facilityInfo)) {
+    res.status(422).json({ message: 'Miss necessary information to add a new house.' });
+    return;
+  }
+
   try {
     const newHouse = {
       name,
@@ -74,4 +79,59 @@ const createNewHouse = async (req, res) => {
   }
 };
 
-export { getHouseInfo, createNewHouse };
+// get summary information of all houses
+// may need pagination, but currently not
+const getHousesSummary = async (req, res) => {
+  try {
+    const houseListFound = await Housing.find().select('name address landlord residents').lean().exec();
+    const houseList = houseListFound.map((house) => (
+      { ...house, residents: house.residents.length }));
+    res.status(200).json({
+      message: 'House list found.',
+      houseList,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+// get the information of the house that the user is assigned to with a user’s _id
+// Address, List of roommates (preferred or legal full name and phone number)
+// TODO: Check if we have better solution to present resident info for who do not have a profile yet
+// Current solution: if no profile found for an account, send empty object
+const getUserHousing = async (req, res) => {
+  const { userID } = req.params;
+
+  try {
+    const account = await UserAccount.findById(userID).select('housingId').lean().exec();
+    const house = await Housing.findById(account.housingId).select('address residents').lean().exec();
+    // Check if the house with the exists, if not, return 422 response
+    if (!house) {
+      return res.status(422).json({ message: 'House doesn’t exist.' });
+    }
+    // If the house exists, find profile information for each resident
+    const residentInfo = await Promise.all(house.residents.map(async (resident) => {
+      const profile = await UserProfile.findOne({ userAccountId: resident })
+        .select('personalInfo.firstName personalInfo.lastName personalInfo.preferredName personalInfo.contactSchema.cellPhoneNumber')
+        .lean().exec();
+      // if the profile exists, return personal info
+      if (profile) {
+        console.log(`residentAccount: ${resident} profile: ${profile.personalInfo.firstName}`);
+        return { ...profile };
+      }
+      // if not return empty object
+      return {};
+    }));
+
+    res.status(200).json({
+      message: 'House full information found.',
+      house: { ...house, residents: residentInfo },
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export {
+  getHouseInfo, createNewHouse, getHousesSummary, getUserHousing,
+};

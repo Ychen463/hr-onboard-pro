@@ -2,7 +2,9 @@
 /* eslint-disable import/named */
 import express from 'express';
 import jwtVerifyToken from '../middlewares/AuthMiddleware.js';
-import { getHouseInfo, createNewHouse } from '../controllers/HousingController.js';
+import {
+  getHouseInfo, createNewHouse, getHousesSummary, getUserHousing,
+} from '../controllers/HousingController.js';
 import checkRole from '../middlewares/CheckRoleMiddleware.js';
 
 const router = express.Router();
@@ -13,5 +15,12 @@ router.get('/housing', jwtVerifyToken, getHouseInfo);
 // create a new house with basic house information:
 // a name, an address, landlord information, capacity basic facility information
 router.post('/housing', jwtVerifyToken, checkRole(['HR']), createNewHouse);
+
+// get summary information of all houses
+// may need pagination, but currently not
+router.get('/housing/summary', jwtVerifyToken, checkRole(['HR']), getHousesSummary);
+
+// get the information of the house that the user is assigned to with a user’s _id
+router.get('/housing/user/:userID', jwtVerifyToken, getUserHousing);
 
 export default router;
