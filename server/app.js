@@ -5,7 +5,7 @@ import path from 'path';
 import RegistrationTokenRouter from './routers/RegistrationTokenRouter.js';
 import UserAccountRouter from './routers/UserAccountRouter.js';
 import OnboardingRouter from './routers/OnboardingRouter.js';
-
+import UserProfileRouter from './routers/UserProfileRouter.js';
 import HousingRouter from './routers/HousingRouter.js';
 
 const app = express();
@@ -37,6 +37,7 @@ app.use('/api', RegistrationTokenRouter);
 app.use('/api', UserAccountRouter);
 app.use('/api', OnboardingRouter);
 app.use('/api', HousingRouter);
+app.use('/api', UserProfileRouter);
 
 // app.use("/types", TypeRouter);
 // app.use("/products", ProductRouter);
