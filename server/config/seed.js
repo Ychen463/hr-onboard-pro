@@ -49,6 +49,14 @@ const seedUserAccounts = async () => {
       userRole: 'employee',
     },
     // add more account users
+    // add an HR for testing
+    {
+      registrationEmail: 'bbb@bb.com',
+      username: 'tim.doe',
+      password: await bcrypt.hash('password123', SALT_ROUNDS),
+      email: 'tim.doe@example.com',
+      userRole: 'HR',
+    },
   ];
 
   try {
@@ -190,6 +198,7 @@ const seedUserProfiles = async () => {
   }
 };
 const seedHousing = async () => {
+  const account = await UserAccount.find().select('_id').lean().exec(); // get one account as testing resident
   const housings = [
     {
       name: 'Sunny Apartments',
@@ -199,9 +208,20 @@ const seedHousing = async () => {
         phoneNumber: '123-456-7890',
         email: 'johndoe@example.com',
       },
-      capacity: 4,
       residents: [], // Assuming no residents initially
-      isFull: false,
+      facilityInfo: {
+        beds: 4, mattresses: 4, tables: 1, chairs: 4,
+      },
+    },
+    {
+      name: 'Rainy Apartments',
+      address: '124 Sunny Road, Sunville',
+      landlord: {
+        fullName: 'John Doe',
+        phoneNumber: '123-456-7890',
+        email: 'johndoe@example.com',
+      },
+      residents: [account[0]], // Assuming this house has one resident
       facilityInfo: {
         beds: 4, mattresses: 4, tables: 1, chairs: 4,
       },
