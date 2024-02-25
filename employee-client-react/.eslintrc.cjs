@@ -30,5 +30,6 @@ module.exports = {
     'import/no-absolute-path': 'off',
     // You might need to adjust or disable this rule if your build tool handles resolution
     'import/no-unresolved': 'off',
+    "no-param-reassign": "off",
   },
 }
