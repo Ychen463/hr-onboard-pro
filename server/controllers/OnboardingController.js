@@ -82,7 +82,6 @@ const applyUserOnboarding = async (req, res) => {
 
 // Get Onboarding Record API
 const getUserOnboarding = async (req, res) => {
-  console.log(req.params.userAccountId);
   try {
     const params = { userAccountId: req.params.userAccountId };
     const onboardingData = await Onboarding.findOne(params).exec();
