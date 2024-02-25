@@ -4,13 +4,12 @@ import morgan from 'morgan';
 import path from 'path';
 import RegistrationTokenRouter from './routers/RegistrationTokenRouter.js';
 import UserAccountRouter from './routers/UserAccountRouter.js';
+import OnboardingRouter from './routers/OnboardingRouter.js';
+
 import HousingRouter from './routers/HousingRouter.js';
-// import BrandRouter from "./routers/BrandRouter.js";
-// import TypeRouter from "./routers/TypeRouter.js";
-// import ProductRouter from "./routers/ProductRouter.js";
 
 const app = express();
-app.use(express.json()); // 用于解析JSON请求体
+app.use(express.json());
 
 // eslint-disable-next-line no-unused-vars
 const __dirname = path.resolve();
@@ -36,6 +35,7 @@ app.use(morgan(':method :url :status :response-time ms'));
 // set routes
 app.use('/api', RegistrationTokenRouter);
 app.use('/api', UserAccountRouter);
+app.use('/api', OnboardingRouter);
 app.use('/api', HousingRouter);
 
 // app.use("/types", TypeRouter);

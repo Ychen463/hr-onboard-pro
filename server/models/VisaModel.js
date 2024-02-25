@@ -3,31 +3,36 @@ import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
 
 const documentSchema = new Schema({
-  optReceiptId: String,
+  docId: String,
   docUrl: String,
   rejFeedback: String,
   createdDatetime: Date,
-  status: String, // "Await" | "Pending" | "Approved" | "Rejected"
-});
+  status: {
+    type: String,
+    default: 'Await', // "Await" | "Pending" | "Approved" | "Rejected"
+  },
+}, { _id: false });
 
 const visaSchema = new Schema({
-  userAccountId: { type: Schema.Types.ObjectId, ref: 'UserAccountModel' },
-  userProfileId: { type: Schema.Types.ObjectId, ref: 'UserProfileModel' },
-  onboardingId: { type: Schema.Types.ObjectId, ref: 'OnboardingModel' },
+  userAccountId: { type: Schema.Types.ObjectId, ref: 'UserAccount' },
+  userProfileId: { type: Schema.Types.ObjectId, ref: 'UserProfile' },
+  onboardingId: { type: Schema.Types.ObjectId, ref: 'Onboarding' },
   docs: {
     optReceipt: documentSchema,
     optEAD: documentSchema,
     i983: {
-      i983Id: String,
+      docId: String,
       docUrls: [String],
       rejFeedback: String,
       createdDatetime: Date,
-      status: String,
+      status: {
+        type: String,
+        default: 'Await', // "Await" | "Pending" | "Approved" | "Rejected"
+      },
     },
     i20: documentSchema,
   },
-  overallStatus: String,
-  nextStep: String,
+  visaStatus: String,
 });
 
 export default model('Visa', visaSchema);

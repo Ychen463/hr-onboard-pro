@@ -8,19 +8,18 @@ const addressSchema = new Schema({
   city: String,
   state: String,
   zip: String,
-});
+}, { _id: false });
 
 const carInfoSchema = new Schema({
   make: String,
   model: String,
   color: String,
-});
+}, { _id: false });
 
 const contactSchema = new Schema({
   cellPhoneNumber: String,
   workPhoneNumber: String,
-});
-
+}, { _id: false });
 const personalInfoSchema = new Schema({
   firstName: String,
   lastName: String,
@@ -33,7 +32,7 @@ const personalInfoSchema = new Schema({
   ssn: String,
   dateOfBirth: Date,
   gender: String, // "Male", "Female", "I do not wish to answer"
-});
+}, { _id: false });
 
 const driverLicenseSchema = new Schema({
   DocId: Schema.Types.ObjectId,
@@ -41,7 +40,7 @@ const driverLicenseSchema = new Schema({
   driverLicenseNumber: String,
   expirationDate: Date,
   driverLicenseCopyUrl: String,
-});
+}, { _id: false });
 
 const emergencyContactSchema = new Schema({
   firstName: String,
@@ -50,11 +49,11 @@ const emergencyContactSchema = new Schema({
   phone: String,
   email: String,
   relationship: String,
-});
+}, { _id: false });
 
 const userProfileSchema = new Schema({
-  userAccountId: { type: Schema.Types.ObjectId, ref: 'UserAccountModel', required: true },
-  onboardingId: { type: Schema.Types.ObjectId, ref: 'OnboardingModel', required: true },
+  userAccountId: { type: Schema.Types.ObjectId, ref: 'UserAccount', required: true },
+  onboardingId: { type: Schema.Types.ObjectId, ref: 'Onboarding', required: true },
   personalInfo: personalInfoSchema,
   employmentStatus: String, // “Onboarding”, "Active", "Inactive"
   driverLicense: driverLicenseSchema,
