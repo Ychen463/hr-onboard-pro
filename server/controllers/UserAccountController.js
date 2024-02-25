@@ -55,17 +55,21 @@ const register = async (req, res) => {
     const loginJwtToken = generateLoginToken(
       savedUserAccount._id,
       savedUserAccount.username,
-      'employee',
+      savedUserAccount.userRole,
     );
 
     return res.status(201).json({
       message: 'User registered successfully, logged in successfully',
-      username: savedUserAccount.username,
-      email,
-      housingID: assignedHousing._id,
       loginJwtToken,
-      visaStatus: savedUserAccount.visaStatus,
-      onboardingStatus: savedUserAccount.onboardingStatus,
+      user: {
+        userId: savedUserAccount._id,
+        username: savedUserAccount.username,
+        userRole: savedUserAccount.userRole,
+        email: savedUserAccount.email,
+        housingId: assignedHousing._id,
+        onboardingStatus: savedUserAccount.onboardingStatus,
+        visaStatus: savedUserAccount.visaStatus,
+      },
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -93,11 +97,16 @@ const login = async (req, res) => {
     );
     return res.status(200).json({
       message: `User: ${userAccount.username} login successful`,
-      username: userAccount.username,
-      userRole: userAccount.userRole,
-      visaStatus: userAccount.visaStatus,
-      onboardingStatus: userAccount.onboardingStatus,
       loginJwtToken,
+      user: {
+        userId: userAccount._id,
+        username: userAccount.username,
+        userRole: userAccount.userRole,
+        email: userAccount.email,
+        housingId: userAccount.housingId,
+        onboardingStatus: userAccount.onboardingStatus,
+        visaStatus: userAccount.visaStatus,
+      },
     });
   } catch (error) {
     return res.status(500).json({ message: 'Error logging in', error: error.message });
@@ -114,10 +123,12 @@ const validateSession = async (req, res) => {
         userId: req.user.userId,
         username: req.user.username,
         userRole: req.user.userRole,
-        loginStatus: 'Logged In',
-        visaStatus: userAccount.visaStatus,
+        email: userAccount.email,
+        housingId: userAccount.housingId,
         onboardingStatus: userAccount.onboardingStatus,
+        visaStatus: userAccount.visaStatus,
       },
+      loginStatus: 'Logged In',
     });
   } catch (error) {
     res.status(500).json({ message: 'Error checking user token', error: error.message });
