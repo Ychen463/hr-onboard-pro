@@ -1,5 +1,7 @@
+// TODO: error handling check: add isValidObjectId check
 import UserAccount from '../models/UserAccountModel.js';
 import UserProfile from '../models/UserProfileModel.js';
+import Onboarding from '../models/OnboardingModel.js';
 
 // Get all employees' profile summary, sort by last name alphabetically
 // Name(first, last, preferred), SSN, Work Authorization Title, Phone Number, email(account)
@@ -13,7 +15,7 @@ const getAllProfileSummary = async (req, res) => {
     ).sort({ 'personalInfo.lastName': 1 })
       .lean()
       .exec();
-    console.log(profileListFound);
+    // console.log(profileListFound);
     const profileList = profileListFound.map((profile) => ({
       userProfileId: profile._id,
       userAccountId: profile.userAccountId._id,
@@ -51,7 +53,7 @@ const getEmployeeFullProfile = async (req, res) => {
       return res.status(422).json({ message: 'Profile doesn’t exist.' });
     }
     if (!account) {
-      return res.status(422).json({ message: 'Profile is not linked to a valid account.' });
+      return res.status(422).json({ message: 'Could not find the user account.' });
     }
 
     const email = account.registrationEmail;
@@ -81,7 +83,7 @@ const getProfile = async (req, res) => {
       return res.status(422).json({ message: 'Profile doesn’t exist.' });
     }
     if (!account) {
-      return res.status(422).json({ message: 'Profile is not linked to a valid account.' });
+      return res.status(422).json({ message: 'Could not find the user account.' });
     }
 
     const email = account.registrationEmail;
@@ -135,6 +137,57 @@ const updateProfile = async (req, res) => {
   }
 };
 
+// Create new profile for an employee who finished onboarding
+const createUserProfile = async (req, res) => {
+  const { userAccountId, onboardingId } = req.body;
+  if (!(userAccountId && onboardingId)) {
+    return res.status(422).json({ message: 'Missing userAccountId and onboardingId to create a user profile.' });
+  }
+
+  try {
+    const account = await UserAccount.findById(userAccountId).lean().exec();
+    const onboarding = await Onboarding.findById(onboardingId).lean().exec();
+    if (!account) {
+      return res.status(422).json({ message: 'User account doesn’t exist.' });
+    }
+    if (!onboarding) {
+      return res.status(422).json({ message: 'Onboarding record doesn’t exist.' });
+    }
+    if (String(onboarding.userAccountId) !== userAccountId) {
+      return res.status(409).json({ message: 'userAccountId sent doesn’t match the userAccountId in the onboarding record.' });
+    }
+    if (onboarding.onboardingStatus !== 'Completed') {
+      return res.status(409).json({ message: 'Onboarding is not completed.' });
+    }
+
+    const duplicate = await UserProfile.findOne({ userAccountId }).lean().exec();
+    if (duplicate) {
+      console.log(duplicate);
+      return res.status(409).json({ message: 'Profile with the same userAccountId already exists.' });
+    }
+
+    // based on information in onboarding record, create the user profile
+    const newProfileInfo = {
+      userAccountId,
+      onboardingId,
+      personalInfo: onboarding.personalInfo,
+      employmentStatus: 'Active',
+      citizenshipStatus: onboarding.citizenshipStatus,
+      driverLicense: onboarding.driverLicense,
+      emergencyContacts: onboarding.emergencyContacts,
+    };
+
+    const profileCreated = await UserProfile.create(newProfileInfo);
+    if (profileCreated) {
+      res.status(201).json({
+        message: 'Profile created.',
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 export {
-  getAllProfileSummary, getEmployeeFullProfile, getProfile, updateProfile,
+  getAllProfileSummary, getEmployeeFullProfile, getProfile, updateProfile, createUserProfile,
 };
