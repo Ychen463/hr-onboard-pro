@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import * as visaApiService from '../../apiServices/visa.js';
+import { logout } from './authSlice.js';
 
 const initialState = {
   currentStep: null,
@@ -150,7 +151,9 @@ export const visaSlice = createSlice({
       .addCase(submiti20.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
-      });
+      })
+    // logout clean state
+      .addCase(logout, () => initialState);
   },
 });
 
