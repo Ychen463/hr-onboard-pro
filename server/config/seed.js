@@ -223,6 +223,17 @@ const seedUserProfiles = async () => {
       gender: 'Male',
     },
     employmentStatus: 'Onboarding',
+    citizenshipStatus: {
+      isCitizenOrPermanentResident: true,
+      statusDetail: 'Citizen',
+      workAuthorization: 'F1(CPT/OPT)',
+      workAuthorizationOtherTitle: '',
+      workAuthorizationFiles: [],
+      startEndDate: {
+        startDate: '2022-01-01',
+        endDate: '2022-12-31',
+      },
+    },
     driverLicense: {
       DocId: new mongoose.Types.ObjectId(),
       hasDriverLicense: true,

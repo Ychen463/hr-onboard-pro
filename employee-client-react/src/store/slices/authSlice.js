@@ -5,7 +5,6 @@ const initialState = {
   user: null,
   isLoggedIn: false,
   registrationToken: null,
-  isRegistering: false,
   isLoading: false,
   error: null,
 };
@@ -19,6 +18,7 @@ export const registration = createAsyncThunk(
       const response = await authApiService.register({
         username, password, email, token,
       });
+      localStorage.setItem('jwtToken', response.data.loginJwtToken);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -31,6 +31,7 @@ export const login = createAsyncThunk(
   async ({ username, password }, thunkAPI) => {
     try {
       const response = await authApiService.login({ username, password });
+      localStorage.setItem('jwtToken', response.data.loginJwtToken);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -64,16 +65,16 @@ export const authSlice = createSlice({
     builder
       // registration
       .addCase(registration.pending, (state) => {
-        state.isRegistering = true;
+        state.isLoading = true;
         state.error = null;
       })
       .addCase(registration.fulfilled, (state, action) => {
-        state.isRegistering = false;
+        state.isLoading = false;
         state.isLoggedIn = true;
-        state.user = action.payload;
+        state.user = action.payload.user;
       })
       .addCase(registration.rejected, (state, action) => {
-        state.isRegistering = false;
+        state.isLoading = false;
         state.error = action.error.message;
       })
       // login
@@ -84,7 +85,7 @@ export const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isLoggedIn = true;
-        state.user = action.payload;
+        state.user = action.payload.user;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -99,13 +100,16 @@ export const authSlice = createSlice({
       .addCase(sessionValidate.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isLoggedIn = true;
-        state.user = action.payload;
+        state.user = action.payload.user;
       })
       .addCase(sessionValidate.rejected, (state, action) => {
         state.isLoading = false;
         state.isLoggedIn = false;
+        state.user = null;
         state.error = action.error.message;
-      });
+      })
+      // logout clean state
+      .addCase(logout, () => initialState);
   },
 });
 
@@ -114,3 +118,19 @@ export const {
 } = authSlice.actions;
 
 export default authSlice.reducer;
+
+// selectors
+// get user data
+export const selectorCurrentUser = (state) => state.auth.user;
+
+// check if the user is logged in
+export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
+
+// check if an authentication-related process is loading
+export const selectIsAuthLoading = (state) => state.auth.isLoading;
+
+// get any authentication-related error
+export const selectAuthError = (state) => state.auth.error;
+
+// get registrationToken
+export const selectRegistrationToken = (state) => state.auth.registrationToken;

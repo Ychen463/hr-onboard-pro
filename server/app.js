@@ -6,7 +6,9 @@ import RegistrationTokenRouter from './routers/RegistrationTokenRouter.js';
 import UserAccountRouter from './routers/UserAccountRouter.js';
 import OnboardingRouter from './routers/OnboardingRouter.js';
 import VisaRouter from './routers/VisaRouter.js';
+import UserProfileRouter from './routers/UserProfileRouter.js';
 import HousingRouter from './routers/HousingRouter.js';
+import AWSS3Router from './routers/AWSS3Router.js';
 
 const app = express();
 app.use(express.json());
@@ -38,7 +40,8 @@ app.use('/api', UserAccountRouter);
 app.use('/api', OnboardingRouter);
 app.use('/api', HousingRouter);
 app.use('/api/visa', VisaRouter);
-
+app.use('/api', UserProfileRouter);
+app.use('/api/awss3', AWSS3Router);
 // app.use("/types", TypeRouter);
 // app.use("/products", ProductRouter);
 

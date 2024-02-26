@@ -31,5 +31,6 @@ module.exports = {
     // You might need to adjust or disable this rule if your build tool handles resolution
     'import/no-unresolved': 'off',
     "no-param-reassign": "off",
+    "no-use-before-define": "off",
   },
 }
