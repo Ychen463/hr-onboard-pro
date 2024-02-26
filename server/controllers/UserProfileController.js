@@ -37,10 +37,10 @@ const getAllProfileSummary = async (req, res) => {
 
 // View an employee’s entire profile, for HR
 const getEmployeeFullProfile = async (req, res) => {
-  const { accountId } = req.body;
+  const { userAccountId } = req.body;
 
   try {
-    const profile = await UserProfile.findOne({ userAccountId: accountId }).lean().exec();
+    const profile = await UserProfile.findOne({ userAccountId }).lean().exec();
     const account = await UserAccount.findById(profile.userAccountId).lean().exec();
     // if no profile found
     if (!profile) {
