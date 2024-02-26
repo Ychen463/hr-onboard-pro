@@ -29,7 +29,7 @@ const visaSchema = new Schema({
     },
     i983: {
       docId: String,
-      docUrls: [String],
+      docUrl: String,
       rejFeedback: String,
       createdDatetime: Date,
       status: {

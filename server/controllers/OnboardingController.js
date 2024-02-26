@@ -48,7 +48,7 @@ const applyUserOnboarding = async (req, res) => {
     }
     userAccount.visaStatus = visaStatus;
     await userAccount.save();
-    const { registrationEmail } = userAccount;
+    const { email } = userAccount;
     // Update citizenshipStatus with visaId if it exists
     const updatedCitizenshipStatus = { ...citizenshipStatus };
     if (visaId) {
@@ -59,7 +59,7 @@ const applyUserOnboarding = async (req, res) => {
     // Create the onboarding document
     const onboardingDocument = {
       userAccountId,
-      registrationEmail, // prefilled, cannot be changed by user
+      email, // prefilled, cannot be changed by user
       onboardingStatus: ONBOARDING_STATUS,
       rejFeedback: '',
       personalInfo,

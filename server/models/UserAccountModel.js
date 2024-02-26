@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 const userAccountSchema = new Schema({
-  registrationEmail: {
+  email: {
     type: String,
     required: true,
     unique: true,
@@ -15,11 +15,6 @@ const userAccountSchema = new Schema({
   password: {
     type: String,
     required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
   },
   userRole: {
     type: String,
@@ -34,8 +29,16 @@ const userAccountSchema = new Schema({
     type: String,
     default: 'Not Applicable',
   },
-  housingId: { type: Schema.Types.ObjectId, ref: 'Housing', required: true },
-
+  housingId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Housing',
+    required: true,
+  },
+  registrationTokenId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'RegistrationToken',
+    required: true,
+  },
 });
 
 const UserAccount = mongoose.model('UserAccount', userAccountSchema);

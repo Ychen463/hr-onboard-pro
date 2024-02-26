@@ -25,171 +25,107 @@ const getCurrentStep = async (req, res) => {
 
     const steps = ['optReceipt', 'optEAD', 'i983', 'i20'];
     const stepNames = ['OPT RECEIPT', 'OPT EAD', 'I983', 'I20'];
-    const currentIndex = steps.findIndex((step, index) => {
-      const statusToCheck = `${stepNames[index]}-Approved`;
-      return visa.docs[step].status !== statusToCheck;
-    });
+    let currentStepIndex = -1;
+
+    // Find the index of the current step
+    for (let i = 0; i < steps.length; i += 1) {
+      const statusToCheck = `${stepNames[i]}-Approved`;
+      if (visa.docs[steps[i]].status !== statusToCheck) {
+        currentStepIndex = i;
+        break;
+      }
+    }
+
     let currentStep; let
       nextStep;
 
-    if (currentIndex === -1) { // All steps are approved
-      currentStep = steps[steps.length - 1]; // The last step
-      nextStep = null; // No next step
+    if (currentStepIndex === -1) {
+      // All steps are approved
+      currentStep = steps[steps.length - 1];
+      nextStep = null;
     } else {
-      currentStep = steps[currentIndex];
-      nextStep = currentIndex + 1 < steps.length ? steps[currentIndex + 1] : null;
+      currentStep = steps[currentStepIndex];
+      nextStep = currentStepIndex + 1 < steps.length && visa.docs[steps[currentStepIndex]].status === `${stepNames[currentStepIndex]}-Approved` ? steps[currentStepIndex + 1] : steps[currentStepIndex];
     }
+
     // Constructing the response message based on the current step
     let responseMessage = `Current step: ${currentStep}.`;
-    if (nextStep) {
+    if (nextStep && nextStep !== currentStep) {
       responseMessage += ` Next step: ${nextStep}.`;
+    } else {
+      responseMessage += ' Next step is the same as current step until approved.';
     }
 
     return res.status(200).json({
       message: responseMessage,
       currentStep: visa.docs[currentStep] ? visa.docs[currentStep] : {},
-      nextStep: nextStep ? visa.docs[nextStep] : null,
+      nextStep: nextStep && nextStep !== currentStep ? visa.docs[nextStep] : null,
     });
   } catch (error) {
     console.error('Error fetching current step:', error);
     return res.status(500).json({ message: error.message });
   }
 };
-async function updateVisaDocument({
-  userAccountId, docType, docTypeName, docUrl, newStatus = `${docTypeName}-Pending`,
-}) {
+
+const docTypeToDocTypeName = {
+  optReceipt: 'OPT RECEIPT',
+  optEAD: 'OPT EAD',
+  i983: 'I983',
+  i20: 'I-20',
+};
+
+const updateDoc = async (req, res) => {
+  const { userAccountId, docType } = req.params;
+  const { docUrl } = req.body;
+  const docTypeName = docTypeToDocTypeName[docType];
+
   try {
     const visa = await Visa.findOne({ userAccountId }).exec();
     if (!visa) {
-      return { error: true, statusCode: 404, message: 'Visa record not found.' };
+      return res.status(404).json({ message: 'Visa record not found.' });
     }
-    // doc sequence
+
+    // Document sequence
     const steps = ['optReceipt', 'optEAD', 'i983', 'i20'];
     const currentIndex = steps.indexOf(docType);
-    // Check prev steps are all Approved
+
+    // Check if previous steps are all Approved
     for (let i = 0; i < currentIndex; i += 1) {
       const prevDocType = steps[i];
       if (!visa.docs[prevDocType].status.endsWith('-Approved')) {
-        return {
-          error: true,
-          statusCode: 403,
-          message: `Cannot proceed. ${prevDocType} is not approved.`,
-        };
+        return res.status(403).json({
+          message: `Cannot proceed. ${docTypeToDocTypeName[prevDocType]} is not approved.`,
+        });
       }
     }
-    // Initiate
+
+    // Initiate update
     const update = {
-      [`docs.${docType}.status`]: newStatus,
-      visaStatus: newStatus,
+      [`docs.${docType}.status`]: `${docTypeName}-Pending`,
       [`docs.${docType}.docId`]: `${userAccountId}_${docType}`,
       [`docs.${docType}.createdDatetime`]: new Date(),
+      [`docs.${docType}.docUrl`]: docUrl,
+      visaStatus: `${docTypeName}-Pending`,
     };
 
-    if (docType === 'i983') {
-      update.$push = { [`docs.${docType}.docUrls`]: docUrl };
-    } else {
-      update[`docs.${docType}.docUrl`] = docUrl;
-    }
-
+    // Update Visa document
     const updatedVisa = await Visa.findOneAndUpdate(
       { userAccountId },
       update,
       { new: true },
     ).exec();
 
-    await UserAccount.findOneAndUpdate(
-      { _id: userAccountId },
-      { visaStatus: newStatus },
-      { new: true },
-    );
-    await Onboarding.findOneAndUpdate(
-      { _id: visa.onboardingId },
-      { visaStatus: newStatus },
-      { new: true },
-    );
+    await UserAccount.findOneAndUpdate({ _id: userAccountId }, { visaStatus: `${docTypeName}-Pending` }, { new: true });
+    await Onboarding.findOneAndUpdate({ _id: visa.onboardingId }, { visaStatus: `${docTypeName}-Pending` }, { new: true });
 
-    return { error: false, statusCode: 200, data: updatedVisa };
+    return res.status(200).json({
+      message: `${docTypeName} updated successfully.`,
+      data: updatedVisa,
+    });
   } catch (error) {
     console.error('Error updating document:', error);
-    return { error: true, statusCode: 500, message: error.message };
+    return res.status(500).json({ message: error.message });
   }
-}
-
-const updateOptReceipt = async (req, res) => {
-  const { userAccountId } = req.params;
-  const { docUrl } = req.body;
-
-  const result = await updateVisaDocument({
-    userAccountId,
-    docType: 'optReceipt',
-    docTypeName: 'OPT RECEIPT',
-    docUrl,
-    newStatus: 'OPT RECEIPT-Pending',
-  });
-  if (result.error) {
-    return res.status(result.statusCode).json({ message: result.message });
-  }
-  res.status(200).json({
-    message: 'OPT Receipt updated successfully.',
-    OptReceipt: result.data.docs.optReceipt,
-  });
-};
-const updateOptEAD = async (req, res) => {
-  const { userAccountId } = req.params;
-  const { docUrl } = req.body;
-
-  const result = await updateVisaDocument({
-    userAccountId,
-    docType: 'optEAD',
-    docTypeName: 'OPT EAD',
-    docUrl,
-    newStatus: 'OPT EAD-Pending',
-  });
-  if (result.error) {
-    return res.status(result.statusCode).json({ message: result.message });
-  }
-  res.status(200).json({
-    message: 'OPT EAD updated successfully.',
-    optEAD: result.data.docs.optEAD,
-  });
-};
-const updateI983 = async (req, res) => {
-  const { userAccountId } = req.params;
-  const { docUrl } = req.body;
-
-  const result = await updateVisaDocument({
-    userAccountId,
-    docType: 'i983',
-    docTypeName: 'I983',
-    docUrl,
-    newStatus: 'I983-Pending',
-  });
-  if (result.error) {
-    return res.status(result.statusCode).json({ message: result.message });
-  }
-  res.status(200).json({
-    message: 'I983 updated successfully.',
-    i983: result.data.docs.i983,
-  });
-};
-const updateI20 = async (req, res) => {
-  const { userAccountId } = req.params;
-  const { docUrl } = req.body;
-
-  const result = await updateVisaDocument({
-    userAccountId,
-    docType: 'i20',
-    docTypeName: 'I20',
-    docUrl,
-    newStatus: 'I20-Pending',
-  });
-  if (result.error) {
-    return res.status(result.statusCode).json({ message: result.message });
-  }
-  res.status(200).json({
-    message: 'I20 updated successfully.',
-    i20: result.data.docs.i20,
-  });
 };
 
 const updateVisaDecision = async (req, res) => {
@@ -200,65 +136,59 @@ const updateVisaDecision = async (req, res) => {
   const docTypeNames = ['OPT RECEIPT', 'OPT EAD', 'I983', 'I20'];
   const index = docTypes.indexOf(docType);
   const docTypeName = docTypeNames[index];
-  const visaStatus = `${docTypeNames[index]}-${decision}`;
-  console.log(visaStatus);
+  // Construct document and Visa status based on decision
+  const docStatus = `${docTypeName}-${decision}`;
+
   try {
     const visa = await Visa.findOne({ userAccountId }).exec();
     if (!visa) {
       return res.status(404).json({ message: 'Visa record not found.' });
     }
+    const currentDoc = visa.docs[docType];
+    if (!currentDoc.url && currentDoc.status !== `${docTypeName}-Pending`) {
+      return res.status(400).json({ message: `Error: Document for ${docTypeName} must be uploaded before HR can make a ${decision} decision.` });
+    }
     const update = {
-      [`docs.${docType}.status`]: visaStatus,
+      [`docs.${docType}.status`]: docStatus,
     };
-    if (decision.includes('Rejected')) {
+    if (decision === 'Rejected') {
       update[`docs.${docType}.rejFeedback`] = rejFeedback || 'No feedback provided.';
-      update[`docs.${docType}.status`] = visaStatus;
-      update.visaStatus = visaStatus;
+      update.visaStatus = docStatus;
+    } else if (decision === 'Approved') {
+      update.visaStatus = docStatus;
+      update[`docs.${docType}.rejFeedback`] = '';
     }
 
-    const updatedVisa = await Visa.findOneAndUpdate(
-      { userAccountId },
-      update,
-      { new: true },
-    ).exec();
-    // Determine and update the next document, if applicable
+    await Visa.findOneAndUpdate({ userAccountId }, update, { new: true }).exec();
     const nextIndex = index + 1;
-    if (nextIndex < docTypes.length) { // Ensure there is a next document
+    if (nextIndex < docTypes.length && decision === 'Approved') {
       const nextDocType = docTypes[nextIndex];
       const nextDocTypeName = docTypeNames[nextIndex];
-      // Set the next document's status to "Await"
-
-      update[`docs.${nextDocType}.status`] = `${nextDocTypeName}-Await`;
-    }
-    // Perform the update operation
-    const updatedNextVisa = await Visa.findOneAndUpdate(
-      { userAccountId },
-      update,
-      { new: true },
-    ).exec();
-    if (!updatedNextVisa) {
-      return res.status(404).json({ message: 'Visa record not found.' });
+      await Visa.findOneAndUpdate(
+        { userAccountId },
+        { [`docs.${nextDocType}.status`]: `${nextDocTypeName}-Await` },
+        { new: true },
+      ).exec();
     }
     await UserAccount.findOneAndUpdate(
       { _id: userAccountId },
-      { visaStatus },
+      { visaStatus: docStatus },
       { new: true },
-    );
-    await Onboarding.findOneAndUpdate(
-      { _id: updatedVisa.onboardingId },
-      { visaStatus },
-      { new: true },
-    );
+    ).exec();
 
-    // 返回更新后的Visa文档
+    // Fetch the updated visa document to return the latest status
+    const updatedVisa = await Visa.findOne({ userAccountId }).exec();
     return res.status(200).json({
-      message: `Visa document ${docTypeName} status updated to ${visaStatus}.`,
+      message: `Visa document ${docType} status updated to ${docStatus}.`,
       updatedDocument: updatedVisa.docs[docType],
+      nextDocumentStatus: nextIndex < docTypes.length && decision === 'Approved' ? `${docTypeNames[nextIndex]}-Await` : 'None',
     });
   } catch (error) {
+    console.error('Error updating visa document status:', error);
     return res.status(500).json({ message: error.message });
   }
 };
+
 const getAll = async (req, res) => {
   try {
     const visas = await Visa.find().exec();
@@ -269,6 +199,5 @@ const getAll = async (req, res) => {
 };
 
 export {
-  getVisaDetails, getCurrentStep, updateOptReceipt, updateOptEAD, updateI983,
-  updateI20, updateVisaDecision, getAll,
+  getVisaDetails, getCurrentStep, updateDoc, updateVisaDecision, getAll,
 };

@@ -16,6 +16,48 @@ dotenv.config();
 
 const SALT_ROUNDS = parseInt(process.env.SALT, 10) || 10;
 
+const seedHousing = async () => {
+  const account = await UserAccount.find().select('_id').lean().exec(); // get one account as testing resident
+  const housings = [
+    {
+      name: 'Sunny Apartments',
+      address: '123 Sunny Road, Sunville',
+      landlord: {
+        fullName: 'John Doe',
+        phoneNumber: '123-456-7890',
+        email: 'johndoe@example.com',
+      },
+      residents: [], // Assuming no residents initially
+      facilityInfo: {
+        beds: 4, mattresses: 4, tables: 1, chairs: 4,
+      },
+    },
+    {
+      name: 'Rainy Apartments',
+      address: '124 Sunny Road, Sunville',
+      landlord: {
+        fullName: 'John Doe',
+        phoneNumber: '123-456-7890',
+        email: 'johndoe@example.com',
+      },
+      residents: [account[0]], // Assuming this house has one resident
+      facilityInfo: {
+        beds: 4, mattresses: 4, tables: 1, chairs: 4,
+      },
+    },
+  ];
+
+  try {
+    await Housing.deleteMany();
+    await Housing.insertMany(housings);
+    const firstHousing = await Housing.findOne().lean(); // Fetch the first one as an example
+    console.log('Housing Data Seeded Successfully');
+    return firstHousing._id; // Return its ID
+  } catch (error) {
+    console.error('Error seeding Housing data: ', error);
+  }
+};
+
 const seedRegistrationTokens = async () => {
   const tokens = [
     {
@@ -28,39 +70,42 @@ const seedRegistrationTokens = async () => {
       createdDatetime: new Date(),
       usedDatetime: null,
     },
-    // add more tokens
+    {
+      email: 'example2@example.com',
+      userFirstName: 'John2',
+      userLastName: 'Doe2',
+      registrationLink: 'https://example2.com/register',
+      token: 'someUniqueToken12322',
+      tokenStatus: 'Unused',
+      createdDatetime: new Date(),
+      usedDatetime: null,
+    },
   ];
 
   try {
     await RegistrationToken.deleteMany();
     await RegistrationToken.insertMany(tokens);
+    const firstToken = await RegistrationToken.findOne().lean();
     console.log('RegistrationToken Data Seeded Successfully');
+    return firstToken._id; // Return its ID
   } catch (error) {
     console.error('Error seeding RegistrationToken data: ', error);
   }
 };
 
-const seedUserAccounts = async () => {
+const seedUserAccounts = async (registrationTokenId, housingId) => {
   const userAccounts = [
     {
-      registrationEmail: 'aaa@aa.com',
       username: 'john.doe',
       password: await bcrypt.hash('password123', SALT_ROUNDS),
-      email: 'john.doe@example.com',
+      email: 'aaa@aa.com',
       userRole: 'employee',
       onboardingStatus: 'Not Started',
       visaStatus: 'Not Applicable',
-      housingId: new mongoose.Types.ObjectId(),
+      housingId,
+      registrationTokenId,
     },
-    // add more account users
-    // add an HR for testing
-    {
-      registrationEmail: 'bbb@bb.com',
-      username: 'tim.doe',
-      password: await bcrypt.hash('password123', SALT_ROUNDS),
-      email: 'tim.doe@example.com',
-      userRole: 'HR',
-    },
+
   ];
 
   try {
@@ -75,7 +120,7 @@ const seedUserAccounts = async () => {
 const seedOnboardings = async () => {
   const onboardings = [{
     userAccountId: new mongoose.Types.ObjectId(),
-    registrationEmail: 'abc@abc.com',
+    email: 'abc@abc.com',
     onboardingStatus: 'Not Started',
     rejFeedback: '',
     personalInfo: {
@@ -203,45 +248,6 @@ const seedUserProfiles = async () => {
     console.error('Error seeding UserProfile data: ', error);
   }
 };
-const seedHousing = async () => {
-  const account = await UserAccount.find().select('_id').lean().exec(); // get one account as testing resident
-  const housings = [
-    {
-      name: 'Sunny Apartments',
-      address: '123 Sunny Road, Sunville',
-      landlord: {
-        fullName: 'John Doe',
-        phoneNumber: '123-456-7890',
-        email: 'johndoe@example.com',
-      },
-      residents: [], // Assuming no residents initially
-      facilityInfo: {
-        beds: 4, mattresses: 4, tables: 1, chairs: 4,
-      },
-    },
-    {
-      name: 'Rainy Apartments',
-      address: '124 Sunny Road, Sunville',
-      landlord: {
-        fullName: 'John Doe',
-        phoneNumber: '123-456-7890',
-        email: 'johndoe@example.com',
-      },
-      residents: [account[0]], // Assuming this house has one resident
-      facilityInfo: {
-        beds: 4, mattresses: 4, tables: 1, chairs: 4,
-      },
-    },
-  ];
-
-  try {
-    await Housing.deleteMany();
-    await Housing.insertMany(housings);
-    console.log('Housing Data Seeded Successfully');
-  } catch (error) {
-    console.error('Error seeding Housing data: ', error);
-  }
-};
 
 const seedVisas = async () => {
   const visas = [
@@ -269,7 +275,7 @@ const seedVisas = async () => {
         },
         i983: {
           i983Id: '1234-i983',
-          docUrls: ['http://example.com/i983.pdf'],
+          docUrl: 'http://example.com/i983.pdf',
           rejFeedback: '',
           createdDatetime: new Date(),
           status: 'Pending',
@@ -326,12 +332,12 @@ const seedDatabase = async () => {
   try {
     await connection.openUri(process.env.MONGO_URI);
     console.log('Connected to Database');
-
-    await seedRegistrationTokens();
-    await seedUserAccounts();
+    const registrationTokenId = await seedRegistrationTokens();
+    const housingId = await seedHousing();
+    await seedUserAccounts(registrationTokenId, housingId);
     await seedOnboardings();
     await seedUserProfiles();
-    await seedHousing();
+
     await seedVisas();
     await seedFacilityReports();
   } catch (error) {
