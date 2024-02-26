@@ -15,8 +15,8 @@ const getAllProfileSummary = async (req, res) => {
       .exec();
     console.log(profileListFound);
     const profileList = profileListFound.map((profile) => ({
-      profileId: profile._id,
-      accountId: profile.userAccountId._id,
+      userProfileId: profile._id,
+      userAccountId: profile.userAccountId._id,
       email: profile.userAccountId.registrationEmail,
       workAuthorization: profile.citizenshipStatus.workAuthorization,
       firstName: profile.personalInfo.firstName,
