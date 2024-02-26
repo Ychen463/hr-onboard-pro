@@ -5,6 +5,7 @@ import path from 'path';
 import RegistrationTokenRouter from './routers/RegistrationTokenRouter.js';
 import UserAccountRouter from './routers/UserAccountRouter.js';
 import OnboardingRouter from './routers/OnboardingRouter.js';
+import VisaRouter from './routers/VisaRouter.js';
 import UserProfileRouter from './routers/UserProfileRouter.js';
 import HousingRouter from './routers/HousingRouter.js';
 
@@ -33,12 +34,12 @@ app.use(morgan(':method :url :status :response-time ms'));
 // app.use(express.static("views"));
 
 // set routes
-app.use('/api', RegistrationTokenRouter);
+app.use('/api/registrationToken', RegistrationTokenRouter);
 app.use('/api', UserAccountRouter);
 app.use('/api', OnboardingRouter);
 app.use('/api', HousingRouter);
+app.use('/api/visa', VisaRouter);
 app.use('/api', UserProfileRouter);
-
 // app.use("/types", TypeRouter);
 // app.use("/products", ProductRouter);
 
