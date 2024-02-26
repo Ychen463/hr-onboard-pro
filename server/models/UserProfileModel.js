@@ -22,6 +22,7 @@ const contactSchema = new Schema({
   cellPhoneNumber: String,
   workPhoneNumber: String,
 }, { _id: false });
+
 const personalInfoSchema = new Schema({
   firstName: String,
   lastName: String,
