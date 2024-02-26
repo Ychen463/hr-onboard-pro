@@ -78,5 +78,5 @@ export const selectorCurrentOnboardingData = (state) => state.onboarding.onboard
 // check if state is loading
 export const selectIsOnboardingLoading = (state) => state.onboarding.isLoading;
 
-// get any authentication-related error
+// get any error
 export const selectOnboardingError = (state) => state.onboarding.error;
