@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import * as onboardingApiService from '../../apiServices/onboarding.js';
+import { logout } from './authSlice.js';
 
 const initialState = {
   onboardingData: null,
@@ -65,7 +66,9 @@ export const onboardingSlice = createSlice({
       .addCase(submitOnboarding.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
-      });
+      })
+      // logout clean state
+      .addCase(logout, () => initialState);
   },
 });
 

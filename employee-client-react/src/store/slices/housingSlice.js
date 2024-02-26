@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import * as housingApiService from '../../apiServices/housing.js';
+import { logout } from './authSlice.js';
 
 const initialState = {
   house: null,
@@ -37,7 +38,9 @@ export const housingSlice = createSlice({
       .addCase(getHousing.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
-      });
+      })
+      // logout clean state
+      .addCase(logout, () => initialState);
   },
 });
 
