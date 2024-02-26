@@ -38,6 +38,10 @@ const getAllProfileSummary = async (req, res) => {
 // View an employee’s entire profile, for HR
 const getEmployeeFullProfile = async (req, res) => {
   const { userAccountId } = req.body;
+  if (!userAccountId) {
+    res.status(422).json({ message: 'Missing userAccountId to fetch a user profile.' });
+    return;
+  }
 
   try {
     const profile = await UserProfile.findOne({ userAccountId }).lean().exec();
