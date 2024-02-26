@@ -4,6 +4,7 @@ import express from 'express';
 import jwtVerifyToken from '../middlewares/AuthMiddleware.js';
 import checkRole from '../middlewares/CheckRoleMiddleware.js';
 import {
+  createUserProfile,
   getAllProfileSummary, getEmployeeFullProfile, getProfile, updateProfile,
 } from '../controllers/UserProfileController.js';
 
@@ -22,7 +23,7 @@ router.get('/profile', jwtVerifyToken, checkRole(['employee']), getProfile);
 // Update a profile, for employee
 router.patch('/profile', jwtVerifyToken, checkRole(['employee']), updateProfile);
 
-// Create a profile for an employee??
-router.post('/employee/profile', jwtVerifyToken);
+// Create a profile for an employee
+router.post('/employee/profile/new', jwtVerifyToken, checkRole(['HR']), createUserProfile);
 
 export default router;
