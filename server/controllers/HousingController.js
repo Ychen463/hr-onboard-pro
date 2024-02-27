@@ -31,7 +31,8 @@ const getHouseInfo = async (req, res) => {
         .lean().exec();
       // if the registrationToken exists, return personal info
       if (registrationToken) {
-        console.log(`residentAccount: ${account} registrationToken: ${registrationToken}`);
+        // console.log(`residentAccount: ${account} registrationToken: ${registrationToken}`);
+        delete registrationToken._id;
         return { ...registrationToken, userAccountId: residentAccountId };
       }
       return res.status(404).json({ message: 'A Registration Token associated with one of the resident accounts doesn’t exist.' });
@@ -121,7 +122,8 @@ const getUserHousing = async (req, res) => {
         .lean().exec();
       // if the registrationToken exists, return personal info
       if (registrationToken) {
-        console.log(`residentAccount: ${account} registrationToken: ${registrationToken}`);
+        // console.log(`residentAccount: ${account} registrationToken: ${registrationToken}`);
+        delete registrationToken._id;
         return { ...registrationToken, userAccountId: residentAccountId };
       }
       return res.status(404).json({ message: 'A Registration Token associated with one of the resident accounts doesn’t exist.' });
