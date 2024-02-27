@@ -9,7 +9,8 @@ const SALT = parseInt(process.env.SALT, 10);
 
 const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, password } = req.body;
+    const email = req.user.registrationEmail;
     const hashedPassword = await bcrypt.hash(password, SALT);
     // Check if email already exists
     const userEmailExists = await UserAccount.findOne({ email }).lean().exec();
@@ -29,20 +30,23 @@ const register = async (req, res) => {
     const randomIndex = Math.floor(Math.random() * housings.length);
     const assignedHousing = housings[randomIndex];
 
-    const { registrationEmail } = req.user;
-    console.log(assignedHousing._id);
+    // Find RegistrationToken
+
+    const registrationToken = await RegistrationToken.findOne({ email }).lean().exec();
+    console.log(email);
+
     const savedUserAccount = await UserAccount.create({
       username,
       email,
-      registrationEmail,
       userRole: 'employee',
       password: hashedPassword,
       housingId: assignedHousing._id,
+      registrationTokenId: registrationToken._id,
     });
 
     // Update the registration token status
     const updatedRegistrationToken = await RegistrationToken.findOneAndUpdate(
-      { email: registrationEmail },
+      { email },
       { $set: { tokenStatus: 'Used' } },
       { new: true },
     ).exec();
