@@ -16,8 +16,8 @@ export class GenerateTokenComponent {
   successMessage: string = '';
   registrationLink: string = '';
   responseMessage: string = ''; 
-  returnedFirstName: string = ''; // 新的响应信息
-  returnedLastName: string = ''; // 新的响应信息
+  returnedFirstName: string = ''; 
+  returnedLastName: string = ''; 
 
   constructor(private http: HttpClient) {}
 
@@ -55,15 +55,19 @@ export class GenerateTokenComponent {
         this.successMessage = 'Token generated successfully.';
         this.responseMessage = response.message;
         this.registrationLink = response.registrationLink;
-        this.returnedFirstName = response.userFirstName; // 新的响应信息
-        this.returnedLastName = response.userLastName; // 新的响应信息
-        this.userFirstName = '';
-        this.userLastName = '';
-        this.email = '';
+        this.returnedFirstName = response.userFirstName;
+        this.returnedLastName = response.userLastName;
+        this.clearForm();
       },
       error => {
         console.error('Failed to generate token:', error);
       }
     );
+  }
+
+  clearForm(): void {
+    this.userFirstName = '';
+    this.userLastName = '';
+    this.email = '';
   }
 }
