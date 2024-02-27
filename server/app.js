@@ -20,7 +20,15 @@ const __dirname = path.resolve();
 // enable cors
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin(origin, callback) {
+      // 允许的来源列表
+      const allowedOrigins = ['http://localhost:4200', 'http://localhost:5173'];
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true, // enable cookies for cors
   }),
 );
