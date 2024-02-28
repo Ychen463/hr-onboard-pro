@@ -13,16 +13,17 @@ export class LoginPageComponent implements OnInit {
   username: string = '';
   password: string = '';
   authStateSubscription: Subscription | undefined;
-  constructor(private authService: AuthService, private store: Store) {}
+  constructor(
+    private authService: AuthService,
+    private store: Store
+  ) {}
 
   ngOnInit(): void {
-    this.authStateSubscription = this.store
-      .select(AuthSelectors.selectAuth)
-      .subscribe({
-        next: (authState) => {
-          console.log('auth state', authState);
-        },
-      });
+    this.authStateSubscription = this.store.select(AuthSelectors.selectAuth).subscribe({
+      next: (authState) => {
+        console.log('auth state', authState);
+      },
+    });
   }
 
   onLogin(username: string, password: string) {

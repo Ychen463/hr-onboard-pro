@@ -14,10 +14,7 @@ export class AuthInterceptor implements HttpInterceptor {
   private readonly baseUrl = 'http://localhost:3000';
   constructor() {}
 
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Only prepend base URL for relative URLs (not absolute URLs)
 
     request = request.clone({
