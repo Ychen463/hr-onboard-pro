@@ -5,7 +5,8 @@ import Onboarding from '../models/OnboardingModel.js';
 
 // Get all employees' profile summary, sort by last name alphabetically
 // Name(first, last, preferred), SSN, Work Authorization Title, Phone Number, email(account)
-// Note: email here is the email in UserAccountSchema and can not be modified
+// Note: email here is the email used for registration and can not be modified
+// TODO: check with the team the email field in AccountSchema
 // TODO: error handling, if userAccountId/onboardingId not found in their collection?
 const getAllProfileSummary = async (req, res) => {
   try {
@@ -18,7 +19,7 @@ const getAllProfileSummary = async (req, res) => {
     const profileList = profileListFound.map((profile) => ({
       userProfileId: profile._id,
       userAccountId: profile.userAccountId._id,
-      email: profile.userAccountId.email,
+      email: profile.userAccountId.registrationEmail,
       workAuthorization: profile.citizenshipStatus.workAuthorization,
       firstName: profile.personalInfo.firstName,
       lastName: profile.personalInfo.lastName,
@@ -55,7 +56,7 @@ const getEmployeeFullProfile = async (req, res) => {
       return res.status(422).json({ message: 'Could not find the user account.' });
     }
 
-    const { email } = account;
+    const email = account.registrationEmail;
     profile.email = email;
 
     delete profile.userAccountId;
@@ -85,7 +86,7 @@ const getProfile = async (req, res) => {
       return res.status(422).json({ message: 'Could not find the user account.' });
     }
 
-    const { email } = account;
+    const email = account.registrationEmail;
     profile.email = email;
 
     delete profile.userAccountId;
@@ -118,7 +119,6 @@ const updateProfile = async (req, res) => {
     // If pass the check, take out unnecessary fields and do the update
     const { email } = newProfile;
     delete newProfile.email;
-    delete newProfile.citizenshipStatus;
     const updatedProfile = await UserProfile
       .findByIdAndUpdate(newProfile._id, newProfile, { new: true }).lean().exec();
     // console.log(updatedProfile);

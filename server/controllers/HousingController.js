@@ -2,7 +2,7 @@
 /* eslint-disable import/prefer-default-export */
 import Housing from '../models/HousingModel.js';
 import UserAccount from '../models/UserAccountModel.js';
-import RegistrationToken from '../models/RegistrationTokenModel.js';
+import UserProfile from '../models/UserProfileModel.js';
 
 // get a house's full information with its _id
 // TODO: Check if we have better solution to present resident info for who do not have a profile yet
@@ -10,7 +10,6 @@ import RegistrationToken from '../models/RegistrationTokenModel.js';
 // information are needed
 // Email is in account. Other information are in user profile document
 // Current solution: if no profile found for an account, send only the account email
-// UPDATED: for every resident, send the email and name in registrationtokens collection
 const getHouseInfo = async (req, res) => {
   // req passed jwtVerifyToken check
   // extract house ObjectID from req body
@@ -24,18 +23,17 @@ const getHouseInfo = async (req, res) => {
       return res.status(422).json({ message: 'House doesn’t exist.' });
     }
     // If the house exists, find profile information for each resident
-    const residentInfo = await Promise.all(house.residents.map(async (residentAccountId) => {
-      const account = await UserAccount.findById(residentAccountId).select('registrationTokenId').lean().exec();
-      const registrationToken = await RegistrationToken.findById(account.registrationTokenId)
-        .select('email userFirstName userLastName')
+    const residentInfo = await Promise.all(house.residents.map(async (resident) => {
+      const account = await UserAccount.findById(resident).select('email').lean().exec();
+      const profile = await UserProfile.findOne({ userAccountId: resident })
+        .select('personalInfo.firstName personalInfo.lastName personalInfo.preferredName personalInfo.carInformation')
         .lean().exec();
-      // if the registrationToken exists, return personal info
-      if (registrationToken) {
-        // console.log(`residentAccount: ${account} registrationToken: ${registrationToken}`);
-        delete registrationToken._id;
-        return { ...registrationToken, userAccountId: residentAccountId };
+      // if the profile exists, return personal info
+      if (profile) {
+        console.log(`residentAccount: ${resident} profile: ${profile.personalInfo.firstName}`);
+        return { ...profile, email: account.email };
       }
-      return res.status(404).json({ message: 'A Registration Token associated with one of the resident accounts doesn’t exist.' });
+      return { email: account.email };
     }));
 
     res.status(200).json({
@@ -102,7 +100,6 @@ const getHousesSummary = async (req, res) => {
 // Address, List of roommates (preferred or legal full name and phone number)
 // TODO: Check if we have better solution to present resident info for who do not have a profile yet
 // Current solution: if no profile found for an account, send empty object
-// UPDATED: for every resident, send the email and name in registrationtokens collection
 const getUserHousing = async (req, res) => {
   const { userId } = req.user;
   console.log(req.user);
@@ -114,19 +111,17 @@ const getUserHousing = async (req, res) => {
       return res.status(422).json({ message: 'House doesn’t exist.' });
     }
     // If the house exists, find profile information for each resident
-    const residentInfo = await Promise.all(house.residents.map(async (residentAccountId) => {
-      const residentAccount = await UserAccount.findById(residentAccountId).select('registrationTokenId').lean().exec();
-      const registrationToken = await RegistrationToken
-        .findById(residentAccount.registrationTokenId)
-        .select('email userFirstName userLastName')
+    const residentInfo = await Promise.all(house.residents.map(async (resident) => {
+      const profile = await UserProfile.findOne({ userAccountId: resident })
+        .select('personalInfo.firstName personalInfo.lastName personalInfo.preferredName personalInfo.contactSchema.cellPhoneNumber')
         .lean().exec();
-      // if the registrationToken exists, return personal info
-      if (registrationToken) {
-        // console.log(`residentAccount: ${account} registrationToken: ${registrationToken}`);
-        delete registrationToken._id;
-        return { ...registrationToken, userAccountId: residentAccountId };
+      // if the profile exists, return personal info
+      if (profile) {
+        console.log(`residentAccount: ${resident} profile: ${profile.personalInfo.firstName}`);
+        return { ...profile };
       }
-      return res.status(404).json({ message: 'A Registration Token associated with one of the resident accounts doesn’t exist.' });
+      // if not return empty object
+      return {};
     }));
 
     res.status(200).json({
