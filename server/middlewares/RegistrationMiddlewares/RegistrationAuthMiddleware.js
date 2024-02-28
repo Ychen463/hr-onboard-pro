@@ -20,7 +20,7 @@ const RegiJwtVerifyToken = (req, res, next) => {
     req.user.userFirstName = decoded.userFirstName;
     req.user.userLastName = decoded.userLastName;
     req.user.jwtToken = token;
-    req.user.registrationEmail = decoded.email;
+    req.user.email = decoded.email;
 
     req.user.userRole = decoded.userRole;
     return next();

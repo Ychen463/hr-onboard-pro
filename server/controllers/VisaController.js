@@ -71,7 +71,7 @@ const docTypeToDocTypeName = {
   optReceipt: 'OPT RECEIPT',
   optEAD: 'OPT EAD',
   i983: 'I983',
-  i20: 'I-20',
+  i20: 'I20',
 };
 
 const updateDoc = async (req, res) => {
