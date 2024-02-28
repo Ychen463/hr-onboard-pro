@@ -1,41 +1,31 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+/* eslint-disable import/no-extraneous-dependencies */
+// App.js
+import {
+  BrowserRouter as Router, Routes, Route, Navigate,
+} from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import LoginForm from './components/LoginForm.jsx';
+import Registration from './components/Registration.jsx';
+import OnboardingStatusPage from './pages/OnboardingStatusPage.jsx';
+import OnboardingApplicationPage from './pages/OnboardingApplicationFormPage.jsx';
+import PersonalProfilePage from './pages/PersonalProfilePage.jsx';
+import VisaStatusMgtPage from './pages/VisaStatusMgtPage.jsx';
+import HousingPage from './pages/HousingPage.jsx';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button type="button" onClick={() => setCount((preCount) => preCount + 1)}>
-          count is
-          {' '}
-          {count}
-        </button>
-        <p>
-          Edit
-          {' '}
-          <code>src/App.jsx</code>
-          {' '}
-          and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/" element={<ProtectedRoute component={PersonalProfilePage} checkOnboarding />} />
+        <Route path="/profile" element={<ProtectedRoute component={PersonalProfilePage} checkOnboarding />} />
+        <Route path="/visa" element={<ProtectedRoute component={VisaStatusMgtPage} checkOnboarding />} />
+        <Route path="/housing" element={<ProtectedRoute component={HousingPage} checkOnboarding />} />
+        <Route path="/onboarding-status" element={<OnboardingStatusPage />} />
+        <Route path="/onboarding-application" element={<OnboardingApplicationPage />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </Router>
   );
 }
-
 export default App;
