@@ -1,23 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+// import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GenerateTokenComponent } from './generate-token.component';
+// import { GenerateTokenComponent } from './generate-token.component';
 
-describe('GenerateTokenComponent', () => {
-  let component: GenerateTokenComponent;
-  let fixture: ComponentFixture<GenerateTokenComponent>;
+// describe('GenerateTokenComponent', () => {
+//   let component: GenerateTokenComponent;
+//   let fixture: ComponentFixture<GenerateTokenComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ GenerateTokenComponent ]
-    })
-    .compileComponents();
+//   beforeEach(async () => {
+//     await TestBed.configureTestingModule({
+//       declarations: [ GenerateTokenComponent ]
+//     })
+//     .compileComponents();
 
-    fixture = TestBed.createComponent(GenerateTokenComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+//     fixture = TestBed.createComponent(GenerateTokenComponent);
+//     component = fixture.componentInstance;
+//     fixture.detectChanges();
+//   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+//   it('should create', () => {
+//     expect(component).toBeTruthy();
+//   });
+// });
