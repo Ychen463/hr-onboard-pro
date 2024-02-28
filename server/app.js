@@ -20,7 +20,7 @@ const __dirname = path.resolve();
 // enable cors
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:4200', 'http://localhost:3000'],
     credentials: true, // enable cookies for cors
   }),
 );
