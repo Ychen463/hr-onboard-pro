@@ -20,6 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 import { FormsModule } from '@angular/forms';
+import { HiringPageModule } from './pages/hiring-page.module';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -41,6 +42,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     MatInputModule,
     MatButtonModule,
     FormsModule,
+    HiringPageModule,
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],

@@ -1,0 +1,14 @@
+<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+<div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+<div *ngIf="responseMessage" class="response-message">{{ responseMessage }}</div>
+
+<form (ngSubmit)="generateToken()">
+  <input type="text" [(ngModel)]="userFirstName" name="userFirstName" placeholder="First Name">
+  <input type="text" [(ngModel)]="userLastName" name="userLastName" placeholder="Last Name">
+  <input type="email" [(ngModel)]="email" name="email" placeholder="Email">
+  <button type="submit">Generate Token</button>
+</form>
+
+<div *ngIf="returnedFirstName" class="returned-first-name">First Name: {{ returnedFirstName }}</div> 
+<div *ngIf="returnedLastName" class="returned-last-name">Last Name: {{ returnedLastName }}</div>
+<div *ngIf="registrationLink" class="registration-link">Registration Link: <a href="{{ registrationLink }}">{{ registrationLink }}</a></div>
