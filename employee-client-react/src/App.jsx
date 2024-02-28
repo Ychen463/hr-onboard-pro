@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import LoginForm from './components/LoginForm.jsx';
-import Registration from './components/Registration.jsx';
+// import Registration from './components/Registration.jsx';
 import OnboardingStatusPage from './pages/OnboardingStatusPage.jsx';
 import OnboardingApplicationPage from './pages/OnboardingApplicationFormPage.jsx';
 import PersonalProfilePage from './pages/PersonalProfilePage.jsx';
