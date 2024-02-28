@@ -5,16 +5,10 @@ import { AuthState } from './auth.models';
 const selectAuthState = createFeatureSelector<AuthState>('auth');
 
 // Selector to get the entire auth state
-export const selectAuth = createSelector(
-  selectAuthState,
-  (state: AuthState) => state
-);
+export const selectAuth = createSelector(selectAuthState, (state: AuthState) => state);
 
 // Selector to get the current user
-export const selectCurrentUser = createSelector(
-  selectAuthState,
-  (state: AuthState) => state.user
-);
+export const selectCurrentUser = createSelector(selectAuthState, (state: AuthState) => state.user);
 
 // Selector to check if the user is logged in
 export const selectIsLoggedIn = createSelector(
@@ -29,7 +23,4 @@ export const selectIsLoading = createSelector(
 );
 
 // Selector to get the current auth error
-export const selectAuthError = createSelector(
-  selectAuthState,
-  (state: AuthState) => state.error
-);
+export const selectAuthError = createSelector(selectAuthState, (state: AuthState) => state.error);
