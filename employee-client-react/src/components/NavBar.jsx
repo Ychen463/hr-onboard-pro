@@ -16,9 +16,17 @@ function NavBar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      const actionResult = await dispatch(logout());
+      const result = actionResult.payload;
+      if (result.loginJwtToken) {
+        navigate('/login');
+      }
+      console(result.message);
+    } catch (error) {
+      console.error('LogOut failed:', error);
+    }
   };
 
   return (
