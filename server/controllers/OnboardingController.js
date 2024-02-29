@@ -165,6 +165,15 @@ const viewOnboardingApplicationsByStatus = async (req, res) => {
   }
 };
 
+const getAllTokens = async (req, res) => {
+  try {
+    const tokens = await Onboarding.find();
+    res.status(200).json(tokens);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 export {
-  applyUserOnboarding, getUserOnboarding, hrUpdateDecision, viewOnboardingApplicationsByStatus,
+  applyUserOnboarding, getUserOnboarding, hrUpdateDecision,
+  viewOnboardingApplicationsByStatus, getAllTokens,
 };

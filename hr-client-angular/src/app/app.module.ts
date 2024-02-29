@@ -25,9 +25,10 @@ import { HiringPageModule } from './pages/hiring-page/hiring-page.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ShortenUrlPipe } from './pages/hiring-page/pipe/shorten-url.pipe';
+import { OnboardingDetailsComponent } from './pages/hiring-page/onboarding-details/onboarding-details.component';
 
 @NgModule({
-  declarations: [AppComponent, NavigationBarComponent, LoginPageComponent, ShortenUrlPipe,ShortenUrlPipe],
+  declarations: [AppComponent, NavigationBarComponent, LoginPageComponent, ShortenUrlPipe,ShortenUrlPipe, OnboardingDetailsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
