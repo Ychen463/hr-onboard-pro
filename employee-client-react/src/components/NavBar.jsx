@@ -21,6 +21,7 @@ function NavBar() {
       const actionResult = await dispatch(logout());
       const result = actionResult.payload;
       if (result.loginJwtToken) {
+        localStorage.removeItem('jwtToken');
         navigate('/login');
       }
       console(result.message);
