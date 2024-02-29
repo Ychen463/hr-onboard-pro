@@ -11,7 +11,9 @@ export class ApiService {
     // getAllTokens
   private APIgetAllRegiToken: string = `api/registrationToken`;
   private APIpostGenerateRegiToken: string = `api/registrationToken`;
+  private APIgetAllOnboarding: string = `api/onboardings/status`;
 
+  
 
   constructor() { }
 
@@ -20,5 +22,8 @@ export class ApiService {
   }
   postGenerateRegiTokenUrl(): string {
     return this.APIpostGenerateRegiToken;
+  }
+  getAllOnboardingUrl(): string {
+    return this.APIgetAllOnboarding;
   }
 }

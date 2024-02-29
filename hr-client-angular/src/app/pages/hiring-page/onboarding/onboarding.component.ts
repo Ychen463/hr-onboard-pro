@@ -2,81 +2,126 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 import { ApiService } from 'src/app/services/api.service/api.service';
 import { HttpClient } from '@angular/common/http';
 
-import { RegistrationTokenData, DisplayedData } from '../registrationToken';
+import { RegistrationTokenData, DisplayedRegiData } from '../RegistrationToken';
+import { UserAccountOnboardingData, DisplayedOnboardingData } from '../UserAccountOnboarding';
+
+import { GenerateTokenComponent } from '../generate-token/generate-token.component';
+import {MatDialog} from '@angular/material/dialog';
+
+import { ShortenUrlPipe } from '../pipe/shorten-url.pipe';
 
 @Component({
   selector: 'app-onboarding',
   templateUrl: './onboarding.component.html',
-  styleUrls: ['./onboarding.component.css']
+  styleUrls: ['./onboarding.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class OnboardingComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'email', 'status', 'registrationLink'];
+  columnsToDisplay = ['name', 'email', 'tokenStatus','createdDatetime'];
+  columnNamesToDisplay: { [key: string]: string } = {
+    'name': 'Name',
+    'email': 'Email',
+    'tokenStatus': 'Status',
+    'createdDatetime': 'Created At'
+  };
+  displayedRegiColumns: string[] = ['Name', 'Email', 'Status', 'Created At'];
+  displayedOnbColumns: string[] = ['name', 'email', 'status', 'userAccountId'];
   apiGetAllTokensUrl!: string;
-  apiPostGenTokenUrl!: string;
-  dataSource: MatTableDataSource<DisplayedData>;
+  apiGetAllOnbUrl!: string;
+
+
+
+  RegidataSource: MatTableDataSource<DisplayedRegiData>;
+  OnbdataSource : MatTableDataSource<DisplayedOnboardingData>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private httpClient: HttpClient,
-    private apiService: ApiService
+    private apiService: ApiService,
+    public dialog: MatDialog
   ) {
-    // const registrationTokens = Array.from({ length: 100 }, (_, k) => 
-    // this.createNewRegistrationToken("I20-ra",
-    //                                 "I20-ra",
-    //                                 "I20-ar@gamil.com"));
-    this.dataSource = new MatTableDataSource<DisplayedData>();
+    this.RegidataSource = new MatTableDataSource<DisplayedRegiData>();
+    this.OnbdataSource = new MatTableDataSource<DisplayedOnboardingData>();
+
 }
 
   ngOnInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.RegidataSource.paginator = this.paginator;
+    this.RegidataSource.sort = this.sort;
+    this.OnbdataSource.paginator = this.paginator;
+    this.OnbdataSource.sort = this.sort;
     this.apiGetAllTokensUrl = this.apiService.getAllRegiTokenUrl();
-    this.apiPostGenTokenUrl = this.apiService.postGenerateRegiTokenUrl();
-    this.fetchDataFromApi();
+    this.apiGetAllOnbUrl = this.apiService.getAllOnboardingUrl();
+    this.fetchDataFromTokenApi();
+    this.fetchDataFromOnboardingApi();
+
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue?.trim().toLowerCase();
+  // applyFilter(event: Event) {
+  //   const filterValue = (event.target as HTMLInputElement).value;
+  //   this.dataSource.filter = filterValue?.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
+  //   if (this.dataSource.paginator) {
+  //     this.dataSource.paginator.firstPage();
+  //   }
+  // }
 
-  fetchDataFromApi(): void {
+  fetchDataFromTokenApi(): void {
     this.httpClient.get<RegistrationTokenData[]>(this.apiGetAllTokensUrl).subscribe((data) => {
-      const displayedData = data.map(item => ({
+      const DisplayedRegiData = data.map(item => ({
         name: `${item.userFirstName} ${item.userLastName}`,
         email: item.email,
         registrationLink: item.registrationLink,
-        status: item.tokenStatus
+        tokenStatus: item.tokenStatus,
+        createdDatetime: item.createdDatetime
       }));
 
-      this.dataSource.data = displayedData; 
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      this.RegidataSource.data = DisplayedRegiData; 
+      this.RegidataSource.paginator = this.paginator;
+      this.RegidataSource.sort = this.sort;
+    });
+  }
+  fetchDataFromOnboardingApi(): void {
+    this.httpClient.get<UserAccountOnboardingData[]>(this.apiGetAllOnbUrl).subscribe((data) => {
+      const DisplayedOnboardingData = data.map(item => ({
+        name: `${item.personalInfo.firstName} ${item.personalInfo.lastName}`,
+        email: item.email,
+        userAccountId: item.userAccountId,
+        onboardingStatus: item.onboardingStatus,
+      }));
+      console.log(data);
+      this.OnbdataSource.data = DisplayedOnboardingData; 
+      this.OnbdataSource.paginator = this.paginator;
+      this.OnbdataSource.sort = this.sort;
     });
   }
   
 
-  /** Creates and returns a new RegistrationTokenData. */
-  createNewRegistrationToken(userFirstName: string, userLastName: string, email: string): void {
-    const newRegistrationToken = {
-      userFirstName: userFirstName,
-      userLastName: userLastName,
-      email: email
-    };
+  openDialog(): void {
+    const dialogRef = this.dialog.open(GenerateTokenComponent, {
+      width: '500px',
+      height: 'auto',
 
-    this.httpClient.post(this.apiPostGenTokenUrl, newRegistrationToken).subscribe((response) => {
-      // 处理 POST 请求的响应
-      console.log(response);
+      data: { }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
     });
   }
+
+
 
 }

@@ -10,10 +10,10 @@
     usedDatetime: Date | null;
     __v: number;
   }
-  export interface DisplayedData {
+  export interface DisplayedRegiData {
     email: string;
     name: string;
     registrationLink: string;
-    status: string;
+    tokenStatus: string;
 
   }

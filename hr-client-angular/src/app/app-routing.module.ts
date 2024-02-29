@@ -7,6 +7,7 @@ import { OnboardingComponent } from './pages/hiring-page/onboarding/onboarding.c
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'hiring', component: OnboardingComponent },
+  { path: 'onboarding/:userAccountId', component: OnboardingComponent },
 
   // other routes
 ];

@@ -1,0 +1,18 @@
+.form-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .name-field {
+    flex: 1;
+    margin-right: 16px; 
+  }
+  
+  .name-field:last-child {
+    margin-right: 0; 
+  }
+  
+  .email-field {
+    flex: 1; 
+  }

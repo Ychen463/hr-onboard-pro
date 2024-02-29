@@ -12,6 +12,11 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatDividerModule} from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
+import {MatCardModule} from '@angular/material/card';
+
+import { ShortenUrlPipe } from './pipe/shorten-url.pipe';
 
 import { GenerateTokenComponent } from './generate-token/generate-token.component';
 import { OnboardingComponent } from './onboarding/onboarding.component';
@@ -35,12 +40,16 @@ import { MatInputModule } from '@angular/material/input';
     MatSortModule,
     MatPaginatorModule,
     MatDividerModule,
-    MatTabsModule
+    MatTabsModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatCardModule,
   ],
   exports: [GenerateTokenComponent,
     OnboardingComponent,
     MatButtonModule,
     MatInputModule,
+
   ]
 })
 export class HiringPageModule {}
