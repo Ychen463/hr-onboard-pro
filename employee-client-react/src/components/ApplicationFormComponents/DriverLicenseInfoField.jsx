@@ -71,7 +71,7 @@ function DriverLicenseInfoField({ readOnly }) {
             </Grid>
             <Grid item xs={6}>
               <InputUnit
-                name="endDate"
+                name="driverLicenseExpirationDate"
                 value={driverLicense.expirationDate}
                 label="Driver's License Expiration Date"
                 type="date"

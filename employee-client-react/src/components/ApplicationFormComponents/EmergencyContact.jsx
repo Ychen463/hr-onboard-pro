@@ -41,17 +41,7 @@ function EmergencyContact({ readOnly }) {
             disabled={readOnly}
           />
         </Grid>
-        <Grid item xs={6}>
-          <InputUnit
-            name="emergencyContactFirstName"
-            value={emergencyContact.firstName}
-            label="First Name"
-            type="text"
-            placeholder="John"
-            required
-            disabled={readOnly}
-          />
-        </Grid>
+
         <Grid item xs={6}>
           <InputUnit
             name="emergencyContactMiddleName"
@@ -62,22 +52,13 @@ function EmergencyContact({ readOnly }) {
             disabled={readOnly}
           />
         </Grid>
-        <Grid item xs={6}>
-          <InputUnit
-            name="emergencyContactPreferredName"
-            value={emergencyContact.preferredName}
-            label="Preferred Name"
-            type="text"
-            placeholder="Johnny"
-            disabled={readOnly}
-          />
-        </Grid>
+
         <Grid item xs={6}>
           <InputUnit
             name="emergencyContactPhoneNumber"
             required
             value={emergencyContact.phone}
-            label="Referral's Phone Number"
+            label="Emergency Contact Phone Number"
             type="text"
             placeholder="(666) 666-6666"
             disabled={readOnly}
@@ -88,7 +69,7 @@ function EmergencyContact({ readOnly }) {
             name="emergencyContactEmail"
             required
             value={emergencyContact.email}
-            label="Referral's Email"
+            label="Emergency Contact Email"
             type="email"
             placeholder="sampleemail@gmail.com"
             disabled={readOnly}
@@ -99,7 +80,7 @@ function EmergencyContact({ readOnly }) {
             name="emergencyContactRelationship"
             required
             value={emergencyContact.email}
-            label="Referral's Relationship"
+            label="Emergency Contact Relationship"
             type="text"
             placeholder="Friend"
             disabled={readOnly}

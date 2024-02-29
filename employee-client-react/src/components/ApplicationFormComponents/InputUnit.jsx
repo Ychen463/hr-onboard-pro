@@ -41,7 +41,7 @@ const CustomTextField = styled(TextField)({
     paddingBottom: '15px',
   },
   // making the input box taking whole space
-  width: '100%',
+  width: '90%',
 
   // Aligning the dropdown selected value align to left
   '& .MuiSelect-select': {

@@ -1,7 +1,9 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-unused-vars */
-import { useSelector } from 'react-redux';
-import { Container, Button } from '@mui/material';
-import { selectorCurrentOnboardingData } from '../store/slices/onboardingSlice.js';
+import { useSelector, useDispatch } from 'react-redux';
+import { Container, Button, Typography } from '@mui/material';
+import { useState } from 'react';
+import { selectorCurrentOnboardingData, submitOnboarding } from '../store/slices/onboardingSlice.js';
 
 import formDataToObject from '../utils/formDataToObject.jsx';
 import PersonalInfoField from '../components/ApplicationFormComponents/PersonalInfoField.jsx';
@@ -12,41 +14,60 @@ import ReferenceField from '../components/ApplicationFormComponents/ReferenceFie
 import EmergencyContact from '../components/ApplicationFormComponents/EmergencyContact.jsx';
 import DriverLicenseInfoField from '../components/ApplicationFormComponents/DriverLicenseInfoField.jsx';
 
+import createOnboardingFormPayload from '../utils/createOnboardingFormPayload.js';
+
 function OnboardingApplicationPage() {
+  const [errorMessage, setErrormessage] = useState('');
+  const dispatch = useDispatch();
   const onboardingData = useSelector(selectorCurrentOnboardingData);
 
   // Disable form edit at "Pending" status
   const readOnlyForm = onboardingData ? onboardingData.onboardingStatus === 'Pending' : false;
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formDataObj = formDataToObject(formData);
 
-    console.log('all form data entries', formDataObj);
+    const onboardingSubmitData = createOnboardingFormPayload(formDataObj);
+
+    try {
+      const submitResult = await dispatch(submitOnboarding(onboardingData));
+      // console.log('submitResult', submitResult);
+      if (submitResult.error.message === 'Rejected') {
+        setErrormessage(submitResult.payload.message);
+      }
+    } catch (error) {
+      console.error('submit failed:', error);
+    }
   };
 
   return (
     <div style={{ width: '1080px', margin: '10px auto' }}>
       <h1 style={{ textAlign: 'center' }}>Onboarding Application</h1>
       <Container component="form" onSubmit={handleSubmit}>
-        <PersonalInfoField readOnly={readOnlyForm} />
-        <ContactInfoField readOnly={readOnlyForm} />
-        <AddressInfoField readOnly={readOnlyForm} />
-        <VisaInfoField readOnly={readOnlyForm} />
-        <DriverLicenseInfoField readOnly={readOnlyForm} />
-        <ReferenceField readOnly={readOnlyForm} />
-        <EmergencyContact readOnly={readOnlyForm} />
-        {!readOnlyForm && (
-        <Button
-          type="submit"
-          variant="contained"
-          sx={{ mt: 5, mb: 2, float: 'right' }}
-        >
-          Submit
-        </Button>
+        {errorMessage ? <Typography variant="h5" style={{ margin: '500px auto' }}>{errorMessage}</Typography> : (
+          <>
+            <PersonalInfoField readOnly={readOnlyForm} />
+            <ContactInfoField readOnly={readOnlyForm} />
+            <AddressInfoField readOnly={readOnlyForm} />
+            <VisaInfoField readOnly={readOnlyForm} />
+            <DriverLicenseInfoField readOnly={readOnlyForm} />
+            <ReferenceField readOnly={readOnlyForm} />
+            <EmergencyContact readOnly={readOnlyForm} />
+            {!readOnlyForm && (
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 5, mb: 2, float: 'right' }}
+            >
+              Submit
+            </Button>
 
+            )}
+          </>
         )}
+
         <br />
         <br />
         <br />

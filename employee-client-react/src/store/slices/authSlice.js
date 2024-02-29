@@ -59,7 +59,6 @@ export const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.isLoggedIn = false;
-      localStorage.removeItem('jwtToken');
     },
   },
   extraReducers: (builder) => {

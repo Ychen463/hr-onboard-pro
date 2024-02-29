@@ -78,7 +78,7 @@ function PersonalInfoField({ readOnly }) {
             value={ssn}
             label="SSN Number"
             type="text"
-            placeholder="666-66-6666"
+            placeholder="xxx-xx-xxxx"
             disabled={readOnly}
           />
         </Grid>

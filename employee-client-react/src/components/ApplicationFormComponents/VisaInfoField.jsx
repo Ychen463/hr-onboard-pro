@@ -40,7 +40,7 @@ function VisaInfoField({ readOnly }) {
   const handleFileSubmit = (e) => {
     const { files } = e.target;
 
-    console.log('uploaded files utl:', files);
+    // console.log('uploaded files utl:', files);
   };
 
   const citizenshipOptions = ['Yes', 'No'];
