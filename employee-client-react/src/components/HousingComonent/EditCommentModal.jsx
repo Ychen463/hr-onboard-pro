@@ -1,12 +1,17 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useState } from "react";
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button,
-} from '@mui/material';
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+} from "@mui/material";
 
 function EditCommentModal({ currentComment }) {
   const [open, setOpen] = useState(false);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -18,14 +23,16 @@ function EditCommentModal({ currentComment }) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleOpen}>test Edit modal</Button>
+      <Button variant="outlined" onClick={handleOpen}>
+        test Edit modal
+      </Button>
       <Dialog
         open={open}
         onClose={handleClose}
         PaperProps={{
           sx: {
-            width: '600px',
-            height: '350px',
+            width: "600px",
+            height: "350px",
           },
         }}
       >
@@ -46,7 +53,11 @@ function EditCommentModal({ currentComment }) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSaveComment} variant="contained" color="primary">
+          <Button
+            onClick={handleSaveComment}
+            variant="contained"
+            color="primary"
+          >
             SAVE
           </Button>
           <Button onClick={handleClose} variant="contained">

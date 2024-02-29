@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState, useRef } from 'react';
+import { useState, useRef } from "react";
 
 function UploadDropzone({ onFileUpload }) {
   const [highlighted, setHighlighted] = useState(false);
@@ -44,14 +44,14 @@ function UploadDropzone({ onFileUpload }) {
       onDrop={handleDrop}
       onClick={handleClick}
       style={{
-        border: '2px dashed #aaa',
-        borderRadius: '5px',
-        padding: '20px',
-        textAlign: 'center',
-        backgroundColor: highlighted ? '#f0f0f0' : 'inherit',
-        cursor: 'pointer',
-        width: '50%',
-        margin: '0 auto',
+        border: "2px dashed #aaa",
+        borderRadius: "5px",
+        padding: "20px",
+        textAlign: "center",
+        backgroundColor: highlighted ? "#f0f0f0" : "inherit",
+        cursor: "pointer",
+        width: "50%",
+        margin: "0 auto",
       }}
     >
       <input
@@ -59,7 +59,7 @@ function UploadDropzone({ onFileUpload }) {
         type="file"
         accept="image/*, application/pdf"
         onChange={handleFileInput}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
       />
       <p>Drag and drop your files here or click to select</p>
     </div>

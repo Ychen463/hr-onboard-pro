@@ -1,5 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import * as authApiService from '../../apiServices/auth.js';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from "@reduxjs/toolkit";
+import * as authApiService from "../../apiServices/auth.js";
 
 const initialState = {
   user: null,
@@ -11,14 +15,17 @@ const initialState = {
 
 // async thunk for registration
 export const registration = createAsyncThunk(
-  'auth/registration',
+  "auth/registration",
   async ({ username, password, email }, thunkAPI) => {
     try {
       const token = thunkAPI.getState((state) => state.registrationToken);
       const response = await authApiService.register({
-        username, password, email, token,
+        username,
+        password,
+        email,
+        token,
       });
-      localStorage.setItem('jwtToken', response.data.loginJwtToken);
+      localStorage.setItem("jwtToken", response.data.loginJwtToken);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -27,11 +34,11 @@ export const registration = createAsyncThunk(
 );
 
 export const login = createAsyncThunk(
-  'auth/login',
+  "auth/login",
   async ({ username, password }, thunkAPI) => {
     try {
       const response = await authApiService.login({ username, password });
-      localStorage.setItem('jwtToken', response.data.loginJwtToken);
+      localStorage.setItem("jwtToken", response.data.loginJwtToken);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -40,7 +47,7 @@ export const login = createAsyncThunk(
 );
 
 export const sessionValidate = createAsyncThunk(
-  'auth/session',
+  "auth/session",
   async (_, thunkAPI) => {
     try {
       const response = await authApiService.getJWTtokenValidation();
@@ -52,7 +59,7 @@ export const sessionValidate = createAsyncThunk(
 );
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     // Reducer for logout
@@ -113,24 +120,38 @@ export const authSlice = createSlice({
   },
 });
 
-export const {
-  logout,
-} = authSlice.actions;
+export const { logout } = authSlice.actions;
 
 export default authSlice.reducer;
 
 // selectors
+const selectAuthState = (state) => state.auth;
 // get user data
-export const selectorCurrentUser = (state) => state.auth.user;
+export const selectorCurrentUser = createSelector(
+  selectAuthState,
+  (state) => state.user,
+);
 
 // check if the user is logged in
-export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
+export const selectIsLoggedIn = createSelector(
+  selectAuthState,
+  (state) => state.isLoggedIn,
+);
 
 // check if an authentication-related process is loading
-export const selectIsAuthLoading = (state) => state.auth.isLoading;
+export const selectIsAuthLoading = createSelector(
+  selectAuthState,
+  (state) => state.isLoading,
+);
 
 // get any authentication-related error
-export const selectAuthError = (state) => state.auth.error;
+export const selectAuthError = createSelector(
+  selectAuthState,
+  (state) => state.error,
+);
 
 // get registrationToken
-export const selectRegistrationToken = (state) => state.auth.registrationToken;
+export const selectRegistrationToken = createSelector(
+  selectAuthState,
+  (state) => state.registrationToken,
+);

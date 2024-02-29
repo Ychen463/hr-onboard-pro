@@ -1,5 +1,7 @@
-import axiosInstance from '../interceptors/authInterceptor.js';
+import axiosInstance from "../interceptors/authInterceptor.js";
 
-export const getOnboarding = async (userAccountId) => axiosInstance.get(`/onboarding/${userAccountId}`);
+export const getOnboarding = async (userAccountId) =>
+  axiosInstance.get(`/onboarding/${userAccountId}`);
 
-export const postOnboarding = async (onboardingData) => axiosInstance.post('/onboarding', onboardingData);
+export const postOnboarding = async (onboardingData) =>
+  axiosInstance.post("/onboarding", onboardingData);

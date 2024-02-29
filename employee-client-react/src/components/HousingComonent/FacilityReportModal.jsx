@@ -1,19 +1,17 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
-import {
-  Modal, Box, Typography, TextField, Button,
-} from '@mui/material';
+import { useState } from "react";
+import { Modal, Box, Typography, TextField, Button } from "@mui/material";
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
+  bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
-  outline: 'none', // Disables the default focus outline
+  outline: "none", // Disables the default focus outline
 };
 
 function FacilityReportModal() {
@@ -32,7 +30,11 @@ function FacilityReportModal() {
         aria-describedby="facility-report-modal-description"
       >
         <Box sx={style}>
-          <Typography id="facility-report-modal-title" variant="h6" component="h2">
+          <Typography
+            id="facility-report-modal-title"
+            variant="h6"
+            component="h2"
+          >
             Create A Facility Report
           </Typography>
           <TextField
@@ -56,7 +58,7 @@ function FacilityReportModal() {
             placeholder="Please describe your facility problem"
             sx={{ mt: 2, mb: 2 }}
           />
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
             <Button onClick={handleClose} color="error">
               Cancel
             </Button>

@@ -1,7 +1,5 @@
 function VisaStatusMgtPage() {
-  return (
-    <div>VisaStatusMgt</div>
-  );
+  return <div>VisaStatusMgt</div>;
 }
 
 export default VisaStatusMgtPage;

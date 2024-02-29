@@ -52,11 +52,9 @@ const updateTokenStatus = async (req, res) => {
       tokenStatus: 'Used',
       usedDatetime: Date.now(),
     };
-    const updatedToken = await RegistrationToken.findOneAndUpdate(
-      { token },
-      statusUpdate,
-      { new: true },
-    );
+    const updatedToken = await RegistrationToken.findOneAndUpdate({ token }, statusUpdate, {
+      new: true,
+    });
     if (!updatedToken) {
       return res.status(404).json({ message: 'Token not found' });
     }

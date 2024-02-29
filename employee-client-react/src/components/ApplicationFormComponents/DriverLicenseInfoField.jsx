@@ -1,28 +1,29 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 // import UploadDropzone from './UploadDropzone.jsx';
-import { Typography, Grid } from '@mui/material';
+import { Typography, Grid } from "@mui/material";
 
-import { useState } from 'react';
+import { useState } from "react";
 
-import InputUnit from './InputUnit.jsx';
+import InputUnit from "./InputUnit.jsx";
 
 function DriverLicenseInfoField({ readOnly }) {
   const [driverLicense, setDriverLicense] = useState({
-    DocId: '',
-    hasDriverLicense: '',
-    driverLicenseNumber: '',
-    expirationDate: '',
-    driverLicenseCopyUrl: ''
-    ,
+    DocId: "",
+    hasDriverLicense: "",
+    driverLicenseNumber: "",
+    expirationDate: "",
+    driverLicenseCopyUrl: "",
   });
   const [carInformation, setCarInformation] = useState({
-    make: '',
-    model: '',
-    color: '',
+    make: "",
+    model: "",
+    color: "",
   });
 
-  const [formControl, setFormControl] = useState({ isCitizenOrPermanentResident: false });
+  const [formControl, setFormControl] = useState({
+    isCitizenOrPermanentResident: false,
+  });
   const handleSubmit = (event) => {
     const { name, value } = event.target;
     setFormControl((prev) => ({ ...prev, [name]: value }));
@@ -31,17 +32,17 @@ function DriverLicenseInfoField({ readOnly }) {
   const handleFileSubmit = (e) => {
     const { files } = e.target;
 
-    console.log('uploaded files utl:', files);
+    console.log("uploaded files utl:", files);
   };
 
-  const driverLicenseOptions = ['Yes', 'No'];
+  const driverLicenseOptions = ["Yes", "No"];
 
   return (
-    <Typography style={{ marginTop: '50px' }}>
-
-      <Typography variant="h4" textAlign="left" style={{ marginLeft: '8px' }}>Driver’s license Information</Typography>
-      <Grid container spacing={8} sx={{ wnameth: '80%', margin: '0 auto' }}>
-
+    <Typography style={{ marginTop: "50px" }}>
+      <Typography variant="h4" textAlign="left" style={{ marginLeft: "8px" }}>
+        Driver’s license Information
+      </Typography>
+      <Grid container spacing={8} sx={{ wnameth: "80%", margin: "0 auto" }}>
         <Grid item xs={6}>
           <InputUnit
             onChange={handleSubmit}
@@ -56,7 +57,7 @@ function DriverLicenseInfoField({ readOnly }) {
           />
         </Grid>
         <Grid item xs={6} />
-        { formControl.hasDriverLicense === 'Yes' && (
+        {formControl.hasDriverLicense === "Yes" && (
           <>
             <Grid item xs={6}>
               <InputUnit
@@ -102,7 +103,7 @@ function DriverLicenseInfoField({ readOnly }) {
                 disabled={readOnly}
               />
             </Grid>
-            {formControl.hasCar === 'Yes' && (
+            {formControl.hasCar === "Yes" && (
               <>
                 <Grid item xs={6}>
                   <InputUnit
@@ -138,8 +139,8 @@ function DriverLicenseInfoField({ readOnly }) {
             )}
           </>
         )}
-        { formControl.isCitizenOrPermanentResident === 'No' && (
-        <Grid item xs={6} />
+        {formControl.isCitizenOrPermanentResident === "No" && (
+          <Grid item xs={6} />
         )}
       </Grid>
     </Typography>

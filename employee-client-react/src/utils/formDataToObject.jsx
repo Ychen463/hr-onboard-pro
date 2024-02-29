@@ -2,7 +2,7 @@ const formDataToObject = (formData) => {
   const userInputs = {};
   formData.forEach((value, key) => {
     // Check if key already exists
-    if (userInputs.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(userInputs, key)) {
       // If key already exists, make its value an array and push new value
       if (!Array.isArray(userInputs[key])) {
         userInputs[key] = [userInputs[key]];

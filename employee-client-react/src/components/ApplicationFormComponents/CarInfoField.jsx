@@ -1,26 +1,24 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { Typography, Grid } from '@mui/material';
+import { Typography, Grid } from "@mui/material";
 
-import { useState } from 'react';
-import InputUnit from './InputUnit.jsx';
+import { useState } from "react";
+import InputUnit from "./InputUnit.jsx";
 
 function CarInfoField({ readOnly }) {
   // select Data from Redux directly
-  const [contactInfo, setContactInfo] = useState(
-    {
-      make: '',
-      model: '',
-      color: '',
-    },
-  );
+  const [contactInfo, setContactInfo] = useState({
+    make: "",
+    model: "",
+    color: "",
+  });
 
   return (
-    <Typography style={{ marginTop: '50px' }}>
-
-      <Typography variant="h4" textAlign="left" style={{ marginLeft: '8px' }}>Contact Information</Typography>
-      <Grid container spacing={8} sx={{ wnameth: '80%', margin: '0 auto' }}>
-
+    <Typography style={{ marginTop: "50px" }}>
+      <Typography variant="h4" textAlign="left" style={{ marginLeft: "8px" }}>
+        Contact Information
+      </Typography>
+      <Grid container spacing={8} sx={{ wnameth: "80%", margin: "0 auto" }}>
         <Grid item xs={6}>
           <InputUnit
             name="personalCellPhoneNumber"
@@ -42,7 +40,6 @@ function CarInfoField({ readOnly }) {
             disabled={readOnly}
           />
         </Grid>
-
       </Grid>
     </Typography>
   );

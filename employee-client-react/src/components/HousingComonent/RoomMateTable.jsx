@@ -1,16 +1,32 @@
 import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar, Typography,
-} from '@mui/material';
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Avatar,
+  Typography,
+} from "@mui/material";
 
 function RoommateTable({ roommates }) {
   // Replace this with your actual data fetching logic
 
   return (
     <>
-      <Typography variant="h6" gutterBottom component="div" sx={{ p: 2, textAlign: 'left' }}>
+      <Typography
+        variant="h6"
+        gutterBottom
+        component="div"
+        sx={{ p: 2, textAlign: "left" }}
+      >
         Roommates
       </Typography>
-      <TableContainer component={Paper} sx={{ maxWidth: 1024, margin: 'auto', mt: 4 }}>
+      <TableContainer
+        component={Paper}
+        sx={{ maxWidth: 1024, margin: "auto", mt: 4 }}
+      >
         <Table aria-label="roomMateTable">
           <TableHead>
             <TableRow>

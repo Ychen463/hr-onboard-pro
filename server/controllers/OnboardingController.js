@@ -19,8 +19,10 @@ const applyUserOnboarding = async (req, res) => {
 
   // VISA CREATE IF NEEDED
   let visaId = null;
-  if (req.body.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)'
-    && req.body.citizenshipStatus.workAuthorizationFiles) {
+  if (
+    req.body.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' &&
+    req.body.citizenshipStatus.workAuthorizationFiles
+  ) {
     const { workAuthorizationFiles } = req.body.citizenshipStatus;
     const visaDocument = await Visa.create({
       userAccountId,
@@ -37,9 +39,7 @@ const applyUserOnboarding = async (req, res) => {
     visaId = visaDocument._id;
   }
 
-  const {
-    personalInfo, citizenshipStatus, driverLicense, referral, emergencyContacts,
-  } = req.body;
+  const { personalInfo, citizenshipStatus, driverLicense, referral, emergencyContacts } = req.body;
 
   try {
     const userAccount = await UserAccount.findOne({ _id: userAccountId });
@@ -68,7 +68,6 @@ const applyUserOnboarding = async (req, res) => {
       referral,
       emergencyContacts,
       visaId,
-
     };
     const savedOnboardingData = await Onboarding.create(onboardingDocument);
     userAccount.onboardingStatus = ONBOARDING_STATUS;
@@ -113,18 +112,16 @@ const hrUpdateDecision = async (req, res) => {
       updateFields.rejFeedback = rejFeedback; // Only update rejFeedback if rejected
     }
 
-    const updatedOnboarding = await Onboarding.findOneAndUpdate(
-      { userAccountId },
-      updateFields,
-      { new: true },
-    );
+    const updatedOnboarding = await Onboarding.findOneAndUpdate({ userAccountId }, updateFields, {
+      new: true,
+    });
     if (!updatedOnboarding) {
       return res.status(404).json({ message: 'Onboarding process not found.' });
     }
     await UserAccount.findOneAndUpdate(
       { _id: userAccountId },
       { onboardingStatus: ONBOARDING_STATUS },
-      { new: true },
+      { new: true }
     );
     return res.status(200).json(updatedOnboarding);
   } catch (error) {
@@ -166,5 +163,8 @@ const viewOnboardingApplicationsByStatus = async (req, res) => {
 };
 
 export {
-  applyUserOnboarding, getUserOnboarding, hrUpdateDecision, viewOnboardingApplicationsByStatus,
+  applyUserOnboarding,
+  getUserOnboarding,
+  hrUpdateDecision,
+  viewOnboardingApplicationsByStatus,
 };

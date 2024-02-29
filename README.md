@@ -71,11 +71,11 @@ MERNA Full Stack Employee/HR website portal for managing the new employee onboar
 
 11. Merging to Main Branch: Once the team'is ready to release or deploy some features, team lead will merge the dev branch into the main branch.
 
-## Setting Up ESLint in React Folder and Express Server Folder, and Prettier for Angular Folder
+## Setting Up ESLint and Prettier in React Folder and Express Server Folder, and Prettier for Angular Folder
 
 ### React and Express
 
-We are using ESLint to enforce code quality and style guidelines. Please follow the steps below to set up ESLint in your local development environment.
+We are using ESLint to enforce code quality and style guidelines and Prettier for formatting. Please follow the steps below to set up ESLint in your local development environment.
 
 ### Install dependencies:
 
@@ -97,9 +97,9 @@ This will install ESLint and the necessary plugins as defined in package.json. f
 
 - hr-client-angular
 
-      `cd hr-client-angular`
+  `cd hr-client-angular`
 
-      `npm install`
+  `npm install`
 
   This will install Prettier and the necessary plugins as defined in package.json. for each folder.
 
@@ -125,21 +125,48 @@ This will install ESLint and the necessary plugins as defined in package.json. f
   //   "[typescript]": {
   //     "editor.defaultFormatter": "esbenp.prettier-vscode"
   //   },
-  //   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // "editor.defaultFormatter": "esbenp.prettier-vscode",
 }
 ```
 
 ### Install Prettier Extension
+
 Install the Prettier extension for VS Code and to enable the "Format on Save" feature
 
 ### Restart VS Code
 
 After updating the settings, you might need to restart VS Code to ensure that the changes take effect.
 
-### Prettier for Angular
+### Prettier for Angular Folder
 
 You can run this follow script to tells Prettier to format all TypeScript, HTML, CSS, and SCSS files in your src directory. Adjust the file patterns as needed for your project.
 
 `npm run format`
 
 This command will format all files in your project according to the rules defined in .prettierrc
+
+## Eslint and Prettier for Express Server Folder
+
+### Run ESLint with the --fix option:
+
+This will automatically fix as many issues as possible, including those related to code quality and style as defined by the Airbnb style guide.
+
+Open your terminal in the root directory of your server project and run:
+
+`npx eslint --fix .`
+
+This command will fix all fixable issues in JavaScript files throughout your project according to your ESLint configuration. Replace . with the specific directory or file pattern if you want to target a specific set of files.
+
+### Run Prettier on JavaScript Files:
+
+Execute the following command to format all .js files in your server folder:
+
+`npx prettier --write "**/*.js"`
+
+## ESlint and Prettier for React Folder
+
+### Run ESLint with the --fix Option:
+
+After setting up ESLint and Prettier together, you can run ESLint with the --fix option to automatically fix certain issues, including those that can be formatted by Prettier:
+
+`eslint --fix "src/**/*.{js,jsx,ts,tsx}"`

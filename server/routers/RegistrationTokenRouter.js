@@ -1,5 +1,9 @@
 import express from 'express';
-import { generateRegiToken, updateTokenStatus, getTokenStatus } from '../controllers/RegistrationTokenController.js';
+import {
+  generateRegiToken,
+  updateTokenStatus,
+  getTokenStatus,
+} from '../controllers/RegistrationTokenController.js';
 import validateToken from '../middlewares/RegistrationMiddlewares/RegistrationTokenMiddleware.js';
 import jwtVerifyToken from '../middlewares/AuthMiddleware.js';
 import checkRole from '../middlewares/CheckRoleMiddleware.js';

@@ -5,7 +5,10 @@ import jwtVerifyToken from '../middlewares/AuthMiddleware.js';
 import checkRole from '../middlewares/CheckRoleMiddleware.js';
 import {
   createUserProfile,
-  getAllProfileSummary, getEmployeeFullProfile, getProfile, updateProfile,
+  getAllProfileSummary,
+  getEmployeeFullProfile,
+  getProfile,
+  updateProfile,
 } from '../controllers/UserProfileController.js';
 
 const router = express.Router();

@@ -24,19 +24,28 @@ const getHouseInfo = async (req, res) => {
       return res.status(422).json({ message: 'House doesn’t exist.' });
     }
     // If the house exists, find profile information for each resident
-    const residentInfo = await Promise.all(house.residents.map(async (residentAccountId) => {
-      const account = await UserAccount.findById(residentAccountId).select('registrationTokenId').lean().exec();
-      const registrationToken = await RegistrationToken.findById(account.registrationTokenId)
-        .select('email userFirstName userLastName')
-        .lean().exec();
-      // if the registrationToken exists, return personal info
-      if (registrationToken) {
-        // console.log(`residentAccount: ${account} registrationToken: ${registrationToken}`);
-        delete registrationToken._id;
-        return { ...registrationToken, userAccountId: residentAccountId };
-      }
-      return res.status(404).json({ message: 'A Registration Token associated with one of the resident accounts doesn’t exist.' });
-    }));
+    const residentInfo = await Promise.all(
+      house.residents.map(async (residentAccountId) => {
+        const account = await UserAccount.findById(residentAccountId)
+          .select('registrationTokenId')
+          .lean()
+          .exec();
+        const registrationToken = await RegistrationToken.findById(account.registrationTokenId)
+          .select('email userFirstName userLastName')
+          .lean()
+          .exec();
+        // if the registrationToken exists, return personal info
+        if (registrationToken) {
+          // console.log(`residentAccount: ${account} registrationToken: ${registrationToken}`);
+          delete registrationToken._id;
+          return { ...registrationToken, userAccountId: residentAccountId };
+        }
+        return res.status(404).json({
+          message:
+            'A Registration Token associated with one of the resident accounts doesn’t exist.',
+        });
+      })
+    );
 
     res.status(200).json({
       message: 'House full information found.',
@@ -51,9 +60,7 @@ const getHouseInfo = async (req, res) => {
 // capacity, basic facility information
 const createNewHouse = async (req, res) => {
   // extract information from req body
-  const {
-    name, address, landlord, facilityInfo,
-  } = req.body;
+  const { name, address, landlord, facilityInfo } = req.body;
 
   // for now, we allow any of these fields to be empty
   if (!(name && address && landlord && facilityInfo)) {
@@ -86,9 +93,14 @@ const createNewHouse = async (req, res) => {
 // may need pagination, but currently not
 const getHousesSummary = async (req, res) => {
   try {
-    const houseListFound = await Housing.find().select('name address landlord residents').lean().exec();
-    const houseList = houseListFound.map((house) => (
-      { ...house, residents: house.residents.length }));
+    const houseListFound = await Housing.find()
+      .select('name address landlord residents')
+      .lean()
+      .exec();
+    const houseList = houseListFound.map((house) => ({
+      ...house,
+      residents: house.residents.length,
+    }));
     res.status(200).json({
       message: 'House list found.',
       houseList,
@@ -108,26 +120,39 @@ const getUserHousing = async (req, res) => {
   console.log(req.user);
   try {
     const account = await UserAccount.findById(userId).select('housingId').lean().exec();
-    const house = await Housing.findById(account.housingId).select('address residents').lean().exec();
+    const house = await Housing.findById(account.housingId)
+      .select('address residents')
+      .lean()
+      .exec();
     // Check if the house with the exists, if not, return 422 response
     if (!house) {
       return res.status(422).json({ message: 'House doesn’t exist.' });
     }
     // If the house exists, find profile information for each resident
-    const residentInfo = await Promise.all(house.residents.map(async (residentAccountId) => {
-      const residentAccount = await UserAccount.findById(residentAccountId).select('registrationTokenId').lean().exec();
-      const registrationToken = await RegistrationToken
-        .findById(residentAccount.registrationTokenId)
-        .select('email userFirstName userLastName')
-        .lean().exec();
-      // if the registrationToken exists, return personal info
-      if (registrationToken) {
-        // console.log(`residentAccount: ${account} registrationToken: ${registrationToken}`);
-        delete registrationToken._id;
-        return { ...registrationToken, userAccountId: residentAccountId };
-      }
-      return res.status(404).json({ message: 'A Registration Token associated with one of the resident accounts doesn’t exist.' });
-    }));
+    const residentInfo = await Promise.all(
+      house.residents.map(async (residentAccountId) => {
+        const residentAccount = await UserAccount.findById(residentAccountId)
+          .select('registrationTokenId')
+          .lean()
+          .exec();
+        const registrationToken = await RegistrationToken.findById(
+          residentAccount.registrationTokenId
+        )
+          .select('email userFirstName userLastName')
+          .lean()
+          .exec();
+        // if the registrationToken exists, return personal info
+        if (registrationToken) {
+          // console.log(`residentAccount: ${account} registrationToken: ${registrationToken}`);
+          delete registrationToken._id;
+          return { ...registrationToken, userAccountId: residentAccountId };
+        }
+        return res.status(404).json({
+          message:
+            'A Registration Token associated with one of the resident accounts doesn’t exist.',
+        });
+      })
+    );
 
     res.status(200).json({
       message: 'House full information found.',
@@ -138,6 +163,4 @@ const getUserHousing = async (req, res) => {
   }
 };
 
-export {
-  getHouseInfo, createNewHouse, getHousesSummary, getUserHousing,
-};
+export { getHouseInfo, createNewHouse, getHousesSummary, getUserHousing };

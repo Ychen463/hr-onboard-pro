@@ -9,9 +9,10 @@ import Onboarding from '../models/OnboardingModel.js';
 // TODO: error handling, if userAccountId/onboardingId not found in their collection?
 const getAllProfileSummary = async (req, res) => {
   try {
-    const profileListFound = await UserProfile.find().populate('userAccountId').select(
-      'userAccountId citizenshipStatus personalInfo',
-    ).sort({ 'personalInfo.lastName': 1 })
+    const profileListFound = await UserProfile.find()
+      .populate('userAccountId')
+      .select('userAccountId citizenshipStatus personalInfo')
+      .sort({ 'personalInfo.lastName': 1 })
       .lean()
       .exec();
     // console.log(profileListFound);
@@ -119,8 +120,11 @@ const updateProfile = async (req, res) => {
     const { email } = newProfile;
     delete newProfile.email;
     delete newProfile.citizenshipStatus;
-    const updatedProfile = await UserProfile
-      .findByIdAndUpdate(newProfile._id, newProfile, { new: true }).lean().exec();
+    const updatedProfile = await UserProfile.findByIdAndUpdate(newProfile._id, newProfile, {
+      new: true,
+    })
+      .lean()
+      .exec();
     // console.log(updatedProfile);
     // send the user fields for display
     updatedProfile.email = email;
@@ -141,7 +145,9 @@ const updateProfile = async (req, res) => {
 const createUserProfile = async (req, res) => {
   const { userAccountId, onboardingId } = req.body;
   if (!(userAccountId && onboardingId)) {
-    return res.status(422).json({ message: 'Missing userAccountId and onboardingId to create a user profile.' });
+    return res.status(422).json({
+      message: 'Missing userAccountId and onboardingId to create a user profile.',
+    });
   }
 
   try {
@@ -154,7 +160,9 @@ const createUserProfile = async (req, res) => {
       return res.status(422).json({ message: 'Onboarding record doesn’t exist.' });
     }
     if (String(onboarding.userAccountId) !== userAccountId) {
-      return res.status(409).json({ message: 'userAccountId sent doesn’t match the userAccountId in the onboarding record.' });
+      return res.status(409).json({
+        message: 'userAccountId sent doesn’t match the userAccountId in the onboarding record.',
+      });
     }
     if (onboarding.onboardingStatus !== 'Completed') {
       return res.status(409).json({ message: 'Onboarding is not completed.' });
@@ -163,7 +171,9 @@ const createUserProfile = async (req, res) => {
     const duplicate = await UserProfile.findOne({ userAccountId }).lean().exec();
     if (duplicate) {
       console.log(duplicate);
-      return res.status(409).json({ message: 'Profile with the same userAccountId already exists.' });
+      return res.status(409).json({
+        message: 'Profile with the same userAccountId already exists.',
+      });
     }
 
     // based on information in onboarding record, create the user profile
@@ -189,5 +199,9 @@ const createUserProfile = async (req, res) => {
 };
 
 export {
-  getAllProfileSummary, getEmployeeFullProfile, getProfile, updateProfile, createUserProfile,
+  getAllProfileSummary,
+  getEmployeeFullProfile,
+  getProfile,
+  updateProfile,
+  createUserProfile,
 };
