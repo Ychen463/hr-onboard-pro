@@ -11,7 +11,7 @@ export class ApiService {
     // getAllTokens
   private APIgetAllRegiToken: string = `api/registrationToken`;
   private APIpostGenerateRegiToken: string = `api/registrationToken`;
-  private APIgetAllOnboarding: string = `api/onboardings/status`;
+  private APIgetAllOnboarding: string = `api/onboardings`;
 
   
 

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { animate, state, style, transition, trigger} from '@angular/animations';
 
 import { ApiService } from 'src/app/services/api.service/api.service';
 import { HttpClient } from '@angular/common/http';
@@ -29,6 +29,7 @@ import { ShortenUrlPipe } from '../pipe/shorten-url.pipe';
 })
 export class OnboardingComponent implements OnInit {
   columnsToDisplay = ['name', 'email', 'tokenStatus','createdDatetime'];
+  obStatuses = ['None','Not Started','Pending', 'Rejected', 'Completed'];
   columnNamesToDisplay: { [key: string]: string } = {
     'name': 'Name',
     'email': 'Email',
@@ -39,13 +40,23 @@ export class OnboardingComponent implements OnInit {
   displayedOnbColumns: string[] = ['name', 'email', 'status', 'userAccountId'];
   apiGetAllTokensUrl!: string;
   apiGetAllOnbUrl!: string;
+  selectedStatus: string = 'None';
+  selectionChanged(): void {
+    if (this.selectedStatus === 'Completed') {
+      this.selectedStatus = 'Approved';
+    }
+    this.fetchDataFromOnboardingApi(this.selectedStatus);
+  }
+
 
 
 
   RegidataSource: MatTableDataSource<DisplayedRegiData>;
   OnbdataSource : MatTableDataSource<DisplayedOnboardingData>;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('paginator1') RegiMatPaginator!: MatPaginator;
+  @ViewChild('paginator2') OnbMatPaginator!: MatPaginator;
+  @ViewChild('sort1') RegiMatSort!: MatSort;
+  @ViewChild('sort2') OnbMatSort!: MatSort;
 
   constructor(
     private httpClient: HttpClient,
@@ -57,26 +68,19 @@ export class OnboardingComponent implements OnInit {
 
 }
 
-  ngOnInit(): void {
-    this.RegidataSource.paginator = this.paginator;
-    this.RegidataSource.sort = this.sort;
-    this.OnbdataSource.paginator = this.paginator;
-    this.OnbdataSource.sort = this.sort;
-    this.apiGetAllTokensUrl = this.apiService.getAllRegiTokenUrl();
-    this.apiGetAllOnbUrl = this.apiService.getAllOnboardingUrl();
-    this.fetchDataFromTokenApi();
-    this.fetchDataFromOnboardingApi();
+ngOnInit(): void {
+  this.RegidataSource.paginator = this.RegiMatPaginator;
+  this.RegidataSource.sort = this.RegiMatSort;
+  this.OnbdataSource.paginator = this.OnbMatPaginator;
+  this.OnbdataSource.sort = this.OnbMatSort;
+  this.apiGetAllTokensUrl = this.apiService.getAllRegiTokenUrl();
+  this.apiGetAllOnbUrl = this.apiService.getAllOnboardingUrl();
+  this.fetchDataFromTokenApi();
+  this.selectedStatus = 'None';
+  this.fetchDataFromOnboardingApi(this.selectedStatus);
+}
 
-  }
 
-  // applyFilter(event: Event) {
-  //   const filterValue = (event.target as HTMLInputElement).value;
-  //   this.dataSource.filter = filterValue?.trim().toLowerCase();
-
-  //   if (this.dataSource.paginator) {
-  //     this.dataSource.paginator.firstPage();
-  //   }
-  // }
 
   fetchDataFromTokenApi(): void {
     this.httpClient.get<RegistrationTokenData[]>(this.apiGetAllTokensUrl).subscribe((data) => {
@@ -87,24 +91,30 @@ export class OnboardingComponent implements OnInit {
         tokenStatus: item.tokenStatus,
         createdDatetime: item.createdDatetime
       }));
-
-      this.RegidataSource.data = DisplayedRegiData; 
-      this.RegidataSource.paginator = this.paginator;
-      this.RegidataSource.sort = this.sort;
+      this.RegidataSource.sort = this.RegiMatSort;
+    this.RegidataSource.paginator = this.RegiMatPaginator;
+    this.RegidataSource.data = DisplayedRegiData; 
     });
   }
-  fetchDataFromOnboardingApi(): void {
+  
+  fetchDataFromOnboardingApi(selectedStatus: string): void {
     this.httpClient.get<UserAccountOnboardingData[]>(this.apiGetAllOnbUrl).subscribe((data) => {
-      const DisplayedOnboardingData = data.map(item => ({
+      let filteredData = data;
+      if (selectedStatus !== 'None') {
+        
+        filteredData = data.filter(item => item.onboardingStatus.replace(/\s/g, '').toLowerCase() === selectedStatus.replace(/\s/g, '').toLowerCase());
+      }
+      console.log(data.map((each) => each.onboardingStatus))
+      const displayedOnboardingData = filteredData.map(item => ({
         name: `${item.personalInfo.firstName} ${item.personalInfo.lastName}`,
         email: item.email,
         userAccountId: item.userAccountId,
         onboardingStatus: item.onboardingStatus,
       }));
-      console.log(data);
-      this.OnbdataSource.data = DisplayedOnboardingData; 
-      this.OnbdataSource.paginator = this.paginator;
-      this.OnbdataSource.sort = this.sort;
+      
+      this.OnbdataSource.paginator = this.OnbMatPaginator;
+      this.OnbdataSource.sort = this.OnbMatSort;
+      this.OnbdataSource.data = displayedOnboardingData; 
     });
   }
   

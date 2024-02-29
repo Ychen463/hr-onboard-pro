@@ -3,24 +3,41 @@ table {
     width: 100%;
     margin: auto;
   }
-  
-  .mat-form-field {
-    font-size: 14px;
+  mat-table{
     width: 100%;
+    margin: auto;
+  }
+  #search-btn-div {
+    display: flex;
+    align-items: center;
+  }
+  
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
 }
+
 #search-btn-div {
   display: flex;
   justify-content: space-between;
   align-items: center; 
   margin-left: auto;
+  margin-right: auto; /* 添加此行以水平居中 */
 }
-#search-btn-div .mat-raised-button{
-  display: center;
-  height: 60%;
-  align-items: center;
+
+#search-btn-div h3 {
+  flex: 8;
   margin-right: 10px;
-  min-width: 300px;
 }
+#search-btn-div .mat-raised-button {
+  height: 60%;
+  min-width: 100px; /* 调整按钮的最小宽度 */
+}
+#search-btn-div mat-form-field {
+  flex: 1;
+  width: 10%; /* 或者设置其他宽度，以调整 mat-select 的大小 */
+}
+
 
 .mat-form-field > .mat-form-field-wrapper {
     flex: 1; 

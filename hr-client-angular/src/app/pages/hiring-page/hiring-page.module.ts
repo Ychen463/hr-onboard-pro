@@ -15,6 +15,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 import { ShortenUrlPipe } from './pipe/shorten-url.pipe';
 
@@ -44,6 +46,8 @@ import { MatInputModule } from '@angular/material/input';
     MatDialogModule,
     ReactiveFormsModule,
     MatCardModule,
+    MatSelectModule,
+    MatOptionModule,
   ],
   exports: [GenerateTokenComponent,
     OnboardingComponent,
