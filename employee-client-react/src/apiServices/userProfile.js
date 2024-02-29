@@ -1,5 +1,6 @@
-import axiosInstance from '../interceptors/authInterceptor.js';
+import axiosInstance from "../interceptors/authInterceptor.js";
 
-export const getUserProfile = async () => axiosInstance.get('/profile');
+export const getUserProfile = async () => axiosInstance.get("/profile");
 
-export const updateUserProfile = async (newProfile) => axiosInstance.patch('/profile', { newProfile });
+export const updateUserProfile = async (newProfile) =>
+  axiosInstance.patch("/profile", { newProfile });

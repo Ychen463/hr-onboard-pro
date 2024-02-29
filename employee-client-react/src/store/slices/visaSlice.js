@@ -1,6 +1,10 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import * as visaApiService from '../../apiServices/visa.js';
-import { logout } from './authSlice.js';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from "@reduxjs/toolkit";
+import * as visaApiService from "../../apiServices/visa.js";
+import { logout } from "./authSlice.js";
 
 const initialState = {
   currentStep: null,
@@ -11,7 +15,7 @@ const initialState = {
 
 // async thunk for visa
 export const getVisaStatus = createAsyncThunk(
-  'visa/getVisaStatus',
+  "visa/getVisaStatus",
   async ({ userAccountId }, thunkAPI) => {
     try {
       const repsonse = await visaApiService.getVisaStatus(userAccountId);
@@ -23,7 +27,7 @@ export const getVisaStatus = createAsyncThunk(
 );
 
 export const submitOptReceipt = createAsyncThunk(
-  'visa/submitOptReceipt',
+  "visa/submitOptReceipt",
   async (docUrl, thunkAPI) => {
     try {
       // need to make aws s3 request first
@@ -36,7 +40,7 @@ export const submitOptReceipt = createAsyncThunk(
 );
 
 export const submitOptEAD = createAsyncThunk(
-  'visa/submitOptEAD',
+  "visa/submitOptEAD",
   async (docUrl, thunkAPI) => {
     try {
       // need to make aws s3 request first
@@ -49,7 +53,7 @@ export const submitOptEAD = createAsyncThunk(
 );
 
 export const submiti983 = createAsyncThunk(
-  'visa/submiti983',
+  "visa/submiti983",
   async (docUrl, thunkAPI) => {
     try {
       // need to make aws s3 request first
@@ -62,7 +66,7 @@ export const submiti983 = createAsyncThunk(
 );
 
 export const submiti20 = createAsyncThunk(
-  'visa/submiti20',
+  "visa/submiti20",
   async (docUrl, thunkAPI) => {
     try {
       // need to make aws s3 request first
@@ -75,14 +79,14 @@ export const submiti20 = createAsyncThunk(
 );
 
 export const visaSlice = createSlice({
-  name: 'visa',
+  name: "visa",
   initialState,
   reducers: {
     // reducers for visa
   },
   extraReducers: (builder) => {
     builder
-    // getVisaStatus
+      // getVisaStatus
       .addCase(getVisaStatus.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -152,7 +156,7 @@ export const visaSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
       })
-    // logout clean state
+      // logout clean state
       .addCase(logout, () => initialState);
   },
 });
@@ -160,14 +164,27 @@ export const visaSlice = createSlice({
 export default visaSlice.reducer;
 
 // selectors
+const selectVisaState = (state) => state.visa;
 // get current step
-export const selectorCurrentStep = (state) => state.visa.currentStep;
+export const selectorCurrentStep = createSelector(
+  selectVisaState,
+  (state) => state.currentStep,
+);
 
 // get next step
-export const selectorNextStep = (state) => state.visa.nextStep;
+export const selectorNextStep = createSelector(
+  selectVisaState,
+  (state) => state.nextStep,
+);
 
 // check if state is loading
-export const selectIsVisaLoading = (state) => state.visa.isLoading;
+export const selectIsVisaLoading = createSelector(
+  selectVisaState,
+  (state) => state.isLoading,
+);
 
 // get any error
-export const selectVisaError = (state) => state.visa.error;
+export const selectVisaError = createSelector(
+  selectVisaState,
+  (state) => state.error,
+);

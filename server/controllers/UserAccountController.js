@@ -48,7 +48,7 @@ const register = async (req, res) => {
     const updatedRegistrationToken = await RegistrationToken.findOneAndUpdate(
       { email },
       { $set: { tokenStatus: 'Used' } },
-      { new: true },
+      { new: true }
     ).exec();
     if (!updatedRegistrationToken) {
       return res.status(404).json({ message: 'Registration token not found.' });
@@ -58,7 +58,7 @@ const register = async (req, res) => {
     const loginJwtToken = generateLoginToken(
       savedUserAccount._id,
       savedUserAccount.username,
-      savedUserAccount.userRole,
+      savedUserAccount.userRole
     );
 
     return res.status(201).json({
@@ -82,11 +82,11 @@ const register = async (req, res) => {
 // LOGIN
 const login = async (req, res) => {
   try {
-    const userAccount = await UserAccount.findOne({ username: req.body.username });
+    const userAccount = await UserAccount.findOne({
+      username: req.body.username,
+    });
     if (!userAccount) {
-      return res
-        .status(404)
-        .json({ message: 'User not found: Invalid username' });
+      return res.status(404).json({ message: 'User not found: Invalid username' });
     }
     const isMatch = await bcrypt.compare(req.body.password, userAccount.password);
     if (!isMatch) {
@@ -96,7 +96,7 @@ const login = async (req, res) => {
     const loginJwtToken = generateLoginToken(
       userAccount._id,
       userAccount.username,
-      userAccount.userRole,
+      userAccount.userRole
     );
     return res.status(200).json({
       message: `User: ${userAccount.username} login successful`,

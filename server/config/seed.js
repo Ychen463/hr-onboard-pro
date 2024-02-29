@@ -29,7 +29,10 @@ const seedHousing = async () => {
       },
       residents: [], // Assuming no residents initially
       facilityInfo: {
-        beds: 4, mattresses: 4, tables: 1, chairs: 4,
+        beds: 4,
+        mattresses: 4,
+        tables: 1,
+        chairs: 4,
       },
     },
     {
@@ -42,7 +45,10 @@ const seedHousing = async () => {
       },
       residents: [account[0]], // Assuming this house has one resident
       facilityInfo: {
-        beds: 4, mattresses: 4, tables: 1, chairs: 4,
+        beds: 4,
+        mattresses: 4,
+        tables: 1,
+        chairs: 4,
       },
     },
   ];
@@ -105,7 +111,6 @@ const seedUserAccounts = async (registrationTokenId, housingId) => {
       housingId,
       registrationTokenId,
     },
-
   ];
 
   try {
@@ -118,71 +123,75 @@ const seedUserAccounts = async (registrationTokenId, housingId) => {
 };
 
 const seedOnboardings = async () => {
-  const onboardings = [{
-    userAccountId: new mongoose.Types.ObjectId(),
-    email: 'abc@abc.com',
-    onboardingStatus: 'Not Started',
-    rejFeedback: '',
-    personalInfo: {
-      firstName: 'John',
-      lastName: 'Doe',
-      middleName: '',
-      preferredName: '',
-      profilePictureUrl: 'https://example.com/profile.jpg',
-      currentAddress: {
-        streetName: '123 Main St',
-        buildingApt: 'Apt 101',
-        city: 'Anytown',
-        state: 'CA',
-        zip: '12345',
+  const onboardings = [
+    {
+      userAccountId: new mongoose.Types.ObjectId(),
+      email: 'abc@abc.com',
+      onboardingStatus: 'Not Started',
+      rejFeedback: '',
+      personalInfo: {
+        firstName: 'John',
+        lastName: 'Doe',
+        middleName: '',
+        preferredName: '',
+        profilePictureUrl: 'https://example.com/profile.jpg',
+        currentAddress: {
+          streetName: '123 Main St',
+          buildingApt: 'Apt 101',
+          city: 'Anytown',
+          state: 'CA',
+          zip: '12345',
+        },
+        cellPhoneNumber: '123-456-7890',
+        workPhoneNumber: '',
+        carInformation: {
+          make: 'Toyota',
+          model: 'Camry',
+          color: 'Blue',
+        },
+        ssn: '123-45-6789',
+        dateOfBirth: '1990-01-01',
+        gender: 'Male',
       },
-      cellPhoneNumber: '123-456-7890',
-      workPhoneNumber: '',
-      carInformation: {
-        make: 'Toyota',
-        model: 'Camry',
-        color: 'Blue',
+      citizenshipStatus: {
+        isCitizenOrPermanentResident: true,
+        statusDetail: 'Citizen',
+        workAuthorization: 'None',
+        workAuthorizationOtherTitle: '',
+        workAuthorizationFiles: [],
+        startEndDate: {
+          startDate: '2022-01-01',
+          endDate: '2022-12-31',
+        },
       },
-      ssn: '123-45-6789',
-      dateOfBirth: '1990-01-01',
-      gender: 'Male',
-    },
-    citizenshipStatus: {
-      isCitizenOrPermanentResident: true,
-      statusDetail: 'Citizen',
-      workAuthorization: 'None',
-      workAuthorizationOtherTitle: '',
-      workAuthorizationFiles: [],
-      startEndDate: {
-        startDate: '2022-01-01',
-        endDate: '2022-12-31',
+      driverLicense: {
+        DocId: new mongoose.Types.ObjectId(),
+        hasDriverLicense: true,
+        driverLicenseNumber: '123456789',
+        expirationDate: '2025-01-01',
+        driverLicenseCopyUrl: 'https://example.com/driver_license.jpg',
       },
+      referral: {
+        firstName: 'Jane',
+        lastName: 'Smith',
+        middleName: '',
+        phone: '987-654-3210',
+        email: 'jane@example.com',
+        relationship: 'Friend',
+      },
+      emergencyContacts: [
+        {
+          firstName: 'Emergency',
+          lastName: 'Contact',
+          middleName: '',
+          phone: '555-555-5555',
+          email: 'emergency@example.com',
+          relationship: 'Family',
+        },
+      ],
+      visaId: new mongoose.Types.ObjectId(),
     },
-    driverLicense: {
-      DocId: new mongoose.Types.ObjectId(),
-      hasDriverLicense: true,
-      driverLicenseNumber: '123456789',
-      expirationDate: '2025-01-01',
-      driverLicenseCopyUrl: 'https://example.com/driver_license.jpg',
-    },
-    referral: {
-      firstName: 'Jane',
-      lastName: 'Smith',
-      middleName: '',
-      phone: '987-654-3210',
-      email: 'jane@example.com',
-      relationship: 'Friend',
-    },
-    emergencyContacts: [{
-      firstName: 'Emergency',
-      lastName: 'Contact',
-      middleName: '',
-      phone: '555-555-5555',
-      email: 'emergency@example.com',
-      relationship: 'Family',
-    }],
-    visaId: new mongoose.Types.ObjectId(),
-  }];
+  ];
 
   try {
     await Onboarding.deleteMany();
@@ -193,64 +202,66 @@ const seedOnboardings = async () => {
   }
 };
 const seedUserProfiles = async () => {
-  const userProfiles = [{
-    userAccountId: new mongoose.Types.ObjectId(), // Assuming you have user accounts created
-    onboardingId: new mongoose.Types.ObjectId(), // Assuming you have onboarding records created
-    personalInfo: {
-      firstName: 'John',
-      lastName: 'Doe',
-      middleName: '',
-      preferredName: 'Johnny',
-      profilePictureUrl: 'https://example.com/path/to/profile/pic.jpg',
-      currentAddress: {
-        streetName: '123 Main St',
-        buildingApt: 'Apt 4',
-        city: 'Anytown',
-        state: 'Anystate',
-        zip: '12345',
-      },
-      contactSchema: {
-        cellPhoneNumber: '123-456-7890',
-        workPhoneNumber: '098-765-4321',
-      },
-      carInformation: {
-        make: 'Make',
-        model: 'Model',
-        color: 'Color',
-      },
-      ssn: '123-45-6789',
-      dateOfBirth: new Date(1990, 0, 1), // Jan 1, 1990
-      gender: 'Male',
-    },
-    employmentStatus: 'Onboarding',
-    citizenshipStatus: {
-      isCitizenOrPermanentResident: true,
-      statusDetail: 'Citizen',
-      workAuthorization: 'F1(CPT/OPT)',
-      workAuthorizationOtherTitle: '',
-      workAuthorizationFiles: [],
-      startEndDate: {
-        startDate: '2022-01-01',
-        endDate: '2022-12-31',
-      },
-    },
-    driverLicense: {
-      DocId: new mongoose.Types.ObjectId(),
-      hasDriverLicense: true,
-      driverLicenseNumber: 'D1234567',
-      expirationDate: new Date(2025, 11, 31), // Dec 31, 2025
-      driverLicenseCopyUrl: 'https://example.com/path/to/license/copy.jpg',
-    },
-    emergencyContacts: [
-      {
-        firstName: 'Jane',
+  const userProfiles = [
+    {
+      userAccountId: new mongoose.Types.ObjectId(), // Assuming you have user accounts created
+      onboardingId: new mongoose.Types.ObjectId(), // Assuming you have onboarding records created
+      personalInfo: {
+        firstName: 'John',
         lastName: 'Doe',
-        phone: '123-456-7890',
-        email: 'jane.doe@example.com',
-        relationship: 'Spouse',
+        middleName: '',
+        preferredName: 'Johnny',
+        profilePictureUrl: 'https://example.com/path/to/profile/pic.jpg',
+        currentAddress: {
+          streetName: '123 Main St',
+          buildingApt: 'Apt 4',
+          city: 'Anytown',
+          state: 'Anystate',
+          zip: '12345',
+        },
+        contactSchema: {
+          cellPhoneNumber: '123-456-7890',
+          workPhoneNumber: '098-765-4321',
+        },
+        carInformation: {
+          make: 'Make',
+          model: 'Model',
+          color: 'Color',
+        },
+        ssn: '123-45-6789',
+        dateOfBirth: new Date(1990, 0, 1), // Jan 1, 1990
+        gender: 'Male',
       },
-    ],
-  }];
+      employmentStatus: 'Onboarding',
+      citizenshipStatus: {
+        isCitizenOrPermanentResident: true,
+        statusDetail: 'Citizen',
+        workAuthorization: 'F1(CPT/OPT)',
+        workAuthorizationOtherTitle: '',
+        workAuthorizationFiles: [],
+        startEndDate: {
+          startDate: '2022-01-01',
+          endDate: '2022-12-31',
+        },
+      },
+      driverLicense: {
+        DocId: new mongoose.Types.ObjectId(),
+        hasDriverLicense: true,
+        driverLicenseNumber: 'D1234567',
+        expirationDate: new Date(2025, 11, 31), // Dec 31, 2025
+        driverLicenseCopyUrl: 'https://example.com/path/to/license/copy.jpg',
+      },
+      emergencyContacts: [
+        {
+          firstName: 'Jane',
+          lastName: 'Doe',
+          phone: '123-456-7890',
+          email: 'jane.doe@example.com',
+          relationship: 'Spouse',
+        },
+      ],
+    },
+  ];
   try {
     await UserProfile.deleteMany();
     await UserProfile.insertMany(userProfiles);

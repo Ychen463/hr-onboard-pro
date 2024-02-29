@@ -1,6 +1,10 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import * as onboardingApiService from '../../apiServices/onboarding.js';
-import { logout } from './authSlice.js';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from "@reduxjs/toolkit";
+import * as onboardingApiService from "../../apiServices/onboarding.js";
+import { logout } from "./authSlice.js";
 
 const initialState = {
   onboardingData: null,
@@ -10,7 +14,7 @@ const initialState = {
 
 // async thunk for onboarding
 export const getOnboarding = createAsyncThunk(
-  'onboarding/getOnboarding',
+  "onboarding/getOnboarding",
   async ({ userAccountId }, thunkAPI) => {
     try {
       const response = await onboardingApiService.getOnboarding(userAccountId);
@@ -22,10 +26,11 @@ export const getOnboarding = createAsyncThunk(
 );
 
 export const submitOnboarding = createAsyncThunk(
-  'onboarding/submitOnboarding',
+  "onboarding/submitOnboarding",
   async (onboardingData, thunkAPI) => {
     try {
-      const response = await onboardingApiService.postOnboarding(onboardingData);
+      const response =
+        await onboardingApiService.postOnboarding(onboardingData);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -34,14 +39,14 @@ export const submitOnboarding = createAsyncThunk(
 );
 
 export const onboardingSlice = createSlice({
-  name: 'onboarding',
+  name: "onboarding",
   initialState,
   reducers: {
     // reducers for onboarding
   },
   extraReducers: (builder) => {
     builder
-    // getOnboarding
+      // getOnboarding
       .addCase(getOnboarding.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -75,11 +80,21 @@ export const onboardingSlice = createSlice({
 export default onboardingSlice.reducer;
 
 // selectors
+const selectOnboardingState = (state) => state.onboarding;
 // get onboarding data
-export const selectorCurrentOnboardingData = (state) => state.onboarding.onboardingData;
+export const selectorCurrentOnboardingData = createSelector(
+  selectOnboardingState,
+  (state) => state.onboardingData,
+);
 
 // check if state is loading
-export const selectIsOnboardingLoading = (state) => state.onboarding.isLoading;
+export const selectIsOnboardingLoading = createSelector(
+  selectOnboardingState,
+  (state) => state.isLoading,
+);
 
 // get any error
-export const selectOnboardingError = (state) => state.onboarding.error;
+export const selectOnboardingError = createSelector(
+  selectOnboardingState,
+  (state) => state.error,
+);

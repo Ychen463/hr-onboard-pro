@@ -36,8 +36,8 @@ const getCurrentStep = async (req, res) => {
       }
     }
 
-    let currentStep; let
-      nextStep;
+    let currentStep;
+    let nextStep;
 
     if (currentStepIndex === -1) {
       // All steps are approved
@@ -45,7 +45,11 @@ const getCurrentStep = async (req, res) => {
       nextStep = null;
     } else {
       currentStep = steps[currentStepIndex];
-      nextStep = currentStepIndex + 1 < steps.length && visa.docs[steps[currentStepIndex]].status === `${stepNames[currentStepIndex]}-Approved` ? steps[currentStepIndex + 1] : steps[currentStepIndex];
+      nextStep =
+        currentStepIndex + 1 < steps.length &&
+        visa.docs[steps[currentStepIndex]].status === `${stepNames[currentStepIndex]}-Approved`
+          ? steps[currentStepIndex + 1]
+          : steps[currentStepIndex];
     }
 
     // Constructing the response message based on the current step
@@ -109,14 +113,20 @@ const updateDoc = async (req, res) => {
     };
 
     // Update Visa document
-    const updatedVisa = await Visa.findOneAndUpdate(
-      { userAccountId },
-      update,
-      { new: true },
-    ).exec();
+    const updatedVisa = await Visa.findOneAndUpdate({ userAccountId }, update, {
+      new: true,
+    }).exec();
 
-    await UserAccount.findOneAndUpdate({ _id: userAccountId }, { visaStatus: `${docTypeName}-Pending` }, { new: true });
-    await Onboarding.findOneAndUpdate({ _id: visa.onboardingId }, { visaStatus: `${docTypeName}-Pending` }, { new: true });
+    await UserAccount.findOneAndUpdate(
+      { _id: userAccountId },
+      { visaStatus: `${docTypeName}-Pending` },
+      { new: true }
+    );
+    await Onboarding.findOneAndUpdate(
+      { _id: visa.onboardingId },
+      { visaStatus: `${docTypeName}-Pending` },
+      { new: true }
+    );
 
     return res.status(200).json({
       message: `${docTypeName} updated successfully.`,
@@ -146,7 +156,9 @@ const updateVisaDecision = async (req, res) => {
     }
     const currentDoc = visa.docs[docType];
     if (!currentDoc.url && currentDoc.status !== `${docTypeName}-Pending`) {
-      return res.status(400).json({ message: `Error: Document for ${docTypeName} must be uploaded before HR can make a ${decision} decision.` });
+      return res.status(400).json({
+        message: `Error: Document for ${docTypeName} must be uploaded before HR can make a ${decision} decision.`,
+      });
     }
     const update = {
       [`docs.${docType}.status`]: docStatus,
@@ -159,7 +171,9 @@ const updateVisaDecision = async (req, res) => {
       update[`docs.${docType}.rejFeedback`] = '';
     }
 
-    await Visa.findOneAndUpdate({ userAccountId }, update, { new: true }).exec();
+    await Visa.findOneAndUpdate({ userAccountId }, update, {
+      new: true,
+    }).exec();
     const nextIndex = index + 1;
     if (nextIndex < docTypes.length && decision === 'Approved') {
       const nextDocType = docTypes[nextIndex];
@@ -167,13 +181,13 @@ const updateVisaDecision = async (req, res) => {
       await Visa.findOneAndUpdate(
         { userAccountId },
         { [`docs.${nextDocType}.status`]: `${nextDocTypeName}-Await` },
-        { new: true },
+        { new: true }
       ).exec();
     }
     await UserAccount.findOneAndUpdate(
       { _id: userAccountId },
       { visaStatus: docStatus },
-      { new: true },
+      { new: true }
     ).exec();
 
     // Fetch the updated visa document to return the latest status
@@ -181,7 +195,10 @@ const updateVisaDecision = async (req, res) => {
     return res.status(200).json({
       message: `Visa document ${docType} status updated to ${docStatus}.`,
       updatedDocument: updatedVisa.docs[docType],
-      nextDocumentStatus: nextIndex < docTypes.length && decision === 'Approved' ? `${docTypeNames[nextIndex]}-Await` : 'None',
+      nextDocumentStatus:
+        nextIndex < docTypes.length && decision === 'Approved'
+          ? `${docTypeNames[nextIndex]}-Await`
+          : 'None',
     });
   } catch (error) {
     console.error('Error updating visa document status:', error);
@@ -198,6 +215,4 @@ const getAll = async (req, res) => {
   }
 };
 
-export {
-  getVisaDetails, getCurrentStep, updateDoc, updateVisaDecision, getAll,
-};
+export { getVisaDetails, getCurrentStep, updateDoc, updateVisaDecision, getAll };

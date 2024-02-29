@@ -27,7 +27,10 @@ const getPresignedUrl = async (req, res) => {
       console.error(error);
       return res.status(500).send({ message: error.message });
     }
-    res.json({ message: 'AWS S3 presigned Url generated successfully, expire in 5 mins', url });
+    res.json({
+      message: 'AWS S3 presigned Url generated successfully, expire in 5 mins',
+      url,
+    });
   });
 };
 

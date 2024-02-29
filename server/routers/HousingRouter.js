@@ -3,7 +3,10 @@
 import express from 'express';
 import jwtVerifyToken from '../middlewares/AuthMiddleware.js';
 import {
-  getHouseInfo, createNewHouse, getHousesSummary, getUserHousing,
+  getHouseInfo,
+  createNewHouse,
+  getHousesSummary,
+  getUserHousing,
 } from '../controllers/HousingController.js';
 import checkRole from '../middlewares/CheckRoleMiddleware.js';
 

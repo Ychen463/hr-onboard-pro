@@ -1,17 +1,17 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/prop-types */
-import { useSelector } from 'react-redux';
-import { Navigate, useLocation } from 'react-router-dom';
-import { selectorCurrentUser } from '../store/slices/authSlice.js';
+import { useSelector } from "react-redux";
+import { Navigate, useLocation } from "react-router-dom";
+import { selectorCurrentUser } from "../store/slices/authSlice.js";
 
-import NavBar from './NavBar.jsx';
+import NavBar from "./NavBar.jsx";
 
 function ProtectedRoute({ component: Component, checkOnboarding = false }) {
   const user = useSelector(selectorCurrentUser);
-  const { onboardingStatus } = user || 'Not Started';
+  const { onboardingStatus } = user || "Not Started";
 
-  const isAuthenticated = () => (!!localStorage.getItem('jwtToken'));
-  const isOnboarded = () => onboardingStatus === 'Completed';
+  const isAuthenticated = () => !!localStorage.getItem("jwtToken");
+  const isOnboarded = () => onboardingStatus === "Completed";
   const location = useLocation();
 
   if (!isAuthenticated()) {
@@ -23,7 +23,9 @@ function ProtectedRoute({ component: Component, checkOnboarding = false }) {
   }
   return (
     <>
-      {['/', '/profile', '/visa', '/housing'].includes(location.pathname) && <NavBar />}
+      {["/", "/profile", "/visa", "/housing"].includes(location.pathname) && (
+        <NavBar />
+      )}
       <Component />
     </>
   );

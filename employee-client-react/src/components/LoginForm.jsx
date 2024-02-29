@@ -1,40 +1,40 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useState } from 'react';
-import beaconfireLogo from '../assets/beaconfireLogo.jpeg';
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useState } from "react";
+import beaconfireLogo from "../assets/beaconfireLogo.jpeg";
 
-import { login } from '../store/slices/authSlice.js';
+import { login } from "../store/slices/authSlice.js";
 
 function LoginForm() {
-  const [errorMessage, setErrormessage] = useState('');
+  const [errorMessage, setErrormessage] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const username = data.get('username');
-    const password = data.get('password');
+    const username = data.get("username");
+    const password = data.get("password");
 
     try {
       const actionResult = await dispatch(login({ username, password }));
       const result = actionResult.payload;
       if (result.loginJwtToken) {
-        navigate('/');
+        navigate("/");
       }
       setErrormessage(result.message);
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error("Login failed:", error);
     }
   };
 
@@ -45,9 +45,9 @@ function LoginForm() {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           <img src={beaconfireLogo} alt="Logo" />
@@ -81,7 +81,7 @@ function LoginForm() {
               id="password"
               autoComplete="current-password"
             />
-            <Typography style={{ color: 'red' }}>{errorMessage}</Typography>
+            <Typography style={{ color: "red" }}>{errorMessage}</Typography>
             <Button
               type="submit"
               fullWidth
@@ -92,9 +92,7 @@ function LoginForm() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href>
-                  Forgot password?
-                </Link>
+                <Link href>Forgot password?</Link>
               </Grid>
             </Grid>
           </Box>
@@ -106,13 +104,8 @@ function LoginForm() {
 }
 function Copyright() {
   return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-
-    >
-      {'Copyright © '}
+    <Typography variant="body2" color="text.secondary" align="center">
+      {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         BeconFire
       </Link>

@@ -1,6 +1,10 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import * as userProfileApiService from '../../apiServices/userProfile.js';
-import { logout } from './authSlice.js';
+import {
+  createSlice,
+  createAsyncThunk,
+  createSelector,
+} from "@reduxjs/toolkit";
+import * as userProfileApiService from "../../apiServices/userProfile.js";
+import { logout } from "./authSlice.js";
 
 const initialState = {
   userProfile: null,
@@ -10,7 +14,7 @@ const initialState = {
 
 // async thunk for userProfile
 export const getUserProfile = createAsyncThunk(
-  'userProfile/getUserProfile',
+  "userProfile/getUserProfile",
   async (_, thunkAPI) => {
     try {
       const response = await userProfileApiService.getUserProfile();
@@ -22,13 +26,14 @@ export const getUserProfile = createAsyncThunk(
 );
 
 export const updateUserProfile = createAsyncThunk(
-  'userProfile/updateUserProfile',
+  "userProfile/updateUserProfile",
   async (newProfile, thunkAPI) => {
     try {
       // check if docs has been updated by comparing with state.userProfile.userProfile
       // if has doc changes
       // need to do aws s3 request here
-      const response = await userProfileApiService.updateUserProfile(newProfile);
+      const response =
+        await userProfileApiService.updateUserProfile(newProfile);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -37,7 +42,7 @@ export const updateUserProfile = createAsyncThunk(
 );
 
 export const userProfileSlice = createSlice({
-  name: 'userProfile',
+  name: "userProfile",
   initialState,
   reducers: {
     // Define reducers for user profile management
@@ -78,11 +83,21 @@ export const userProfileSlice = createSlice({
 export default userProfileSlice.reducer;
 
 // selectors
+const selectUserProfileState = (state) => state.userProfile;
 // get userProfile
-export const selectorUserProfile = (state) => state.userProfile.userProfile;
+export const selectorUserProfile = createSelector(
+  selectUserProfileState,
+  (state) => state.userProfile,
+);
 
 // check if state is loading
-export const selectIsUserProfileLoading = (state) => state.userProfile.isLoading;
+export const selectIsUserProfileLoading = createSelector(
+  selectUserProfileState,
+  (state) => state.isLoading,
+);
 
 // get any error
-export const selectUserProfileError = (state) => state.userProfile.error;
+export const selectUserProfileError = createSelector(
+  selectUserProfileState,
+  (state) => state.error,
+);

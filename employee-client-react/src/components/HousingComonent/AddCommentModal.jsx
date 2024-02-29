@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button,
-} from '@mui/material';
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+} from "@mui/material";
 
 function AddCommentModal() {
   const [open, setOpen] = useState(false);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleAddComment = () => {
@@ -16,15 +21,17 @@ function AddCommentModal() {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleOpen}>Test add modal</Button>
+      <Button variant="outlined" onClick={handleOpen}>
+        Test add modal
+      </Button>
 
       <Dialog
         open={open}
         onClose={handleClose}
         PaperProps={{
           sx: {
-            width: '600px',
-            height: '350px',
+            width: "600px",
+            height: "350px",
           },
         }}
       >
@@ -46,7 +53,11 @@ function AddCommentModal() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleAddComment} variant="contained" color="primary">
+          <Button
+            onClick={handleAddComment}
+            variant="contained"
+            color="primary"
+          >
             ADD
           </Button>
         </DialogActions>

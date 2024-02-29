@@ -6,11 +6,14 @@ const getUserFacilityReports = async (req, res) => {
   const { userId } = req.user;
 
   try {
-    const reportList = await FacilityReport.find({ createdBy: userId }).populate({
-      path: 'comments.createdBy', // Use dot notation to specify the nested path
-      model: 'UserAccount', // Model to populate from
-      select: '_id username userRole',
-    }).lean().exec();
+    const reportList = await FacilityReport.find({ createdBy: userId })
+      .populate({
+        path: 'comments.createdBy', // Use dot notation to specify the nested path
+        model: 'UserAccount', // Model to populate from
+        select: '_id username userRole',
+      })
+      .lean()
+      .exec();
     // if no report found, will return an empty list
     res.status(200).json({
       message: 'Report list found.',
@@ -26,15 +29,20 @@ const getHouseFacilityReports = async (req, res) => {
   const { housingId } = req.body;
   // if req body does not contain housingId
   if (!housingId) {
-    return res.status(422).json({ message: 'Missing housingId to fetch the list of facility reports.' });
+    return res.status(422).json({
+      message: 'Missing housingId to fetch the list of facility reports.',
+    });
   }
 
   try {
-    const reportList = await FacilityReport.find({ housing: housingId }).populate({
-      path: 'comments.createdBy', // Use dot notation to specify the nested path
-      model: 'UserAccount', // Model to populate from
-      select: '_id username userRole',
-    }).lean().exec();
+    const reportList = await FacilityReport.find({ housing: housingId })
+      .populate({
+        path: 'comments.createdBy', // Use dot notation to specify the nested path
+        model: 'UserAccount', // Model to populate from
+        select: '_id username userRole',
+      })
+      .lean()
+      .exec();
     // if no report found, will return an empty list
     res.status(200).json({
       message: 'Report list found.',
@@ -73,7 +81,11 @@ const createFacilityReport = async (req, res) => {
     const reportCreated = await FacilityReport.create(newReport);
 
     if (reportCreated) {
-      const report = await FacilityReport.populate(reportCreated, { path: 'createdBy', model: 'UserAccount', select: '_id username userRole' });
+      const report = await FacilityReport.populate(reportCreated, {
+        path: 'createdBy',
+        model: 'UserAccount',
+        select: '_id username userRole',
+      });
       res.status(201).json({
         message: 'Report created.',
         report,
@@ -104,12 +116,15 @@ const closeFacilityReport = async (req, res) => {
     const updatedReport = await FacilityReport.findByIdAndUpdate(
       facilityReportId,
       { $set: { status: 'Closed' } },
-      { new: true },
-    ).populate({
-      path: 'comments.createdBy', // Use dot notation to specify the nested path
-      model: 'UserAccount', // Model to populate from
-      select: '_id username userRole',
-    }).lean().exec();
+      { new: true }
+    )
+      .populate({
+        path: 'comments.createdBy', // Use dot notation to specify the nested path
+        model: 'UserAccount', // Model to populate from
+        select: '_id username userRole',
+      })
+      .lean()
+      .exec();
     if (updatedReport) {
       res.status(200).json({
         message: 'Report closed.',
@@ -126,7 +141,9 @@ const addFRComment = async (req, res) => {
   const { userId, userRole } = req.user;
   const { facilityReportId, description } = req.body;
   if (!(facilityReportId && description)) {
-    return res.status(422).json({ message: 'Missing facilityReportId or description to create the comment.' });
+    return res.status(422).json({
+      message: 'Missing facilityReportId or description to create the comment.',
+    });
   }
 
   try {
@@ -136,16 +153,16 @@ const addFRComment = async (req, res) => {
       lastModifiedDatetime: new Date(),
     };
 
-    const reportFound = await FacilityReport.findById(
-      facilityReportId,
-    ).lean().exec();
+    const reportFound = await FacilityReport.findById(facilityReportId).lean().exec();
 
     if (!reportFound) {
       return res.status(404).json({ message: 'No report found with the id.' });
     }
 
     if (String(reportFound.createdBy) !== userId && userRole !== 'HR') {
-      return res.status(403).json({ message: 'User is not authorized to add comment to this report.' });
+      return res.status(403).json({
+        message: 'User is not authorized to add comment to this report.',
+      });
     }
 
     const newCommentList = [...reportFound.comments, newComment];
@@ -153,12 +170,15 @@ const addFRComment = async (req, res) => {
     const updatedReport = await FacilityReport.findByIdAndUpdate(
       facilityReportId,
       { comments: newCommentList, status: 'InProgress' },
-      { new: true },
-    ).populate({
-      path: 'comments.createdBy', // Use dot notation to specify the nested path
-      model: 'UserAccount', // Model to populate from
-      select: '_id username userRole',
-    }).lean().exec();
+      { new: true }
+    )
+      .populate({
+        path: 'comments.createdBy', // Use dot notation to specify the nested path
+        model: 'UserAccount', // Model to populate from
+        select: '_id username userRole',
+      })
+      .lean()
+      .exec();
 
     if (updatedReport) {
       res.status(200).json({
@@ -176,13 +196,13 @@ const editFRComment = async (req, res) => {
   const { userId } = req.user;
   const { facilityReportId, commentId, description } = req.body;
   if (!(facilityReportId && commentId && description)) {
-    return res.status(422).json({ message: 'Missing facilityReportId, commentId or description to create the comment.' });
+    return res.status(422).json({
+      message: 'Missing facilityReportId, commentId or description to create the comment.',
+    });
   }
 
   try {
-    const reportFound = await FacilityReport.findById(
-      facilityReportId,
-    ).lean().exec();
+    const reportFound = await FacilityReport.findById(facilityReportId).lean().exec();
 
     if (!reportFound) {
       return res.status(404).json({ message: 'No report found with the id.' });
@@ -190,7 +210,7 @@ const editFRComment = async (req, res) => {
 
     // Find the index of the comment to update in the array
     const commentIndex = reportFound.comments.findIndex(
-      (comment) => String(comment._id) === commentId,
+      (comment) => String(comment._id) === commentId
     );
 
     if (commentIndex === -1) {
@@ -207,12 +227,15 @@ const editFRComment = async (req, res) => {
     const updatedReport = await FacilityReport.findByIdAndUpdate(
       facilityReportId,
       { comments: updatedCommentsList },
-      { new: true },
-    ).populate({
-      path: 'comments.createdBy', // Use dot notation to specify the nested path
-      model: 'UserAccount', // Model to populate from
-      select: '_id username userRole',
-    }).lean().exec();
+      { new: true }
+    )
+      .populate({
+        path: 'comments.createdBy', // Use dot notation to specify the nested path
+        model: 'UserAccount', // Model to populate from
+        select: '_id username userRole',
+      })
+      .lean()
+      .exec();
 
     if (updatedReport) {
       res.status(200).json({
@@ -226,6 +249,10 @@ const editFRComment = async (req, res) => {
 };
 
 export {
-  getUserFacilityReports, getHouseFacilityReports, createFacilityReport, closeFacilityReport,
-  addFRComment, editFRComment,
+  getUserFacilityReports,
+  getHouseFacilityReports,
+  createFacilityReport,
+  closeFacilityReport,
+  addFRComment,
+  editFRComment,
 };

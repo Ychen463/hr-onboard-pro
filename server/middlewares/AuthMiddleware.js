@@ -3,10 +3,7 @@ import validator from 'validator';
 
 const jwtVerifyToken = (req, res, next) => {
   let token;
-  if (
-    req.headers.authorization
-    && req.headers.authorization.startsWith('Bearer ')
-  ) {
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
     [, token] = req.headers.authorization.split(' ');
   }
   if (!token || validator.isEmpty(token)) {
