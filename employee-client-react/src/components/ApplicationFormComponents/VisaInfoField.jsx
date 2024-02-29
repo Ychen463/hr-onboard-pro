@@ -42,7 +42,7 @@ function VisaInfoField({ readOnly }) {
 
     console.log('uploaded files utl:', files);
   };
-  console.log(formControl);
+
   const citizenshipOptions = ['Yes', 'No'];
   const citizenshipDetailOptions = ['Green Card', 'Citizen'];
   const workAuthorizationOptions = ['H1-B', 'L2', 'F1(CPT/OPT)', 'H4', 'Other'];
