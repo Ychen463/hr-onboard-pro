@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,11 +10,13 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useState } from 'react';
 import beaconfireLogo from '../assets/beaconfireLogo.jpeg';
 
-import { login, selectorCurrentUser } from '../store/slices/authSlice.js';
+import { login } from '../store/slices/authSlice.js';
 
 function LoginForm() {
+  const [errorMessage, setErrormessage] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -25,18 +27,17 @@ function LoginForm() {
     const password = data.get('password');
 
     try {
-      dispatch(login({
-        username,
-        password,
-      }));
-      navigate('/');
+      const actionResult = await dispatch(login({ username, password }));
+      const result = actionResult.payload;
+      if (result.loginJwtToken) {
+        navigate('/');
+      }
+      setErrormessage(result.message);
     } catch (error) {
       console.error('Login failed:', error);
     }
   };
 
-  const user = useSelector(selectorCurrentUser);
-  // console.log('user', user);
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -80,7 +81,7 @@ function LoginForm() {
               id="password"
               autoComplete="current-password"
             />
-
+            <Typography style={{ color: 'red' }}>{errorMessage}</Typography>
             <Button
               type="submit"
               fullWidth

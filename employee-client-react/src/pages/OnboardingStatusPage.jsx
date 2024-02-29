@@ -2,14 +2,15 @@
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button, Card, Typography } from '@mui/material';
-import { selectorCurrentOnboardingData } from '../store/slices/onboardingSlice.js';
+import { selectorCurrentUser } from '../store/slices/authSlice.js';
 
 // eslint-disable-next-line react/prop-types
 function OnboardingStatusCard() {
-  const onboardingData = useSelector(selectorCurrentOnboardingData);
   const navigate = useNavigate();
+  const currentUserData = useSelector(selectorCurrentUser);
+  const { onboardingStatus } = currentUserData;
 
-  const rejFeedback = onboardingData ? onboardingData.rejFeedback : 'On boarding application rejected, contact HR for details';
+  const rejFeedback = 'On boarding application rejected, contact HR for details';
   const CONTENT = {
     'Not Started': {
       boardMessage: 'Start on boarding process',
@@ -33,11 +34,11 @@ function OnboardingStatusCard() {
     }}
     >
       <Typography sx={{ mt: 12, textAlign: 'center' }}>
-        {onboardingData ? CONTENT[onboardingData.onboardingStatus].boardMessage : 'Please start your on boarding process'}
+        {onboardingStatus ? CONTENT[onboardingStatus].boardMessage : 'Please start your on boarding process'}
       </Typography>
 
       <Button onClick={handleStatusClick} variant="contained" sx={{ m: 14 }}>
-        {onboardingData ? CONTENT[onboardingData.onboardingStatus].buttonContent : 'Start on boarding'}
+        {onboardingStatus ? CONTENT[onboardingStatus].buttonContent : 'Start on boarding'}
       </Button>
     </Card>
   );
