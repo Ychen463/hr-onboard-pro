@@ -12,7 +12,6 @@ export class ApiService {
   private APIgetAllRegiToken: string = `api/registrationToken`;
   private APIpostGenerateRegiToken: string = `api/registrationToken`;
   private APIgetAllOnboarding: string = `api/onboardings`;
-
   
 
   constructor() { }
@@ -25,5 +24,8 @@ export class ApiService {
   }
   getAllOnboardingUrl(): string {
     return this.APIgetAllOnboarding;
+  }
+  getOnboardingDecisionUrl(userAccountId: string): string {
+    return `api/onboarding/${userAccountId}/status`;
   }
 }

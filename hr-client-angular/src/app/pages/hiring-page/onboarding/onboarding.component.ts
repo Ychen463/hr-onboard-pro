@@ -11,6 +11,7 @@ import { RegistrationTokenData, DisplayedRegiData } from '../RegistrationToken';
 import { UserAccountOnboardingData, DisplayedOnboardingData } from '../UserAccountOnboarding';
 
 import { GenerateTokenComponent } from '../generate-token/generate-token.component';
+import {RejectFeedbackDialogComponent} from '../reject-feedback-dialog/reject-feedback-dialog.component'
 import {MatDialog} from '@angular/material/dialog';
 
 import { ShortenUrlPipe } from '../pipe/shorten-url.pipe';
@@ -37,10 +38,11 @@ export class OnboardingComponent implements OnInit {
     'createdDatetime': 'Created At'
   };
   displayedRegiColumns: string[] = ['Name', 'Email', 'Status', 'Created At'];
-  displayedOnbColumns: string[] = ['name', 'email', 'status', 'userAccountId'];
+  displayedOnbColumns: string[] = ['name', 'email', 'status', 'action'];
   apiGetAllTokensUrl!: string;
   apiGetAllOnbUrl!: string;
   selectedStatus: string = 'None';
+
   selectionChanged(): void {
     if (this.selectedStatus === 'Completed') {
       this.selectedStatus = 'Approved';
@@ -75,6 +77,8 @@ ngOnInit(): void {
   this.OnbdataSource.sort = this.OnbMatSort;
   this.apiGetAllTokensUrl = this.apiService.getAllRegiTokenUrl();
   this.apiGetAllOnbUrl = this.apiService.getAllOnboardingUrl();
+
+
   this.fetchDataFromTokenApi();
   this.selectedStatus = 'None';
   this.fetchDataFromOnboardingApi(this.selectedStatus);
@@ -131,6 +135,33 @@ ngOnInit(): void {
       console.log('The dialog was closed');
     });
   }
+
+  handleObApprove(userAccountId: string): void {
+    const apiPatchDecisionbUrl = this.apiService.getOnboardingDecisionUrl(userAccountId);
+    console.log(apiPatchDecisionbUrl);
+        this.httpClient.patch(apiPatchDecisionbUrl, { hrDecision: 'Approved' }).subscribe(
+      (data) => {
+        console.log('Approval successful:', data);
+      },
+      (error) => {
+        console.error('Error occurred during approval:', error);
+      }
+    );
+  }
+  
+  
+  openRejectConfirmationDialog(userAccountId: string): void {
+    const dialogRef = this.dialog.open(RejectFeedbackDialogComponent, {
+      width: '500px',
+      height: 'auto',
+      data: { userAccountId: userAccountId }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+  
 
 
 

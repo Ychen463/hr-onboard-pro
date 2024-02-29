@@ -26,9 +26,10 @@ import { OnboardingComponent } from './onboarding/onboarding.component';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { RejectFeedbackDialogComponent } from './reject-feedback-dialog/reject-feedback-dialog.component';
 
 @NgModule({
-  declarations: [GenerateTokenComponent, OnboardingComponent],
+  declarations: [GenerateTokenComponent, OnboardingComponent, RejectFeedbackDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -51,8 +52,10 @@ import { MatInputModule } from '@angular/material/input';
   ],
   exports: [GenerateTokenComponent,
     OnboardingComponent,
+    RejectFeedbackDialogComponent,
     MatButtonModule,
     MatInputModule,
+
 
   ]
 })
