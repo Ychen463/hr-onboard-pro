@@ -8,11 +8,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("jwtToken");
-    if (
-      token &&
-      !config.url.endsWith("/login") &&
-      !config.url.endsWith("/register")
-    ) {
+    if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 

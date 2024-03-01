@@ -7,8 +7,7 @@ import * as visaApiService from "../../apiServices/visa.js";
 import { logout } from "./authSlice.js";
 
 const initialState = {
-  currentStep: null,
-  nextStep: null,
+  visa: null,
   isLoading: false,
   error: null,
 };
@@ -93,8 +92,7 @@ export const visaSlice = createSlice({
       })
       .addCase(getVisaStatus.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.currentStep = action.payload.currentStep;
-        state.nextStep = action.payload.nextStep;
+        state.visa = action.payload.visa;
       })
       .addCase(getVisaStatus.rejected, (state, action) => {
         state.isLoading = false;
@@ -107,8 +105,7 @@ export const visaSlice = createSlice({
       })
       .addCase(submitOptReceipt.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.currentStep = action.payload.currentStep;
-        state.nextStep = action.payload.nextStep;
+        state.visa = action.payload.visa;
       })
       .addCase(submitOptReceipt.rejected, (state, action) => {
         state.isLoading = false;
@@ -121,8 +118,7 @@ export const visaSlice = createSlice({
       })
       .addCase(submitOptEAD.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.currentStep = action.payload.currentStep;
-        state.nextStep = action.payload.nextStep;
+        state.visa = action.payload.visa;
       })
       .addCase(submitOptEAD.rejected, (state, action) => {
         state.isLoading = false;
@@ -135,8 +131,7 @@ export const visaSlice = createSlice({
       })
       .addCase(submiti983.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.currentStep = action.payload.currentStep;
-        state.nextStep = action.payload.nextStep;
+        state.visa = action.payload.visa;
       })
       .addCase(submiti983.rejected, (state, action) => {
         state.isLoading = false;
@@ -149,8 +144,7 @@ export const visaSlice = createSlice({
       })
       .addCase(submiti20.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.currentStep = action.payload.currentStep;
-        state.nextStep = action.payload.nextStep;
+        state.visa = action.payload.visa;
       })
       .addCase(submiti20.rejected, (state, action) => {
         state.isLoading = false;
@@ -165,16 +159,10 @@ export default visaSlice.reducer;
 
 // selectors
 const selectVisaState = (state) => state.visa;
-// get current step
-export const selectorCurrentStep = createSelector(
+// get current visa status
+export const selectorVisa = createSelector(
   selectVisaState,
-  (state) => state.currentStep,
-);
-
-// get next step
-export const selectorNextStep = createSelector(
-  selectVisaState,
-  (state) => state.nextStep,
+  (state) => state.visa,
 );
 
 // check if state is loading
