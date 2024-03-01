@@ -20,15 +20,17 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+
 import { HiringPageModule } from './pages/hiring-page/hiring-page.module';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ShortenUrlPipe } from './pages/hiring-page/pipe/shorten-url.pipe';
-import { OnboardingDetailsComponent } from './pages/hiring-page/onboarding-details/onboarding-details.component';
 
 @NgModule({
-  declarations: [AppComponent, NavigationBarComponent, LoginPageComponent, ShortenUrlPipe,ShortenUrlPipe, OnboardingDetailsComponent],
+  declarations: [AppComponent, NavigationBarComponent, LoginPageComponent, ShortenUrlPipe],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -45,6 +47,8 @@ import { OnboardingDetailsComponent } from './pages/hiring-page/onboarding-detai
     MatDialogModule,
     MatButtonModule,
     FormsModule,
+    MatListModule,
+    MatDividerModule,
     HiringPageModule,
 
   ],
