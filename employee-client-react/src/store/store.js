@@ -4,6 +4,7 @@ import onboardingReducer from "./slices/onboardingSlice.js";
 import housingReducer from "./slices/housingSlice.js";
 import visaReducer from "./slices/visaSlice.js";
 import userProfileReducer from "./slices/userProfileSlice.js";
+import facilityReportReducer from "./slices/facilityReportSlice.js";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     housing: housingReducer,
     visa: visaReducer,
     userProfile: userProfileReducer,
+    facilityReports: facilityReportReducer,
     // other reducers can go here
   },
 });
