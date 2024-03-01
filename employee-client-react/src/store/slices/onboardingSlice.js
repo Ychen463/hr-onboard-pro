@@ -15,12 +15,12 @@ const initialState = {
 // async thunk for onboarding
 export const getOnboarding = createAsyncThunk(
   "onboarding/getOnboarding",
-  async ({ userAccountId }, thunkAPI) => {
+  async ({ userId }, thunkAPI) => {
     try {
-      const response = await onboardingApiService.getOnboarding(userAccountId);
+      const response = await onboardingApiService.getOnboarding(userId);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.data.message);
     }
   },
 );
@@ -33,7 +33,7 @@ export const submitOnboarding = createAsyncThunk(
         await onboardingApiService.postOnboarding(onboardingData);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.data.message);
     }
   },
 );
@@ -57,7 +57,7 @@ export const onboardingSlice = createSlice({
       })
       .addCase(getOnboarding.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       // submitOnboarding
       .addCase(submitOnboarding.pending, (state) => {
@@ -70,7 +70,7 @@ export const onboardingSlice = createSlice({
       })
       .addCase(submitOnboarding.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       // logout clean state
       .addCase(logout, () => initialState);

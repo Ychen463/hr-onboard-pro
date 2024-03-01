@@ -20,7 +20,7 @@ export const getVisaStatus = createAsyncThunk(
       const repsonse = await visaApiService.getVisaStatus(userAccountId);
       return repsonse.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.data.message);
     }
   },
 );
@@ -33,7 +33,7 @@ export const submitOptReceipt = createAsyncThunk(
       const response = await visaApiService.postOptReceipt(docUrl);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.data.message);
     }
   },
 );
@@ -46,7 +46,7 @@ export const submitOptEAD = createAsyncThunk(
       const response = await visaApiService.postOptEAD(docUrl);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.data.message);
     }
   },
 );
@@ -59,7 +59,7 @@ export const submiti983 = createAsyncThunk(
       const response = await visaApiService.posti983(docUrl);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.data.message);
     }
   },
 );
@@ -72,7 +72,7 @@ export const submiti20 = createAsyncThunk(
       const response = await visaApiService.posti20(docUrl);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.data.message);
     }
   },
 );
@@ -96,7 +96,7 @@ export const visaSlice = createSlice({
       })
       .addCase(getVisaStatus.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       // submitOptReceipt
       .addCase(submitOptReceipt.pending, (state) => {
@@ -109,7 +109,7 @@ export const visaSlice = createSlice({
       })
       .addCase(submitOptReceipt.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       // submitOptEAD
       .addCase(submitOptEAD.pending, (state) => {
@@ -122,7 +122,7 @@ export const visaSlice = createSlice({
       })
       .addCase(submitOptEAD.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       // submiti983
       .addCase(submiti983.pending, (state) => {
@@ -135,7 +135,7 @@ export const visaSlice = createSlice({
       })
       .addCase(submiti983.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       // submiti20
       .addCase(submiti20.pending, (state) => {
@@ -148,7 +148,7 @@ export const visaSlice = createSlice({
       })
       .addCase(submiti20.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       // logout clean state
       .addCase(logout, () => initialState);

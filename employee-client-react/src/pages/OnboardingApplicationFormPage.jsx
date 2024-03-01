@@ -5,7 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { Container, Button, Typography } from "@mui/material";
 import { useState } from "react";
 import {
+  selectOnboardingError,
   selectorCurrentOnboardingData,
+  selectIsOnboardingLoading,
   submitOnboarding,
 } from "../store/slices/onboardingSlice.js";
 
@@ -25,16 +27,17 @@ import { selectorCurrentUser } from "../store/slices/authSlice.js";
 
 function OnboardingApplicationPage() {
   const [errorMessage, setErrormessage] = useState("");
-  const dispatch = useDispatch();
   const currentUserData = useSelector(selectorCurrentUser);
-  // const { userId } = currentUserData;
-  console.log("in applicatoin page", currentUserData);
-
-  // useEffect(() => {
-  //   dispatch(getOnboarding(userId));
-  // }, []);
-
+  const isLoading = useSelector(selectIsOnboardingLoading);
+  const error = useSelector(selectOnboardingError);
+  const { userId } = currentUserData;
   const onboardingData = useSelector(selectorCurrentOnboardingData);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getOnboarding({userId}));
+  }, []);
+
   console.log("onboardingData", onboardingData);
 
   // Disable form edit at "Pending" status
@@ -48,25 +51,16 @@ function OnboardingApplicationPage() {
     const formDataObj = formDataToObject(formData);
 
     const onboardingSubmitData = createOnboardingFormPayload(formDataObj);
-
-    try {
-      const submitResult = await dispatch(submitOnboarding(onboardingData));
-      // console.log('submitResult', submitResult);
-      if (submitResult.error.message === "Rejected") {
-        setErrormessage(submitResult.payload.message);
-      }
-    } catch (error) {
-      console.error("submit failed:", error);
-    }
+    dispatch(submitOnboarding(onboardingSubmitData));
   };
 
   return (
     <div style={{ width: "1080px", margin: "10px auto" }}>
       <h1 style={{ textAlign: "center" }}>Onboarding Application</h1>
       <Container component="form" onSubmit={handleSubmit}>
-        {errorMessage ? (
+        {error ? (
           <Typography variant="h5" style={{ margin: "500px auto" }}>
-            {errorMessage}
+            {error}
           </Typography>
         ) : (
           <>
