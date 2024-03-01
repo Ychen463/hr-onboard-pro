@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-unused-vars */
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Button, Typography } from "@mui/material";
 import { useState } from "react";
@@ -19,10 +20,22 @@ import DriverLicenseInfoField from "../components/ApplicationFormComponents/Driv
 
 import createOnboardingFormPayload from "../utils/createOnboardingFormPayload.js";
 
+import { getOnboarding } from "../store/slices/onboardingSlice.js";
+import { selectorCurrentUser } from "../store/slices/authSlice.js";
+
 function OnboardingApplicationPage() {
   const [errorMessage, setErrormessage] = useState("");
   const dispatch = useDispatch();
+  const currentUserData = useSelector(selectorCurrentUser);
+  // const { userId } = currentUserData;
+  console.log("in applicatoin page", currentUserData);
+
+  // useEffect(() => {
+  //   dispatch(getOnboarding(userId));
+  // }, []);
+
   const onboardingData = useSelector(selectorCurrentOnboardingData);
+  console.log("onboardingData", onboardingData);
 
   // Disable form edit at "Pending" status
   const readOnlyForm = onboardingData

@@ -1,6 +1,7 @@
 import { Container, Button } from "@mui/material";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import formDataToObject from "../utils/formDataToObject.jsx";
 import PersonalInfoField from "../components/ApplicationFormComponents/PersonalInfoField.jsx";
 import ContactInfoField from "../components/ApplicationFormComponents/ContactInfoField.jsx";
@@ -9,9 +10,25 @@ import VisaInfoField from "../components/ApplicationFormComponents/VisaInfoField
 import UserEmailField from "../components/UserEmailField.jsx";
 
 import EmergencyContact from "../components/ApplicationFormComponents/EmergencyContact.jsx";
+import {
+  getUserProfile,
+  selectorUserProfile,
+} from "../store/slices/userProfileSlice.js";
 
 function PersonalProfilePage() {
   const [readOnly, setReadOnly] = useState(true);
+  const dispatch = useDispatch();
+
+  const userProfile = useSelector(selectorUserProfile);
+  // const isLoading = useSelector((state) => state.userProfile.isLoading);
+  // const error = useSelector((state) => state.userProfile.error);
+
+  useEffect(() => {
+    dispatch(getUserProfile());
+  }, []);
+
+  console.log("userProfile", userProfile);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);

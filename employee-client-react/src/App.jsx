@@ -6,9 +6,14 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import LoginForm from "./components/LoginForm.jsx";
+import AuthGuard from "./components/AuthGuard.jsx";
+import LoginGuard from "./components/LoginGuard.jsx";
+import HomeGuard from "./components/HomeGuard.jsx";
+import OnboardingGuard from "./components/OnboardingGuard.jsx";
+import HomeLayout from "./components/HomeLayout.jsx";
+import OnboardingLayout from "./components/OnboardingLayout.jsx";
 import Registration from "./components/Registration.jsx";
+import LoginForm from "./components/LoginForm.jsx";
 import OnboardingStatusPage from "./pages/OnboardingStatusPage.jsx";
 import OnboardingApplicationPage from "./pages/OnboardingApplicationFormPage.jsx";
 import PersonalProfilePage from "./pages/PersonalProfilePage.jsx";
@@ -19,35 +24,30 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* <Route element={<LoginGuard />}> */}
         <Route path="/login" element={<LoginForm />} />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute component={PersonalProfilePage} checkOnboarding />
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute component={PersonalProfilePage} checkOnboarding />
-          }
-        />
-        <Route
-          path="/visa"
-          element={
-            <ProtectedRoute component={VisaStatusMgtPage} checkOnboarding />
-          }
-        />
-        <Route
-          path="/housing"
-          element={<ProtectedRoute component={HousingPage} checkOnboarding />}
-        />
-        <Route path="/onboarding-status" element={<OnboardingStatusPage />} />
-        <Route
-          path="/onboarding-application"
-          element={<OnboardingApplicationPage />}
-        />
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* </Route> */}
+        <Route element={<AuthGuard />}>
+          <Route element={<OnboardingGuard />}>
+            <Route element={<OnboardingLayout />}>
+              <Route
+                path="/onboarding-status"
+                element={<OnboardingStatusPage />}
+              />
+              <Route
+                path="/onboarding-application"
+                element={<OnboardingApplicationPage />}
+              />
+            </Route>
+          </Route>
+          <Route element={<HomeGuard />}>
+            <Route element={<HomeLayout />}>
+              <Route path="/" element={<PersonalProfilePage />} />
+              <Route path="/visa" element={<VisaStatusMgtPage />} />
+              <Route path="/housing" element={<HousingPage />} />
+            </Route>
+          </Route>
+        </Route>
       </Routes>
     </Router>
   );

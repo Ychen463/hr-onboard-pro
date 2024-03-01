@@ -9,9 +9,10 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("jwtToken");
     if (
-      token &&
-      !config.url.endsWith("/login") &&
-      !config.url.endsWith("/register")
+      token 
+      // &&
+      // !config.url.endsWith("/login") &&
+      // !config.url.endsWith("/register")
     ) {
       config.headers.Authorization = `Bearer ${token}`;
     }
