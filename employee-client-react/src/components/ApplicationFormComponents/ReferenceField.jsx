@@ -38,6 +38,7 @@ function ReferenceField({ readOnly }) {
           <InputUnit
             onChange={handleSubmit}
             name="ifHasReferal"
+            required={true}
             value=""
             label="Do you have a referal?"
             type="dropdown"

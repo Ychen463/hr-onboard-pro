@@ -2,7 +2,8 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-use-before-define */
 /* eslint-disable react/jsx-props-no-spreading */
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { AppBar, Tabs, Tab, Box, Typography } from "@mui/material";
 
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -10,9 +11,21 @@ import RoommateTable from "../components/HousingComonent/RoomMateTable.jsx";
 import FacilityReportBoard from "../components/HousingComonent/FacilityReportBoard.jsx";
 
 import { housingData, housingReportData } from "../MOCK_DATA.jsx";
+import {
+  getHousing,
+  selectorCurrentHouseData,
+} from "../store/slices/housingSlice.js";
 
 function HousingPageContainer() {
   const [value, setValue] = useState(0);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getHousing());
+  }, []);
+
+  const housingData = useSelector(selectorCurrentHouseData);
+  console.log("housing Data", housingData);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

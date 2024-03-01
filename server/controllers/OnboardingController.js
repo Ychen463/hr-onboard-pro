@@ -20,7 +20,7 @@ const applyUserOnboarding = async (req, res) => {
   // VISA CREATE IF NEEDED
   let visaId = null;
   if (
-    req.body.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' &&
+    req.body.citizenshipStatus?.workAuthorization === 'F1(CPT/OPT)' &&
     req.body.citizenshipStatus.workAuthorizationFiles
   ) {
     const { workAuthorizationFiles } = req.body.citizenshipStatus;
