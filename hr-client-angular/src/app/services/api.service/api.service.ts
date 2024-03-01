@@ -25,6 +25,9 @@ export class ApiService {
   getAllOnboardingUrl(): string {
     return this.APIgetAllOnboarding;
   }
+  getOneOnboardingUrl(userAccountId: string): string {
+    return `api/onboarding/${userAccountId}`;
+  }
   getOnboardingDecisionUrl(userAccountId: string): string {
     return `api/onboarding/${userAccountId}/status`;
   }

@@ -21,7 +21,7 @@ export interface UserAccountOnboardingData {
     visaInfo: VisaInfo;
   }
   
-  interface PersonalInfo {
+  export interface PersonalInfo {
     firstName: string;
     lastName: string;
     middleName: string;
@@ -35,7 +35,7 @@ export interface UserAccountOnboardingData {
     gender: string;
   }
   
-  interface Address {
+  export interface Address {
     streetName: string;
     buildingApt: string;
     city: string;
@@ -43,18 +43,18 @@ export interface UserAccountOnboardingData {
     zip: string;
   }
   
-  interface ContactSchema {
+  export interface ContactSchema {
     cellPhoneNumber: string;
     workPhoneNumber: string;
   }
   
-  interface CarInformation {
+  export interface CarInformation {
     make: string;
     model: string;
     color: string;
   }
   
-  interface CitizenshipStatus {
+  export interface CitizenshipStatus {
     isCitizenOrPermanentResident: boolean;
     statusDetail: string;
     workAuthorization: string;
@@ -63,17 +63,17 @@ export interface UserAccountOnboardingData {
     startEndDate: StartEndDate;
   }
   
-  interface StartEndDate {
+  export interface StartEndDate {
     startDate: string;
     endDate: string;
   }
   
-  interface Document {
+  export interface Document {
     docId: string;
     docUrl: string;
   }
   
-  interface DriverLicense {
+  export interface DriverLicense {
     DocId: string;
     hasDriverLicense: boolean;
     driverLicenseNumber: string;
@@ -81,7 +81,15 @@ export interface UserAccountOnboardingData {
     driverLicenseCopyUrl: string;
   }
   
-  interface Referral {
+  export interface Referral {
+    firstName: string;
+    lastName: string;
+    middleName: string;
+    phone: string;
+    email: string;
+    relationship: string;
+  }
+  export interface EmergencyContact {
     firstName: string;
     lastName: string;
     middleName: string;
@@ -90,16 +98,14 @@ export interface UserAccountOnboardingData {
     relationship: string;
   }
   
-  interface EmergencyContact {
-    firstName: string;
-    lastName: string;
-    middleName: string;
-    phone: string;
-    email: string;
-    relationship: string;
+  export interface EmergencyContacts {
+    emergencyContacts: EmergencyContact[];
   }
   
-  interface VisaInfo {
+  
+  
+  
+  export interface VisaInfo {
     _id: string;
     userAccountId: string;
     docs: {
@@ -112,7 +118,7 @@ export interface UserAccountOnboardingData {
     __v: number;
   }
   
-  interface DocumentStatus extends Document {
+  export interface DocumentStatus extends Document {
     status: string;
     createdDatetime: string;
     rejFeedback: string;

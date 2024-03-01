@@ -17,6 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { MatListModule } from '@angular/material/list';
 
 import { ShortenUrlPipe } from './pipe/shorten-url.pipe';
 
@@ -27,9 +28,13 @@ import { OnboardingComponent } from './onboarding/onboarding.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { RejectFeedbackDialogComponent } from './reject-feedback-dialog/reject-feedback-dialog.component';
+import { OnboardingDetailComponent } from './onboarding-detail/onboarding-detail.component';
 
 @NgModule({
-  declarations: [GenerateTokenComponent, OnboardingComponent, RejectFeedbackDialogComponent],
+  declarations: [GenerateTokenComponent, 
+                OnboardingComponent, 
+                RejectFeedbackDialogComponent, 
+                OnboardingDetailComponent  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -49,6 +54,7 @@ import { RejectFeedbackDialogComponent } from './reject-feedback-dialog/reject-f
     MatCardModule,
     MatSelectModule,
     MatOptionModule,
+    MatListModule,
   ],
   exports: [GenerateTokenComponent,
     OnboardingComponent,

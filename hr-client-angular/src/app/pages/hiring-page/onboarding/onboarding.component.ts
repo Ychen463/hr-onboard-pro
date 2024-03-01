@@ -11,8 +11,8 @@ import { RegistrationTokenData, DisplayedRegiData } from '../RegistrationToken';
 import { UserAccountOnboardingData, DisplayedOnboardingData } from '../UserAccountOnboarding';
 
 import { GenerateTokenComponent } from '../generate-token/generate-token.component';
-import {RejectFeedbackDialogComponent} from '../reject-feedback-dialog/reject-feedback-dialog.component'
-import {MatDialog} from '@angular/material/dialog';
+import { RejectFeedbackDialogComponent} from '../reject-feedback-dialog/reject-feedback-dialog.component'
+import { MatDialog} from '@angular/material/dialog';
 
 import { ShortenUrlPipe } from '../pipe/shorten-url.pipe';
 
@@ -49,8 +49,6 @@ export class OnboardingComponent implements OnInit {
     }
     this.fetchDataFromOnboardingApi(this.selectedStatus);
   }
-
-
 
 
   RegidataSource: MatTableDataSource<DisplayedRegiData>;
@@ -108,7 +106,6 @@ ngOnInit(): void {
         
         filteredData = data.filter(item => item.onboardingStatus.replace(/\s/g, '').toLowerCase() === selectedStatus.replace(/\s/g, '').toLowerCase());
       }
-      console.log(data.map((each) => each.onboardingStatus))
       const displayedOnboardingData = filteredData.map(item => ({
         name: `${item.personalInfo.firstName} ${item.personalInfo.lastName}`,
         email: item.email,
@@ -123,7 +120,7 @@ ngOnInit(): void {
   }
   
 
-  openDialog(): void {
+  openGenToeknDialog(): void {
     const dialogRef = this.dialog.open(GenerateTokenComponent, {
       width: '500px',
       height: 'auto',

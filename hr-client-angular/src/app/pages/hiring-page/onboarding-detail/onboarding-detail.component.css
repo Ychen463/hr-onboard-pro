@@ -1,0 +1,32 @@
+.card-row{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+
+}
+.mat-card{
+    margin: 10px 10px;
+    width: 520px;
+    height:250px;
+}
+.content-wrapper {
+    display: flex;
+    align-items: center; 
+  }
+  
+  .text-content {
+    flex: 2;
+  }
+  
+  .image-content {
+    margin-left: 20px; 
+  }
+  
+  .table-container {
+    margin: 20px 40px;
+    border-bottom:40px;
+    margin-bottom: 100px; 
+    justify-content: center;
+    
+  }
