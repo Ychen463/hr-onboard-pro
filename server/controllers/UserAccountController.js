@@ -10,7 +10,7 @@ const SALT = parseInt(process.env.SALT, 10);
 const register = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const email = req.user.registrationEmail;
+    const { email } = req.user;
     const hashedPassword = await bcrypt.hash(password, SALT);
     // Check if email already exists
     const userEmailExists = await UserAccount.findOne({ email }).lean().exec();

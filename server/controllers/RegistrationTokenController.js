@@ -92,5 +92,14 @@ const getTokenStatus = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
-export { generateRegiToken, updateTokenStatus, getTokenStatus };
+const getAllTokens = async (req, res) => {
+  try {
+    const tokens = await RegistrationToken.find();
+    res.status(200).json(tokens);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export {
+  generateRegiToken, updateTokenStatus, getTokenStatus, getAllTokens,
+};

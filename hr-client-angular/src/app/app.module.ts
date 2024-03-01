@@ -18,14 +18,19 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+
+import { HiringPageModule } from './pages/hiring-page/hiring-page.module';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { ShortenUrlPipe } from './pages/hiring-page/pipe/shorten-url.pipe';
 
 @NgModule({
-  declarations: [AppComponent, NavigationBarComponent, LoginPageComponent],
+  declarations: [AppComponent, NavigationBarComponent, LoginPageComponent, ShortenUrlPipe],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -39,8 +44,13 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDialogModule,
     MatButtonModule,
     FormsModule,
+    MatListModule,
+    MatDividerModule,
+    HiringPageModule,
+
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],

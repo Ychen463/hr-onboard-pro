@@ -59,11 +59,27 @@ const getCurrentStep = async (req, res) => {
     } else {
       responseMessage += ' Next step is the same as current step until approved.';
     }
+    // currentVisa = visa.docs[currentStep] ? visa.docs[currentStep] : {}
+    // currentVisa = visa.docs[currentStep]
+    // console.log(currentStep)
+    console.log(visa.docs[currentStep])
+    console.log(visa.docs[currentStep].status)
 
     return res.status(200).json({
       message: responseMessage,
-      currentStep: visa.docs[currentStep] ? visa.docs[currentStep] : {},
-      nextStep: nextStep && nextStep !== currentStep ? visa.docs[nextStep] : null,
+      visa:{
+        currentStep: visa.docs[currentStep].status.split('-')[0],
+        currentStatus: visa.docs[currentStep].status.split('-')[1],
+        rejFeedback: visa.docs[currentStep].rejFeedback,
+        docId: visa.docs[currentStep].docId,
+        docUrl: visa.docs[currentStep].docUrl,
+      }
+        // currentStep: stepNames[i],
+        // currentStatus: currentVisa.status,
+        // feedback:  currentVisa.feedback ?   currentVisa.feedback : "",
+        // docId: currentVisa.feedback ?   currentVisa.docId: "",
+        // docUrl: currentVisa.docUrl
+      // nextStep: nextStep && nextStep !== currentStep ? visa.docs[nextStep] : null,
     });
   } catch (error) {
     console.error('Error fetching current step:', error);
@@ -130,7 +146,13 @@ const updateDoc = async (req, res) => {
 
     return res.status(200).json({
       message: `${docTypeName} updated successfully.`,
-      data: updatedVisa,
+      visa: {
+        currentStep: docTypeName,
+        currentStatus: "Pending",
+        feedback: "",
+        docId: `${userAccountId}_${docType}`,
+        docUrl: docUrl
+      },
     });
   } catch (error) {
     console.error('Error updating document:', error);

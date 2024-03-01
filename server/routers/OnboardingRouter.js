@@ -1,9 +1,7 @@
 import express from 'express';
 import {
-  applyUserOnboarding,
-  getUserOnboarding,
-  hrUpdateDecision,
-  viewOnboardingApplicationsByStatus,
+  applyUserOnboarding, getUserOnboarding, hrUpdateDecision,
+  viewOnboardingApplicationsByStatus, getAllTokens,
 } from '../controllers/OnboardingController.js';
 import jwtVerifyToken from '../middlewares/AuthMiddleware.js';
 import checkRole from '../middlewares/CheckRoleMiddleware.js';
@@ -18,18 +16,10 @@ router.get(
   getUserOnboarding
 );
 // HR
-router.patch(
-  '/onboarding/:userAccountId/status',
-  jwtVerifyToken,
-  checkRole(['HR']),
-  hrUpdateDecision
-);
+router.patch('/onboarding/:userAccountId/status', jwtVerifyToken, checkRole(['HR']), hrUpdateDecision);
+
 // Search/Filter all emps by Statuses
-router.get(
-  '/onboardings/status',
-  jwtVerifyToken,
-  checkRole(['HR']),
-  viewOnboardingApplicationsByStatus
-);
+router.get('/onboardings/status', jwtVerifyToken, checkRole(['HR']), viewOnboardingApplicationsByStatus);
+router.get('/onboardings', jwtVerifyToken, checkRole(['HR']), getAllTokens);
 
 export default router;
