@@ -1,0 +1,16 @@
+<mat-card-title-group>
+  <mat-card-title>Rejecting Feedback</mat-card-title>
+</mat-card-title-group>
+<mat-divider></mat-divider>
+<p>{{ feedbackMessage }}</p>
+
+<form [formGroup]="rejForm" (ngSubmit)="rejDecisionWtFeedback()">
+  <mat-form-field>
+    <textarea matInput formControlName="rejFeedback" placeholder="Enter your feedback here"></textarea>
+  </mat-form-field>
+  <!-- Buttons -->
+  <div class="actions" align="start">
+    <button mat-flat-button color="primary" class="wide-button" type="submit">Send</button>
+    <button mat-button type="button" class="wide-button" (click)="closeDialog()">Cancel</button>
+  </div>
+</form>
