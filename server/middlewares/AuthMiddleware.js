@@ -8,7 +8,7 @@ const jwtVerifyToken = (req, res, next) => {
   }
   if (!token || validator.isEmpty(token)) {
     return res.status(401).json({
-      message: `${req.headers.authorization} No token provided`,
+      message: 'No token provided',
     });
   }
 

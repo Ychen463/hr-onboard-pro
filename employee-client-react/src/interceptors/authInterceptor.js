@@ -8,18 +8,9 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("jwtToken");
-
-    if (
-      token 
-      &&
-      !config.url.endsWith("/login") &&
-      !config.url.endsWith("/register")
-    ) {
-
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-
     return config;
   },
   (error) => Promise.reject(error),
@@ -37,8 +28,7 @@ axiosInstance.interceptors.response.use(
       localStorage.removeItem("jwtToken");
       // Redirect to login page or handle session expiration
     }
-
-    return Promise.reject(error);
+    return Promise.reject(error.response);
   },
 );
 

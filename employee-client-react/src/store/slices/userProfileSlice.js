@@ -20,7 +20,7 @@ export const getUserProfile = createAsyncThunk(
       const response = await userProfileApiService.getUserProfile();
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.data.message);
     }
   },
 );
@@ -36,7 +36,7 @@ export const updateUserProfile = createAsyncThunk(
         await userProfileApiService.updateUserProfile(newProfile);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.data.message);
     }
   },
 );

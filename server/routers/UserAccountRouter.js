@@ -9,6 +9,6 @@ const router = express.Router();
 router.post('/register', RegiJwtVerifyToken, checkRole(['employee']), register);
 // @todo: if there's existed token, LOG in skipped, redirected to main page of HR or employee
 router.post('/login', login);
-router.post('/session/validate', jwtVerifyToken, validateSession);
+router.get('/session/validate', jwtVerifyToken, validateSession);
 
 export default router;
