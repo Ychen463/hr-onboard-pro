@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
-import { OnboardingDetailComponent } from './pages/hiring-page/onboarding-detail/onboarding-detail.component';
-import { OnboardingComponent } from './pages/hiring-page/onboarding/onboarding.component';
+import { OnboardingDetailComponent } from './pages/hiring-page/components/onboarding-detail/onboarding-detail.component';
+
+import { OnboardingComponent } from './pages/hiring-page/onboarding.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const routes: Routes = [

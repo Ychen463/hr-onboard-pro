@@ -3,9 +3,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
-import { RegistrationTokenService } from '../../../services/hiring.service/registrationToken.services';
-import { RegistrationTokenActions } from '../../../store/hiring/actions/registrationToken.actions';
-import { HiringState } from '../../../store/hiring/models/hiring.state'
+import { RegistrationTokenService } from '../../services/registrationToken.services';
+import { RegistrationTokenActions } from '../../../../store/hiring/actions/registrationToken.actions';
+import { HiringState } from '../../../../store/hiring/models/hiring.models'
 @Component({
   selector: 'app-generate-token',
   templateUrl: './generate-token.component.html',

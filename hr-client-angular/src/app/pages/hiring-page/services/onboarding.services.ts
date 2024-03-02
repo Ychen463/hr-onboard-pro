@@ -3,8 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, throwError } from 'rxjs';
 import {  tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import { Onboarding } from '../../store/hiring/models/onboarding.model';
-import { ApiService } from 'src/app/services/hiring.service/api.service';
+import { Onboarding } from '../interfaces/onboarding.model';
+// import { ApiService } from 'src/app/services/hiring.service/api.service';
+import { ApiService } from '../services/api.service';
+
 
 @Injectable({
     providedIn: 'root'

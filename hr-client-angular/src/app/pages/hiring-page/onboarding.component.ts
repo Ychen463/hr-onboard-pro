@@ -7,18 +7,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Store } from '@ngrx/store';
 
-import { DisplayedRegistrationToken } from '../../../store/hiring/models/registrationToken.model';
-import { DisplayedOnboarding } from '../../../store/hiring/models/onboarding.model';
+import { DisplayedRegistrationToken } from './interfaces/registrationToken.model';
+import { DisplayedOnboarding } from './interfaces/onboarding.model';
 
-import { GenerateTokenComponent } from '../generate-token/generate-token.component';
-import { RejectFeedbackDialogComponent} from '../reject-feedback-dialog/reject-feedback-dialog.component'
+import { GenerateTokenComponent } from './components/generate-token/generate-token.component';
+import { RejectFeedbackDialogComponent} from './components/reject-feedback-dialog/reject-feedback-dialog.component'
 import { MatDialog} from '@angular/material/dialog';
-import { RegistrationTokenActions } from '../../../store/hiring/actions/registrationToken.actions';
-import { OnboardingService } from '../../../services/hiring.service/onboarding.services';
-import { RegistrationTokenService } from '../../../services/hiring.service/registrationToken.services';
+import { RegistrationTokenActions } from '../../store/hiring/actions/registrationToken.actions';
+import { OnboardingService } from './services/onboarding.services';
+import { RegistrationTokenService } from './services/registrationToken.services';
 
-import { OnboardingState, RegistrationTokenState } from '../../../store/hiring/models/hiring.state';
-import { loadOnboardingsFailure, loadOnboardingsStart, loadOnboardingsSuccess, updateOnboardingSuccess } from '../../../store/hiring/actions/onboarding.actions';
+import { OnboardingState, RegistrationTokenState } from '../../store/hiring/models/hiring.models';
+import { loadOnboardingsFailure, loadOnboardingsStart, loadOnboardingsSuccess, updateOnboardingSuccess } from '../../store/hiring/actions/onboarding.actions';
 import { Subscription } from 'rxjs';
 
 

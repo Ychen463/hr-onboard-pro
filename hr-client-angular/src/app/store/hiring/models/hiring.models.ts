@@ -1,5 +1,5 @@
-import {RegistrationToken} from './registrationToken.model'
-import {Onboarding} from './onboarding.model'
+import {RegistrationToken} from '../../../pages/hiring-page/interfaces/registrationToken.model'
+import {Onboarding} from '../../../pages/hiring-page/interfaces/onboarding.model'
 
 
 export interface OnboardingState {
@@ -9,7 +9,7 @@ export interface OnboardingState {
   }
   
   export interface RegistrationTokenState {
-    registrationTokens: RegistrationToken[]; // db type
+    registrationTokens: RegistrationToken[] ; // db type
     isLoading: boolean;
     error: any;
   }

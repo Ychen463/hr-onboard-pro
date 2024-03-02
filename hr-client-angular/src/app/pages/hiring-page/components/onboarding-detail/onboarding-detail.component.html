@@ -1,9 +1,15 @@
 
 <div class="title">
-  <h1>Onboarding Application of {{ personalInfoData.firstName }} {{ personalInfoData.lastName }}</h1>
+  <h1>Onboarding Application of
+  <div *ngIf="personalInfoData"><a> {{ personalInfoData.firstName }}  {{ personalInfoData.lastName }} </a></div>
+</h1>
+<div *ngIf="onboardingData">
   <span class="status-tag" [ngClass]="{'pending': onboardingData.onboardingStatus === 'Pending', 'approved': onboardingData.onboardingStatus === 'Completed', 'rejected': onboardingData.onboardingStatus === 'Rejected'}">
     {{ onboardingData.onboardingStatus }}
   </span>
+</div>
+
+
 
   <div class="example-button-row">
     <button mat-raised-button color="primary" (click)="handleObUpdate(onboardingData.userAccountId, 'Approved')">
@@ -35,12 +41,16 @@
       <mat-card-content>
         <!-- Personal Information Content -->
         <div class="text-content">
-          <p>First Name: {{ personalInfoData.firstName }} {{ personalInfoData.middleName }} {{ personalInfoData.lastName }}</p> 
-          <p>Preferred Name: {{ personalInfoData.preferredName }}</p>
-          <p>SSN: {{ personalInfoData.ssn }}</p>
-          <p>DOB: {{ personalInfoData.dateOfBirth }}</p>
-          <p>Gender: {{ personalInfoData.gender }}</p>
-          <p>Address: {{ currentAddressData.streetName }}, {{ currentAddressData.buildingApt }}, {{ currentAddressData.city }}, {{ currentAddressData.state }}, {{ currentAddressData.zip }}</p>
+          <div *ngIf="personalInfoData">
+            <p>First Name: {{ personalInfoData.firstName }} {{ personalInfoData.middleName }} {{ personalInfoData.lastName }}</p> 
+            <p>Preferred Name: {{ personalInfoData.preferredName }}</p>
+            <p>SSN: {{ personalInfoData.ssn }}</p>
+            <p>DOB: {{ personalInfoData.dateOfBirth }}</p>
+            <p>Gender: {{ personalInfoData.gender }}</p>
+          </div>
+          <div *ngIf="currentAddressData">
+            <p>Address: {{ currentAddressData.streetName }}, {{ currentAddressData.buildingApt }}, {{ currentAddressData.city }}, {{ currentAddressData.state }}, {{ currentAddressData.zip }}</p>
+          </div>
         </div>
       </mat-card-content>
     </div>
@@ -52,10 +62,14 @@
       <mat-card-content>
         <div class="content-wrapper">
           <div class="text-content">
-            <p>Email: {{ onboardingData.email }}</p>
-            <p>Cell Phone Number: {{ contactData.cellPhoneNumber }} </p> 
-            <p>Work Phone Number: {{ contactData.workPhoneNumber }}</p>
-          </div>
+            <div *ngIf="onboardingData">
+              <p>Email: {{ onboardingData.email }}</p>
+            </div>
+            <div *ngIf="contactData">
+              <p>Cell Phone Number: {{ contactData.cellPhoneNumber }}</p>
+              <p>Work Phone Number: {{ contactData.workPhoneNumber }}</p>
+            </div>
+           </div>
         </div>
       </mat-card-content>
     </div>
@@ -68,15 +82,15 @@
       <mat-card-content>
         <!-- Personal Information Content -->
         <div class="text-content">
-          <p>
-            Citizenship/Visa Title: {{ citizenshipStatusData.isCitizenOrPermanentResident }} ?
-            {{ citizenshipStatusData.statusDetail }} : {{ citizenshipStatusData.workAuthorization }} 
-            <span *ngIf="citizenshipStatusData.workAuthorization === 'F1(CPT/OPT)'">
-              {{ citizenshipStatusData.workAuthorizationOtherTitle }}
-            </span>
-          </p> 
-          
-          <!-- Display OPT Receipt if workAuthorization is 'F1(CPT/OPT)' -->
+          <div *ngIf="citizenshipStatusData">
+            <p>
+              Citizenship/Visa Title: {{ citizenshipStatusData.isCitizenOrPermanentResident }} ?
+              {{ citizenshipStatusData.statusDetail }} : {{ citizenshipStatusData.workAuthorization }} 
+              <span *ngIf="citizenshipStatusData.workAuthorization === 'F1(CPT/OPT)'">
+                {{ citizenshipStatusData.workAuthorizationOtherTitle }}
+              </span>
+            </p> 
+            <!-- Display OPT Receipt if workAuthorization is 'F1(CPT/OPT)' -->
           <div *ngIf="citizenshipStatusData.workAuthorization === 'F1(CPT/OPT)'">
             <p>OPT Receipt:</p>
             <ul>
@@ -87,6 +101,11 @@
           </div>
           <p>Start/End Date: {{ citizenshipStatusData.startEndDate.startDate }} - {{ citizenshipStatusData.startEndDate.endDate }}</p>
         </div>
+          </div>
+          
+          
+          
+          
       </mat-card-content>
     </div>
 
@@ -99,14 +118,18 @@
         <!-- Personal Information Content -->
         <div class="text-content">
           <div class="text-content">
-            <p>
-              Has Driver License: {{ driverLicenseData.hasDriverLicense }}
-              <span *ngIf="driverLicenseData.hasDriverLicense">
-                <p>Driver Liscence: {{ driverLicenseData.driverLicenseNumber }}</p>
-                <p>Expiration Date: {{ driverLicenseData.expirationDate }}</p>
-                <p>Driver Liscence URL: {{ driverLicenseData.driverLicenseCopyUrl }}</p>
-              </span>
-            </p> 
+            <div *ngIf="driverLicenseData">
+              <p>
+                Has Driver License: {{ driverLicenseData.hasDriverLicense }}
+                <span *ngIf="driverLicenseData.hasDriverLicense">
+                  <p>Driver Liscence: {{ driverLicenseData.driverLicenseNumber }}</p>
+                  <p>Expiration Date: {{ driverLicenseData.expirationDate }}</p>
+                  <p>Driver Liscence URL: {{ driverLicenseData.driverLicenseCopyUrl }}</p>
+                </span>
+              </p> 
+            </div>
+            
+            
           </div>
         </div>
       </mat-card-content>
@@ -121,10 +144,14 @@
         <!-- Personal Information Content -->
         <div class="text-content">
           <div class="text-content">
-            <p>Name: {{ referralData.firstName }}{{ referralData.middleName }}{{ referralData.lastName }}</p>
-            <p>Phone Number: {{ referralData.phone }} </p> 
-            <p>Email: {{ referralData.email }}</p>
-            <p>Relationship: {{ referralData.relationship }}</p>
+            <div *ngIf="referralData">
+              <p>Name: {{ referralData.firstName }}{{ referralData.middleName }}{{ referralData.lastName }}</p>
+              <p>Phone Number: {{ referralData.phone }} </p> 
+              <p>Email: {{ referralData.email }}</p>
+              <p>Relationship: {{ referralData.relationship }}</p>
+            </div>
+            
+            
           </div>
         </div>
       </mat-card-content>

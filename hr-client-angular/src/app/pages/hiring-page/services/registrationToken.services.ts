@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
+import { Observable, Subject, throwError } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import { RegistrationToken, DisplayedRegistrationToken } from '../../store/hiring/models/registrationToken.model';
-import { ApiService } from 'src/app/services/hiring.service/api.service';
+import { RegistrationToken, DisplayedRegistrationToken } from '../../hiring-page/interfaces/registrationToken.model';
+import { ApiService } from './api.service';
+
 
 @Injectable({
     providedIn: 'root'

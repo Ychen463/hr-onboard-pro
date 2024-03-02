@@ -2,9 +2,10 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { ApiService } from 'src/app/services/hiring.service/api.service';
+import { ApiService } from '../../services/api.service';
 import { Onboarding, PersonalInfo, Address, ContactSchema, 
-  CarInformation, CitizenshipStatus, DriverLicense ,Referral, EmergencyContact, EmergencyContacts, VisaInfo } from '../../../store/hiring/models/onboarding.model';
+  CarInformation, CitizenshipStatus, DriverLicense ,Referral, 
+  EmergencyContact, EmergencyContacts, VisaInfo } from '../../interfaces/onboarding.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
@@ -12,9 +13,9 @@ import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { loadOnboarding, loadOnboardingSuccess, loadOnboardingFailure, 
-  updateOnboardingStart, updateOnboardingSuccess, updateOnboardingFail } from '../../../store/hiring/actions/onboarding-details.actions'; // 更新为你的实际路径
+  updateOnboardingStart, updateOnboardingSuccess, updateOnboardingFail } from '../../../../store/hiring/actions/onboarding-details.actions'; // 更新为你的实际路径
 
-import { OnboardingDetailService } from '../../../services/hiring.service/onboarding-detail.services';
+import { OnboardingDetailService } from '../../services/onboarding-detail.services';
 
 import { MatDialog } from '@angular/material/dialog';
 import { RejectFeedbackDialogComponent } from '../reject-feedback-dialog/reject-feedback-dialog.component';
@@ -103,6 +104,7 @@ export class OnboardingDetailComponent implements OnInit, OnDestroy {
 
 
   handleObUpdate(userAccountId: string, hrDecision: string): void {
+
     if (hrDecision === 'Approved') {
       this.onboardingDetailService.updateOnboarding(userAccountId, { hrDecision }).subscribe({
         next: () => {

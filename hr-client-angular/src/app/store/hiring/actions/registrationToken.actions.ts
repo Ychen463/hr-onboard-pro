@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { RegistrationToken, GenerateRegistrationTokenInput } from '../models/registrationToken.model';
+import { RegistrationToken, GenerateRegistrationTokenInput } from '../../../pages/hiring-page/interfaces/registrationToken.model';
 
 
 export const RegistrationTokenActions = createActionGroup({

@@ -2,10 +2,9 @@
 
 import { createReducer, on } from '@ngrx/store';
 import { loadOnboarding, loadOnboardingSuccess, loadOnboardingFailure } from '../actions/onboarding-details.actions';
-import { Onboarding } from '../models/onboarding.model'; 
-
+import { OnboardingState } from '../models/hiring.models'; 
 export interface State {
-  onboarding: Onboarding | null;
+  onboarding: OnboardingState | null;
   isLoading: boolean, 
   error: any; 
 }

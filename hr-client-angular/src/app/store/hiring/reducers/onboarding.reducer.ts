@@ -2,7 +2,7 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { loadOnboardingsFailure, loadOnboardingsStart, loadOnboardingsSuccess, updateOnboardingFail, updateOnboardingStart, updateOnboardingSuccess,  } from '../actions/onboarding.actions';
-import { OnboardingState } from '../models/hiring.state'
+import { OnboardingState } from '../models/hiring.models'
 
 export const initialOnboardingState: OnboardingState = { 
   onboardings: [], 
@@ -31,7 +31,7 @@ export const onboardingReducer = createReducer(
   // UPDATE ONLOADING
   on(updateOnboardingStart, (state, { userAccountId, onboardingStatus, rejFeedback }) => ({
     ...state,
-    onboardings: state.onboardings.map(onboarding =>
+    onboardings: state.onboardings?.map(onboarding =>
       onboarding.userAccountId === userAccountId
         ? { ...onboarding, onboardingStatus, rejFeedback: rejFeedback || onboarding.rejFeedback }
         : onboarding

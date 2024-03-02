@@ -25,16 +25,16 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
 
 
-import { GenerateTokenComponent } from './generate-token/generate-token.component';
-import { OnboardingComponent } from './onboarding/onboarding.component';
+import { GenerateTokenComponent } from './components/generate-token/generate-token.component';
+
+import { OnboardingComponent } from '../hiring-page/onboarding.component';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { RejectFeedbackDialogComponent } from './reject-feedback-dialog/reject-feedback-dialog.component';
-import { OnboardingDetailComponent } from './onboarding-detail/onboarding-detail.component';
+import { RejectFeedbackDialogComponent } from './components/reject-feedback-dialog/reject-feedback-dialog.component';
+import { OnboardingDetailComponent } from './components/onboarding-detail/onboarding-detail.component';
 
-import { RegistrationTokenService } from '../../services/hiring.service/registrationToken.services'
-
+import { RegistrationTokenService } from './services/registrationToken.services'
 @NgModule({
   declarations: [OnboardingComponent,
                 GenerateTokenComponent, 

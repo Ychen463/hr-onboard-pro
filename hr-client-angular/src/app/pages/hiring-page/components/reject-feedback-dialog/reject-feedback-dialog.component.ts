@@ -1,12 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl } from '@angular/forms';
-import { ApiService } from 'src/app/services/hiring.service/api.service';
-import { OnboardingService } from '../../../services/hiring.service/onboarding.services';
+import { OnboardingDetailService } from '../../services/onboarding-detail.services';
+import { selectOnboardingByAccountId } from '../../../../store/hiring/selectors/hiring.selectors';
+
 import { Store } from '@ngrx/store';
-import { OnboardingState } from '../../../store/hiring/models/hiring.state';
-import { updateOnboardingSuccess } from '../../../store/hiring/actions/onboarding-details.actions';
-import { OnboardingDetailService } from '../../../services/hiring.service/onboarding-detail.services';
+import { OnboardingState } from '../../../../store/hiring/models/hiring.models';
+import { updateOnboardingSuccess } from '../../../../store/hiring/actions/onboarding-details.actions';
+import { Onboarding } from '../../../hiring-page/interfaces/onboarding.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-reject-feedback-dialog',
@@ -14,30 +16,29 @@ import { OnboardingDetailService } from '../../../services/hiring.service/onboar
   styleUrls: ['./reject-feedback-dialog.component.css']
 })
 export class RejectFeedbackDialogComponent implements OnInit {
-  apiPostGenTokenUrl!: string;
   feedbackMessage: string = '';
   rejForm = new FormGroup({
     rejFeedback: new FormControl('')
   });
   messageColor: string = 'black'; 
+  userAccountId!: string; 
+  onboarding$!: Observable<Onboarding | undefined>;
 
 
   constructor(
-    private apiService: ApiService,
-    // private onboardingService: OnboardingService,
     private onboardingDetailService: OnboardingDetailService,
 
     public dialogRef: MatDialogRef<RejectFeedbackDialogComponent>,
-    private store: Store<{ onboarding: OnboardingState}>,
+    private store: Store<{ onboarding: OnboardingState, }>,
 
     @Inject(MAT_DIALOG_DATA) public data: { userAccountId: string, hrDecision: string }
   ) { }
 
-  userAccountId!: string; 
 
   ngOnInit(): void {
-    this.userAccountId = this.data.userAccountId; 
-    this.apiPostGenTokenUrl = this.apiService.postGenerateRegiTokenUrl();
+    this.userAccountId = this.data.userAccountId;
+
+    this.onboarding$ = this.store.select(selectOnboardingByAccountId(this.userAccountId));    
   }
 
   rejDecisionWtFeedback(): void {
@@ -60,7 +61,6 @@ export class RejectFeedbackDialogComponent implements OnInit {
       }
     });
   }
-  
 
   closeDialog(): void {
     this.dialogRef.close();

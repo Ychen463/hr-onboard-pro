@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, of } from 'rxjs';
-import { ObjectId } from 'mongodb';
 import {
   FullProfileResponse,
   ProfileSummaryResponse,
@@ -12,8 +11,10 @@ import { profileActions } from '../../../store/employee-profile/employee.profile
 @Injectable({
   providedIn: 'root',
 })
+
 export class EmployeeProfilesService {
-  userAccountIdForDetails: ObjectId | null = null;
+  // userAccountIdForDetails: ObjectId | null = null;
+  userAccountIdForDetails: string | null = null;
 
   constructor(
     private http: HttpClient,
@@ -40,7 +41,9 @@ export class EmployeeProfilesService {
     });
   }
 
-  getProfileById(userAccountId: ObjectId): Observable<FullProfileResponse> {
+  // getProfileById(userAccountId: ObjectId): Observable<FullProfileResponse> {
+    getProfileById(userAccountId: string): Observable<FullProfileResponse> {
+
     const body = {
       userAccountId,
     };

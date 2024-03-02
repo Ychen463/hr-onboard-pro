@@ -14,6 +14,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { authReducer } from './store/auth/auth.reducer';
 import { employeeProfileReducer } from './store/employee-profile/employee.profile.reducer';
+import { onboardingReducer } from './store/hiring/reducers/onboarding.reducer';
+import { registrationTokenReducer } from './store/hiring/reducers/registrationToken.reducer';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -28,21 +30,17 @@ import { HiringPageModule } from './pages/hiring-page/hiring-page.module';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-<<<<<<< HEAD
-
-@NgModule({
-  declarations: [AppComponent, NavigationBarComponent, LoginPageComponent],
-=======
-import { ShortenUrlPipe } from './pages/hiring-page/pipe/shorten-url.pipe';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
-  declarations: [AppComponent, NavigationBarComponent, LoginPageComponent, NotFoundComponent, ShortenUrlPipe],
->>>>>>> 3236b02204ba6536a7e19c6852cae2849b75ac4d
+  declarations: [AppComponent, NavigationBarComponent, LoginPageComponent, NotFoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({ auth: authReducer, employeeProfile: employeeProfileReducer }),
+    StoreModule.forRoot({ auth: authReducer, 
+                          employeeProfile: employeeProfileReducer, 
+                          registrationToken: registrationTokenReducer,
+                          onboarding:onboardingReducer}),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,

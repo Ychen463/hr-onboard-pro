@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Onboarding  } from '../models/onboarding.model';
+import { Onboarding  } from '../../../pages/hiring-page/interfaces/onboarding.model';
 
 
 export const loadOnboarding = createAction(
