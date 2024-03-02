@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
 import { authReducer } from './store/auth/auth.reducer';
+import { employeeProfileReducer } from './store/employee-profile/employee.profile.reducer';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -28,13 +29,14 @@ import { HiringPageModule } from './pages/hiring-page/hiring-page.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ShortenUrlPipe } from './pages/hiring-page/pipe/shorten-url.pipe';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
-  declarations: [AppComponent, NavigationBarComponent, LoginPageComponent, ShortenUrlPipe],
+  declarations: [AppComponent, NavigationBarComponent, LoginPageComponent, NotFoundComponent, ShortenUrlPipe],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({ auth: authReducer }),
+    StoreModule.forRoot({ auth: authReducer, employeeProfile: employeeProfileReducer }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
