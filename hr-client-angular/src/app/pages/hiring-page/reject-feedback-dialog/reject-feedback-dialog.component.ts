@@ -1,12 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl } from '@angular/forms';
-import { ApiService } from 'src/app/services/api.service/api.service';
-import { OnboardingService } from '../stores/services/onboarding.services';
+import { ApiService } from 'src/app/services/hiring.service/api.service';
+import { OnboardingService } from '../../../services/hiring.service/onboarding.services';
 import { Store } from '@ngrx/store';
-import { OnboardingState } from '../stores/models/hiring.state';
-import { updateOnboardingSuccess } from '../stores/actions/onboarding-details.actions';
-import { OnboardingDetailService } from '../stores/services/onboarding-detail.services';
+import { OnboardingState } from '../../../store/hiring/models/hiring.state';
+import { updateOnboardingSuccess } from '../../../store/hiring/actions/onboarding-details.actions';
+import { OnboardingDetailService } from '../../../services/hiring.service/onboarding-detail.services';
 
 @Component({
   selector: 'app-reject-feedback-dialog',

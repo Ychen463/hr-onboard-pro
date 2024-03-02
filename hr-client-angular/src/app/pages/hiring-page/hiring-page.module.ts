@@ -1,8 +1,8 @@
 import { NgModule , CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 
-import { onboardingReducer } from './stores/reducers/onboarding.reducer';
-import { registrationTokenReducer } from './stores/reducers/registrationToken.reducer';
+import { onboardingReducer } from '../../store/hiring/reducers/onboarding.reducer';
+import { registrationTokenReducer } from '../../store/hiring/reducers/registrationToken.reducer';
 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -33,7 +33,7 @@ import { MatInputModule } from '@angular/material/input';
 import { RejectFeedbackDialogComponent } from './reject-feedback-dialog/reject-feedback-dialog.component';
 import { OnboardingDetailComponent } from './onboarding-detail/onboarding-detail.component';
 
-import { RegistrationTokenService } from './stores/services/registrationToken.services'
+import { RegistrationTokenService } from '../../services/hiring.service/registrationToken.services'
 
 @NgModule({
   declarations: [OnboardingComponent,

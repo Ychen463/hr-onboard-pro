@@ -1,5 +1,5 @@
-import {RegistrationToken} from '../models/registrationToken.model'
-import {Onboarding} from '../models/onboarding.model'
+import {RegistrationToken} from './registrationToken.model'
+import {Onboarding} from './onboarding.model'
 
 
 export interface OnboardingState {

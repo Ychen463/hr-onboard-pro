@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
-import { RegistrationToken, DisplayedRegistrationToken } from '../models/registrationToken.model';
-import { ApiService } from 'src/app/services/api.service/api.service';
+import { RegistrationToken, DisplayedRegistrationToken } from '../../store/hiring/models/registrationToken.model';
+import { ApiService } from 'src/app/services/hiring.service/api.service';
 
 @Injectable({
     providedIn: 'root'
