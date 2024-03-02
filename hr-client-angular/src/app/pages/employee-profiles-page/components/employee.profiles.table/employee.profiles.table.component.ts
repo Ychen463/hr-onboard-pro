@@ -11,7 +11,6 @@ import {
   selectAllProfileSummaries,
 } from 'src/app/store/employee-profile/employee.profile.selectors';
 import { ProfileSummary } from '../../interfaces/employee.profile.interfaces';
-import { ObjectId } from 'mongodb';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -51,7 +50,7 @@ export class EmployeeProfilesTableComponent implements OnInit {
       });
   }
 
-  navigateToDetails(userAccountId: ObjectId) {
+  navigateToDetails(userAccountId: string) {
     this.profileService.userAccountIdForDetails = userAccountId;
     this.router.navigate(['employee-profiles/full-profile']);
   }
