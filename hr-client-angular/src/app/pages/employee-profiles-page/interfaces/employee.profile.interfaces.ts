@@ -1,5 +1,3 @@
-// import { ObjectId } from 'mongodb';
-
 interface PhoneNumbers {
   cellPhoneNumber: string;
   workPhoneNumber?: string;
@@ -53,7 +51,7 @@ interface CitizenshipStatus {
 }
 
 interface DriverLicense {
-  // DocId: ObjectId;
+  DocId: string;
   hasDriverLicense: boolean;
   driverLicenseNumber?: string;
   expirationDate?: Date;
@@ -70,8 +68,8 @@ interface EmergencyContact {
 }
 
 export interface ProfileSummary {
-  // userProfileId: ObjectId;
-  // userAccountId: ObjectId;
+  userProfileId: string;
+  userAccountId: string;
   email: string;
   workAuthorization: string;
   firstName: string;
@@ -82,7 +80,7 @@ export interface ProfileSummary {
 }
 
 export interface FullProfile {
-  // _id: ObjectId;
+  _id: string;
   personalInfo: PersonalInfo;
   employmentStatus: string;
   citizenshipStatus: CitizenshipStatus;

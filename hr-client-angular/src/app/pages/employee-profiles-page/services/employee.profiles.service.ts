@@ -13,7 +13,6 @@ import { profileActions } from '../../../store/employee-profile/employee.profile
 })
 
 export class EmployeeProfilesService {
-  // userAccountIdForDetails: ObjectId | null = null;
   userAccountIdForDetails: string | null = null;
 
   constructor(
@@ -41,9 +40,7 @@ export class EmployeeProfilesService {
     });
   }
 
-  // getProfileById(userAccountId: ObjectId): Observable<FullProfileResponse> {
-    getProfileById(userAccountId: string): Observable<FullProfileResponse> {
-
+  getProfileById(userAccountId: string): Observable<FullProfileResponse> {
     const body = {
       userAccountId,
     };
