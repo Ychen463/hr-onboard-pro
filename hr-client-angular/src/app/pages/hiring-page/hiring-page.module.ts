@@ -1,5 +1,3 @@
-// hiring-page.module.ts
-
 import { NgModule , CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 
