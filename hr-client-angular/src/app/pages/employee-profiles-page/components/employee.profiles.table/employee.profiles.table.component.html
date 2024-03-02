@@ -1,0 +1,49 @@
+<mat-form-field>
+  <mat-label>Search</mat-label>
+  <input
+    matInput
+    type="text"
+    [(ngModel)]="query"
+    (ngModelChange)="handleSearch()"
+    placeholder="Search by name"
+  />
+</mat-form-field>
+
+<table mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let user"> {{ user.firstName }} {{ user.lastName }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef> Email </th>
+    <td mat-cell *matCellDef="let user"> {{ user.email }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="phone">
+    <th mat-header-cell *matHeaderCellDef> Phone </th>
+    <td mat-cell *matCellDef="let user">
+      Cell Phone Number: {{ user.phoneNumber.cellPhoneNumber }}
+      <br />
+      Work Phone Number: {{ user.phoneNumber.workPhoneNumber }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="workAuthorization">
+    <th mat-header-cell *matHeaderCellDef> Work Authorization </th>
+    <td mat-cell *matCellDef="let user"> {{ user.workAuthorization }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="ssn">
+    <th mat-header-cell *matHeaderCellDef> SSN </th>
+    <td mat-cell *matCellDef="let user"> {{ user.ssn }} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr
+    mat-row
+    *matRowDef="let myRowData; columns: columnsToDisplay"
+    (click)="navigateToDetails(myRowData.userAccountId)"
+  ></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
