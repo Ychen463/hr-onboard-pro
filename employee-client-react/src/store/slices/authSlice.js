@@ -28,7 +28,7 @@ export const registration = createAsyncThunk(
       localStorage.setItem("jwtToken", response.data.loginJwtToken);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.data.message);
     }
   },
 );
@@ -41,7 +41,7 @@ export const login = createAsyncThunk(
       localStorage.setItem("jwtToken", response.data.loginJwtToken);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.data.message);
     }
   },
 );
@@ -53,7 +53,7 @@ export const sessionValidate = createAsyncThunk(
       const response = await authApiService.getJWTtokenValidation();
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.data.message);
     }
   },
 );
@@ -82,7 +82,7 @@ export const authSlice = createSlice({
       })
       .addCase(registration.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       // login
       .addCase(login.pending, (state) => {
@@ -97,7 +97,7 @@ export const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.isLoggedIn = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       // session validate
       .addCase(sessionValidate.pending, (state) => {
@@ -113,7 +113,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isLoggedIn = false;
         state.user = null;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       // logout clean state
       .addCase(logout, () => initialState);

@@ -1,7 +1,7 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { login, selectIsLoggedIn, sessionValidate, selectIsAuthLoading, selectAuthError } from "../store/slices/authSlice.js";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -10,43 +10,46 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
 import beaconfireLogo from "../assets/beaconfireLogo.jpeg";
 
-import { login,sessionValidate } from "../store/slices/authSlice.js";
 
 function LoginForm() {
-  const [errorMessage, setErrormessage] = useState("");
+  const isLoggedin = useSelector(selectIsLoggedIn);
+  const isLoading = useSelector(selectIsAuthLoading);
+  const error = useSelector(selectAuthError);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem('jwtToken');
-  //   if (token) {
-  //     dispatch(sessionValidate())
-  //     navigate('/onboarding-status');
-  //   }
-  // }, [navigate]);
+  useEffect(() => {
+    dispatch(sessionValidate())
+    // navigate('/onboarding-status');
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const username = data.get("username");
     const password = data.get("password");
-
-    try {
-      const actionResult = await dispatch(login({ username, password }));
-      const result = actionResult.payload;
-      if (result.loginJwtToken) {
-        console.log("to home nac")
-        navigate("/");
-      }
-      setErrormessage(result.message);
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
+    dispatch(login({ username, password }));
   };
+
+
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (isLoggedin) {
+    navigate('/onboarding-status');
+  }
+
+  console.log("LoginForm error", error);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -91,7 +94,7 @@ function LoginForm() {
               id="password"
               autoComplete="current-password"
             />
-            <Typography style={{ color: "red" }}>{errorMessage}</Typography>
+            <Typography style={{ color: "red" }}>{error !== "No token provided" && error}</Typography>
             <Button
               type="submit"
               fullWidth

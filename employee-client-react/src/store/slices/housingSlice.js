@@ -20,7 +20,7 @@ export const getHousing = createAsyncThunk(
       const response = await housingApiService.getHousing();
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.data.message);
     }
   },
 );
@@ -42,7 +42,7 @@ export const housingSlice = createSlice({
       })
       .addCase(getHousing.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       // logout clean state
       .addCase(logout, () => initialState);

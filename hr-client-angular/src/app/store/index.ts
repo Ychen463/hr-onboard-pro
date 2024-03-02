@@ -1,6 +1,6 @@
 import { combineReducers } from '@ngrx/store';
 import { authReducer } from './auth/auth.reducer';
-// import { employeeProfileReducer } from './employee-profile/employee.profile.reducer';
+import { employeeProfileReducer } from './employee-profile/employee.profile.reducer';
 // import { visaReducer } from './visa/visa.reducer';
 // import { hiringReducer } from './hiring/hiring.reducer';
 // import { housingReducer } from './housing/housing.reducer';
@@ -9,7 +9,7 @@ import { authReducer } from './auth/auth.reducer';
 
 export const rootReducer = combineReducers({
   auth: authReducer,
-  // employeeProfile: employeeProfileReducer,
+  employeeProfile: employeeProfileReducer,
   // visa: visaReducer,
   // hiring: hiringReducer,
   // housing: housingReducer,

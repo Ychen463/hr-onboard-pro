@@ -20,7 +20,7 @@ export const getFacilityReports = createAsyncThunk(
             const response = await facilityReportApiService.getFacilityReports();
             return response.data;
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.response.data);
+            return thunkAPI.rejectWithValue(error.data.message);
         }
     }
 )
@@ -32,7 +32,7 @@ export const createFacilityReport = createAsyncThunk(
             const response = await facilityReportApiService.postCreateFacilityReport({ title, description });
             return response.data;
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.response.data);
+            return thunkAPI.rejectWithValue(error.data.message);
         }
     }
 )
@@ -44,7 +44,7 @@ export const closeFacilityReport = createAsyncThunk(
             const response = await facilityReportApiService.patchCloseFacilityReport(facilityReportId);
             return response.data;
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.response.data);
+            return thunkAPI.rejectWithValue(error.data.message);
         }
     }
 )
@@ -56,7 +56,7 @@ export const addComment = createAsyncThunk(
             const response = await facilityReportApiService.postAddComment({ facilityReportId, description });
             return response.data;
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.response.data);
+            return thunkAPI.rejectWithValue(error.data.message);
         }
     }
 )
@@ -68,7 +68,7 @@ export const editComment = createAsyncThunk(
             const response = await facilityReportApiService.patchEditComment({ facilityReportId, commentId, description });
             return response.data;
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.response.data);
+            return thunkAPI.rejectWithValue(error.data.message);
         }
     }
 )
@@ -92,7 +92,7 @@ export const facilityReportSlice = createSlice({
             })
             .addCase(getFacilityReports.rejected, (state, action) => {
                 state.isLoading = false;
-                error = action.error.message;
+                error = action.payload;
             })
             // createFacilityReport
             .addCase(createFacilityReport.pending, (state) => {
@@ -105,7 +105,7 @@ export const facilityReportSlice = createSlice({
             })
             .addCase(createFacilityReport.rejected, (state, action) => {
                 state.isLoading = false;
-                error = action.error.message;
+                error = action.payload;
             })
             // closeFacilityReport
             .addCase(closeFacilityReport.pending, (state) => {
@@ -122,7 +122,7 @@ export const facilityReportSlice = createSlice({
             })
             .addCase(closeFacilityReport.rejected, (state, action) => {
                 state.isLoading = false;
-                error = action.error.message;
+                error = action.payload;
             })
             // addComment
             .addCase(addComment.pending, (state) => {
@@ -139,7 +139,7 @@ export const facilityReportSlice = createSlice({
             })
             .addCase(addComment.rejected, (state, action) => {
                 state.isLoading = false;
-                error = action.error.message;
+                error = action.payload;
             })
             // editComment
             .addCase(editComment.pending, (state) => {
@@ -156,7 +156,7 @@ export const facilityReportSlice = createSlice({
             })
             .addCase(editComment.rejected, (state, action) => {
                 state.isLoading = false;
-                error = action.error.message;
+                error = action.payload;
             })
             // logout clean state
             .addCase(logout, () => initialState);

@@ -1,0 +1,78 @@
+<h1>Employee Detailed Profile</h1>
+<mat-divider></mat-divider>
+<mat-card flex>
+  <div col>
+    <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" />
+  </div>
+  <div col>
+    <mat-card-title row>
+      {{ profile?.personalInfo?.firstName }} {{ profile?.personalInfo?.lastName }}
+    </mat-card-title>
+    <br />
+    <div row>
+      <div col>
+        <mat-card-subtitle> Basic Information </mat-card-subtitle>
+        <br />
+        <p>First Name: {{ profile?.personalInfo?.firstName }}</p>
+        <p>Last Name: {{ profile?.personalInfo?.lastName }}</p>
+        <p>Middle Name: {{ profile?.personalInfo?.middleName }}</p>
+        <p>Preferred Name: {{ profile?.personalInfo?.preferredName }}</p>
+        <p>SSN: {{ profile?.personalInfo?.ssn }}</p>
+        <p>Date of Birth: {{ profile?.personalInfo?.dateOfBirth | date }}</p>
+        <p>Gender: {{ profile?.personalInfo?.gender }}</p>
+        <br />
+        <br />
+
+        <mat-card-subtitle> Address </mat-card-subtitle>
+        <br />
+        <p>Building: {{ profile?.personalInfo?.currentAddress?.buildingApt }}</p>
+        <p>Street: {{ profile?.personalInfo?.currentAddress?.streetName }}</p>
+        <p>City: {{ profile?.personalInfo?.currentAddress?.city }}</p>
+        <p>State: {{ profile?.personalInfo?.currentAddress?.state }}</p>
+        <p>Zip: {{ profile?.personalInfo?.currentAddress?.zip }}</p>
+        <br />
+        <br />
+
+        <mat-card-subtitle> Contact Information </mat-card-subtitle>
+        <br />
+        <p>Cell phone number: {{ profile?.personalInfo?.contactSchema?.cellPhoneNumber }}</p>
+        <p>Work phone number: {{ profile?.personalInfo?.contactSchema?.workPhoneNumber }}</p>
+        <br />
+        <br />
+      </div>
+      <div col>
+        <mat-card-subtitle> Employment Status </mat-card-subtitle>
+        <br />
+        <p>Visa title: {{ profile?.citizenshipStatus?.workAuthorization }}</p>
+        <p>Start date: {{ profile?.citizenshipStatus?.startEndDate?.startDate | date }}</p>
+        <p>End date: {{ profile?.citizenshipStatus?.startEndDate?.endDate | date }}</p>
+        <br />
+        <br />
+
+        <mat-card-subtitle> Emergency Contact </mat-card-subtitle>
+        <br />
+        <ng-container *ngFor="let contact of profile?.emergencyContacts">
+          <p>First Name: {{ contact.firstName }}</p>
+          <p>Last Name: {{ contact.lastName }}</p>
+          <p>Middle Name: {{ contact.middleName }}</p>
+          <p>Phone: {{ contact.phone }}</p>
+          <p>Email: {{ contact.email }}</p>
+          <p>Relationship: {{ contact.relationship }}</p>
+        </ng-container>
+        <br />
+        <br />
+
+        <mat-card-subtitle> Documents </mat-card-subtitle>
+        <br />
+        <ng-container *ngIf="profile?.driverLicense?.driverLicenseCopyUrl">
+          A Button for Driver License Copy
+        </ng-container>
+        <ng-container *ngFor="let doc of profile?.citizenshipStatus?.workAuthorizationFiles">
+          A Button for work Authorization File
+        </ng-container>
+        <br />
+        <br />
+      </div>
+    </div>
+  </div>
+</mat-card>
