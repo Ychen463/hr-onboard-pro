@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from 'src/app/services/api.service/api.service';
-import { UserAccountOnboardingData, PersonalInfo, Address, ContactSchema, 
-  CarInformation, CitizenshipStatus, DriverLicense ,Referral, EmergencyContact, EmergencyContacts, VisaInfo } from '../UserAccountOnboarding';
+import { Onboarding, PersonalInfo, Address, ContactSchema, 
+  CarInformation, CitizenshipStatus, DriverLicense ,Referral, EmergencyContact, EmergencyContacts, VisaInfo } from '../stores/models/onboarding.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTableModule } from '@angular/material/table';
 
@@ -15,7 +15,7 @@ import { MatTableModule } from '@angular/material/table';
 export class OnboardingDetailComponent implements OnInit {
   apiGetOneOnbUrl!: string;
   userAccountId!: string;
-  onboardingData!: UserAccountOnboardingData;
+  onboardingData!: Onboarding;
   personalInfoData! : PersonalInfo;
   currentAddressData! : Address;
   contactData! : ContactSchema;
@@ -45,7 +45,7 @@ export class OnboardingDetailComponent implements OnInit {
   }
 
   fetchDataFromOnboardingApi(): void {
-    this.httpClient.get<{ onboardingData: UserAccountOnboardingData }>(this.apiGetOneOnbUrl).subscribe(
+    this.httpClient.get<{ onboardingData: Onboarding }>(this.apiGetOneOnbUrl).subscribe(
       (response) => {
         this.onboardingData = response.onboardingData;
         this.personalInfoData = response.onboardingData.personalInfo;

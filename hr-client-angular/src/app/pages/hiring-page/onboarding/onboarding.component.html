@@ -63,7 +63,8 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
           <td mat-cell *matCellDef="let row">
-            <button mat-icon-button color="primary" (click)="handleObApprove(row.userAccountId)">
+            <!-- <button mat-icon-button color="primary" (click)="handleObApprove(row.userAccountId)"> -->
+                <button mat-icon-button color="primary" (click)="handleObUpdate(row.userAccountId, 'Approved')">
               <mat-icon>check</mat-icon>
             </button>
             <button mat-icon-button color="warn" (click)="openRejectConfirmationDialog(row.userAccountId)">

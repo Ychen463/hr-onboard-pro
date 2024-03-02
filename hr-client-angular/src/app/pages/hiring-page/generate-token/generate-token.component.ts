@@ -1,9 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl } from '@angular/forms';
-import { ApiService } from 'src/app/services/api.service/api.service';
+import { Store } from '@ngrx/store';
 
+import { RegistrationTokenService } from '../stores/services/registrationToken.services';
+import { RegistrationTokenActions } from '../stores/actions/registrationToken.actions';
+import { HiringState } from '../stores/models/hiring.state'
 @Component({
   selector: 'app-generate-token',
   templateUrl: './generate-token.component.html',
@@ -20,42 +22,55 @@ export class GenerateTokenComponent implements OnInit {
   tokenFeedbackMessage: string = '';
 
   constructor(
-    private httpClient: HttpClient,
-    private apiService: ApiService,
+    private store: Store<HiringState>,
+    private registrationTokenService: RegistrationTokenService,
     public dialogRef: MatDialogRef<GenerateTokenComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit(): void {
-    this.apiPostGenTokenUrl = this.apiService.postGenerateRegiTokenUrl();
+    // this.apiPostGenTokenUrl = this.apiService.postGenerateRegiTokenUrl();
   }
 
   createNewRegistrationToken(): void {
-    const jwtToken = localStorage.getItem('jwtToken');
-    if (!jwtToken) {
-      console.error('JWT token not found');
-      return;
-    }
-    const headers = { 'Authorization': `Bearer ${jwtToken}` };
 
     const newRegistrationToken = this.tokenForm.value;
-
-    this.httpClient.post(this.apiPostGenTokenUrl, newRegistrationToken, { headers }).subscribe(
-      (response: any) => {
-        console.log('API response:', response);
-        this.tokenFeedbackMessage = 'Token generated successfully.';
+    this.registrationTokenService.generateToken(newRegistrationToken).subscribe({
+      next: (response) => {
+        this.store.dispatch(RegistrationTokenActions.generateregistrationtokensuccess({ input: response }));
+        console.log('Token generated successfully:', response);
       },
-      (error) => {
-        console.error('API error:', error);
-        if (error.status === 401) {
-          this.tokenFeedbackMessage = 'Unauthorized: Please log in to generate a token.';
-        } else if (error.status === 403) {
-          this.tokenFeedbackMessage = 'Forbidden: You do not have permission to generate a token.';
-        } else {
-          this.tokenFeedbackMessage = 'Failed to generate token. Please try again later.';
-        }
+      error: (error) => {
+        this.store.dispatch(RegistrationTokenActions.generateregistrationtokenfailure({ error }));
+        console.error('Failed to generate token:', error);
       }
-    );
+    });
+    
+    // const jwtToken = localStorage.getItem('jwtToken');
+    // if (!jwtToken) {
+    //   console.error('JWT token not found');
+    //   return;
+    // }
+    // const headers = { 'Authorization': `Bearer ${jwtToken}` };
+
+    // const newRegistrationToken = this.tokenForm.value;
+
+    // this.httpClient.post(this.apiPostGenTokenUrl, newRegistrationToken, { headers }).subscribe(
+    //   (response: any) => {
+    //     console.log('API response:', response);
+    //     this.tokenFeedbackMessage = 'Token generated successfully.';
+    //   },
+    //   (error) => {
+    //     console.error('API error:', error);
+    //     if (error.status === 401) {
+    //       this.tokenFeedbackMessage = 'Unauthorized: Please log in to generate a token.';
+    //     } else if (error.status === 403) {
+    //       this.tokenFeedbackMessage = 'Forbidden: You do not have permission to generate a token.';
+    //     } else {
+    //       this.tokenFeedbackMessage = 'Failed to generate token. Please try again later.';
+    //     }
+    //   }
+    // );
     
   }
 

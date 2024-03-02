@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service/api.service';
+import { OnboardingService } from '../stores/services/onboarding.services';
+
 @Component({
   selector: 'app-reject-feedback-dialog',
   templateUrl: './reject-feedback-dialog.component.html',
@@ -16,10 +17,10 @@ export class RejectFeedbackDialogComponent implements OnInit {
   });
 
   constructor(
-    private httpClient: HttpClient,
     private apiService: ApiService,
+    private onboardingService: OnboardingService,
     public dialogRef: MatDialogRef<RejectFeedbackDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { userAccountId: string }
+    @Inject(MAT_DIALOG_DATA) public data: { userAccountId: string, hrDecision: string }
   ) { }
 
   userAccountId!: string; 
@@ -29,34 +30,23 @@ export class RejectFeedbackDialogComponent implements OnInit {
     this.apiPostGenTokenUrl = this.apiService.postGenerateRegiTokenUrl();
   }
 
+  
   rejDecisionWtFeedback(): void {
-    const jwtToken = localStorage.getItem('jwtToken');
-    if (!jwtToken) {
-      console.error('JWT token not found');
-      return;
-    }
-    const headers = { 'Authorization': `Bearer ${jwtToken}` };
-
-    const rejFeedback = this.rejForm.get('rejFeedback')?.value;
-
-    const apiPatchDecisionbUrl = this.apiService.getOnboardingDecisionUrl(this.userAccountId); 
-    this.httpClient.patch(apiPatchDecisionbUrl, { hrDecision: 'Rejected', rejFeedback: rejFeedback }, {headers}).subscribe(
-      (data) => {
-        console.log('Reject successfully:', data);
-        this.feedbackMessage = `Rejection successful! with Feedback: ${rejFeedback}`;
-        this.rejForm.reset(); 
-        // this.dialogRef.close();
-
+    const rejFeedback = this.rejForm.get('rejFeedback')?.value || '';;
+      this.onboardingService.updateOnboarding(this.userAccountId, { hrDecision: 'Rejected', rejFeedback }).subscribe(
+      () => {
+        console.log('Reject successfully');
+        this.feedbackMessage = 'Rejection successful!';
+        this.rejForm.reset();
       },
-      (error) => {
+      error => {
         console.error('Error occurred during rejection:', error);
         this.feedbackMessage = 'Error occurred during rejection: ' + error.message;
-        this.rejForm.reset(); 
+        this.rejForm.reset();
       }
     );
-
-    
   }
+
   closeDialog(): void {
     this.dialogRef.close();
   }
