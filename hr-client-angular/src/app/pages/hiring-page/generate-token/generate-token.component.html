@@ -2,8 +2,9 @@
   <mat-card-title>Generate token and send email</mat-card-title>
 </mat-card-title-group>
 <mat-divider></mat-divider>
-
-<p>{{ tokenFeedbackMessage }}</p>
+<div [ngClass]="{'success-message': operationSuccess === true, 'error-message': operationSuccess === false}">
+  {{ tokenFeedbackMessage }}
+</div>
 
 <form [formGroup]="tokenForm" (ngSubmit)="createNewRegistrationToken()">
   <mat-form-field>

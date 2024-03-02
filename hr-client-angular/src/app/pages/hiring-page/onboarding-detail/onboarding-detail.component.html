@@ -1,139 +1,153 @@
-<h1>Onboarding Application of {{ personalInfoData.firstName}} {{ personalInfoData.lastName }}</h1>
+
+<div class="title">
+  <h1>Onboarding Application of {{ personalInfoData.firstName }} {{ personalInfoData.lastName }}</h1>
+  <span class="status-tag" [ngClass]="{'pending': onboardingData.onboardingStatus === 'Pending', 'approved': onboardingData.onboardingStatus === 'Completed', 'rejected': onboardingData.onboardingStatus === 'Rejected'}">
+    {{ onboardingData.onboardingStatus }}
+  </span>
+
+  <div class="example-button-row">
+    <button mat-raised-button color="primary" (click)="handleObUpdate(onboardingData.userAccountId, 'Approved')">
+      Approved
+    </button>
+    <button mat-raised-button color="warn" (click)="openRejectConfirmationDialog(onboardingData.userAccountId)">
+      Rejected
+    </button>
+  </div>
+</div>
+
+
 <mat-divider></mat-divider>
+<div class="main-container">
 
 
-<div class = "card-row">
-    <mat-card class="example-card">
-        <mat-card-header>
-          <div mat-card-avatar ></div>
-          <mat-card-title>Personal Information</mat-card-title>
-          <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
-        </mat-card-header>
-        <mat-card-content>
-            <div class="content-wrapper">
-              <div class="text-content">
-                <p>First Name: {{ personalInfoData.firstName }} {{ personalInfoData.middleName }} {{ personalInfoData.lastName }}</p> 
-                <p>Preferred Name: {{ personalInfoData.preferredName }}</p>
-                <p>SSN: {{ personalInfoData.ssn }}</p>
-                <p>DOB: {{ personalInfoData.dateOfBirth }}</p>
-                <p>Gender: {{ personalInfoData.gender }}</p>
-                <p>Address: {{ currentAddressData.streetName }}, {{ currentAddressData.buildingApt }}, {{ currentAddressData.city }}, {{ currentAddressData.state }}, {{ currentAddressData.zip }}</p>
-              </div>
-              <div class="image-content">
-                <img mat-card-lg-image src="https://material.angular.io/assets/img/examples/shiba2.jpg">
-              </div>
-            </div>
-          </mat-card-content>
-      </mat-card>
-    
-      <mat-card class="example-card">
-        <mat-card-header>
-          <div mat-card-avatar ></div>
-          <mat-card-title>Contact Information</mat-card-title>
-          <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
-        </mat-card-header>
-        <mat-card-content>
-            <div class="content-wrapper">
-              <div class="text-content">
-                <p>Email: {{ onboardingData.email }}</p>
-                <p>Cell Phone Number: {{ contactData.cellPhoneNumber }} </p> 
-                <p>Work Phone Number: {{ contactData.workPhoneNumber }}</p>
-              </div>
-            </div>
-          </mat-card-content>
-      </mat-card>
-</div>
+  <div class="image-content">
+    <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+  </div>
 
-<div class="card-row">
-    <mat-card class="example-card">
-        <mat-card-header>
-          <div mat-card-avatar></div>
-          <mat-card-title>Citizenship/Visa Details</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="content-wrapper">
-            <div class="text-content">
-              <p>
-                Citizenship/Visa Title: {{ citizenshipStatusData.isCitizenOrPermanentResident }} ?
-                {{ citizenshipStatusData.statusDetail }} : {{ citizenshipStatusData.workAuthorization }} 
-                <span *ngIf="citizenshipStatusData.workAuthorization === 'F1(CPT/OPT)'">
-                  {{ citizenshipStatusData.workAuthorizationOtherTitle }}
-                </span>
-              </p> 
-              
-              <!-- Display OPT Receipt if workAuthorization is 'F1(CPT/OPT)' -->
-              <div *ngIf="citizenshipStatusData.workAuthorization === 'F1(CPT/OPT)'">
-                <p>OPT Receipt:</p>
-                <ul>
-                  <li *ngFor="let file of citizenshipStatusData.workAuthorizationFiles">
-                    {{ file.docUrl }}
-                  </li>
-                </ul>
-              </div>
-              
-              <p>Start/End Date: {{ citizenshipStatusData.startEndDate.startDate }} - {{ citizenshipStatusData.startEndDate.endDate }}</p>
-            </div>
+
+  <div class="cards-grid">
+    <!-- Personal Information Card -->
+    <div class="card-row">
+      <mat-card-header>
+        <div mat-card-avatar></div>
+        <mat-card-title>Personal Information</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Personal Information Content -->
+        <div class="text-content">
+          <p>First Name: {{ personalInfoData.firstName }} {{ personalInfoData.middleName }} {{ personalInfoData.lastName }}</p> 
+          <p>Preferred Name: {{ personalInfoData.preferredName }}</p>
+          <p>SSN: {{ personalInfoData.ssn }}</p>
+          <p>DOB: {{ personalInfoData.dateOfBirth }}</p>
+          <p>Gender: {{ personalInfoData.gender }}</p>
+          <p>Address: {{ currentAddressData.streetName }}, {{ currentAddressData.buildingApt }}, {{ currentAddressData.city }}, {{ currentAddressData.state }}, {{ currentAddressData.zip }}</p>
+        </div>
+      </mat-card-content>
+    </div>
+    <div class="card-row">
+      <mat-card-header>
+        <div mat-card-avatar></div>
+        <mat-card-title>Personal Information</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="content-wrapper">
+          <div class="text-content">
+            <p>Email: {{ onboardingData.email }}</p>
+            <p>Cell Phone Number: {{ contactData.cellPhoneNumber }} </p> 
+            <p>Work Phone Number: {{ contactData.workPhoneNumber }}</p>
           </div>
-        </mat-card-content>
-      </mat-card>
-      
-      <mat-card class="example-card">
-        <mat-card-header>
-          <div mat-card-avatar></div>
-          <mat-card-title>Driver Liscence</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="content-wrapper">
-            <div class="text-content">
-              <p>
-                Has Driver License: {{ driverLicenseData.hasDriverLicense }}
-                <span *ngIf="driverLicenseData.hasDriverLicense">
-                  <p>Driver Liscence: {{ driverLicenseData.driverLicenseNumber }}</p>
-                  <p>Expiration Date: {{ driverLicenseData.expirationDate }}</p>
-                  <p>Driver Liscence URL: {{ driverLicenseData.driverLicenseCopyUrl }}</p>
-                </span>
-              </p> 
-            </div>
+        </div>
+      </mat-card-content>
+    </div>
+
+    <div class="card-row">
+      <mat-card-header>
+        <div mat-card-avatar></div>
+        <mat-card-title>Citizenship/Visa Details</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Personal Information Content -->
+        <div class="text-content">
+          <p>
+            Citizenship/Visa Title: {{ citizenshipStatusData.isCitizenOrPermanentResident }} ?
+            {{ citizenshipStatusData.statusDetail }} : {{ citizenshipStatusData.workAuthorization }} 
+            <span *ngIf="citizenshipStatusData.workAuthorization === 'F1(CPT/OPT)'">
+              {{ citizenshipStatusData.workAuthorizationOtherTitle }}
+            </span>
+          </p> 
+          
+          <!-- Display OPT Receipt if workAuthorization is 'F1(CPT/OPT)' -->
+          <div *ngIf="citizenshipStatusData.workAuthorization === 'F1(CPT/OPT)'">
+            <p>OPT Receipt:</p>
+            <ul>
+              <li *ngFor="let file of citizenshipStatusData.workAuthorizationFiles">
+                {{ file.docUrl }}
+              </li>
+            </ul>
           </div>
-        </mat-card-content>
-      </mat-card>
-</div>
+          <p>Start/End Date: {{ citizenshipStatusData.startEndDate.startDate }} - {{ citizenshipStatusData.startEndDate.endDate }}</p>
+        </div>
+      </mat-card-content>
+    </div>
 
-<div class="card-row">
-    <mat-card class="example-card">
-        <mat-card-header>
-          <div mat-card-avatar ></div>
-          <mat-card-title>Referral</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <div class="content-wrapper">
-              <div class="text-content">
-                <p>Name: {{ referralData.firstName }}{{ referralData.middleName }}{{ referralData.lastName }}</p>
-                <p>Phone Number: {{ referralData.phone }} </p> 
-                <p>Email: {{ referralData.email }}</p>
-                <p>Relationship: {{ referralData.relationship }}</p>
-              </div>
-            </div>
-          </mat-card-content>
-      </mat-card>
-    
-      
-</div>
-<div class="card-now">
+    <div class="card-row">
+      <mat-card-header>
+        <div mat-card-avatar></div>
+        <mat-card-title>Driver Liscence</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Personal Information Content -->
+        <div class="text-content">
+          <div class="text-content">
+            <p>
+              Has Driver License: {{ driverLicenseData.hasDriverLicense }}
+              <span *ngIf="driverLicenseData.hasDriverLicense">
+                <p>Driver Liscence: {{ driverLicenseData.driverLicenseNumber }}</p>
+                <p>Expiration Date: {{ driverLicenseData.expirationDate }}</p>
+                <p>Driver Liscence URL: {{ driverLicenseData.driverLicenseCopyUrl }}</p>
+              </span>
+            </p> 
+          </div>
+        </div>
+      </mat-card-content>
+    </div>
 
-    <div class="table-container">
-        <mat-card-title>Emergency Contacts</mat-card-title>
+    <div class="card-row">
+      <mat-card-header>
+        <div mat-card-avatar></div>
+        <mat-card-title> Referral </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Personal Information Content -->
+        <div class="text-content">
+          <div class="text-content">
+            <p>Name: {{ referralData.firstName }}{{ referralData.middleName }}{{ referralData.lastName }}</p>
+            <p>Phone Number: {{ referralData.phone }} </p> 
+            <p>Email: {{ referralData.email }}</p>
+            <p>Relationship: {{ referralData.relationship }}</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </div>
+
+    <div class="card-row">
+      <mat-card-header>
+        <div mat-card-avatar></div>
+        <mat-card-title> Emergency Contacts </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
         <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  
+          <ng-container *ngFor="let column of displayedColumns; let i = index" [matColumnDef]="column">
+          <mat-header-cell *matHeaderCellDef>{{ i === 0 ? 'Name' : column }}</mat-header-cell>
+          <mat-cell *matCellDef="let contact">{{ i === 0 ? (contact.firstName + ' ' + contact.middleName + ' ' + contact.lastName) : contact[column] }}</mat-cell>
+        </ng-container>
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+      </mat-card-content>
+    </div>
 
-            <ng-container *ngFor="let column of displayedColumns; let i = index" [matColumnDef]="column">
-            <mat-header-cell *matHeaderCellDef>{{ i === 0 ? 'Name' : column }}</mat-header-cell>
-            <mat-cell *matCellDef="let contact">{{ i === 0 ? (contact.firstName + ' ' + contact.middleName + ' ' + contact.lastName) : contact[column] }}</mat-cell>
-          </ng-container>
-      
-          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      
-          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-        </mat-table>
-      </div>
-      
 </div>

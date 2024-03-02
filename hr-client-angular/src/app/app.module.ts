@@ -37,7 +37,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
-    }), // enabling NgRx devtools, which you can then use the Redux devtools in your browser to check the states and actions
+    }),
     BrowserAnimationsModule,
     HttpClientModule,
     MatCardModule,

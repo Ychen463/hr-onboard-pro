@@ -1,6 +1,6 @@
 // hiring-page.module.ts
 
-import { NgModule } from '@angular/core';
+import { NgModule , CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 
 import { onboardingReducer } from './stores/reducers/onboarding.reducer';
@@ -24,6 +24,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatChipsModule } from '@angular/material/chips';
 
 
 import { GenerateTokenComponent } from './generate-token/generate-token.component';
@@ -55,6 +56,7 @@ import { RegistrationTokenService } from './stores/services/registrationToken.se
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    MatChipsModule,
     MatDividerModule,
     MatTabsModule,
     MatDialogModule,
@@ -73,6 +75,7 @@ import { RegistrationTokenService } from './stores/services/registrationToken.se
   ],
   providers: [
     RegistrationTokenService,
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HiringPageModule {}

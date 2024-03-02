@@ -76,6 +76,7 @@ export class OnboardingComponent implements OnInit,OnDestroy {
     this.RegidataSource = new MatTableDataSource<DisplayedRegistrationToken>();
     this.OnbdataSource = new MatTableDataSource<DisplayedOnboarding>();
 
+
   }
 
 ngOnInit(): void {

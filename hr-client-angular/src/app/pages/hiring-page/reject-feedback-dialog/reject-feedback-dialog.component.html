@@ -2,7 +2,7 @@
   <mat-card-title>Rejecting Feedback</mat-card-title>
 </mat-card-title-group>
 <mat-divider></mat-divider>
-<p>{{ feedbackMessage }}</p>
+<div [style.color]="messageColor">{{feedbackMessage}}</div>
 
 <form [formGroup]="rejForm" (ngSubmit)="rejDecisionWtFeedback()">
   <mat-form-field>

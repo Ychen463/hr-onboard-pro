@@ -1,24 +1,22 @@
-/* Adjusting the size of the textarea */
 mat-form-field {
     width: 100%;
   }
   textarea {
     width: 100%;
-    min-height: 100px; /* Adjust the height as needed */
+    min-height: 100px; 
   }
   
   /* Styling the feedback message */
   p {
     margin-top: 10px;
-    color: green; /* Set the color of the message */
-    font-weight: bold; /* Make the message bold */
+    color: green;
+    font-weight: bold; 
   }
   
-  /* Styling the buttons */
   .actions {
-    margin-top: 20px; /* Add some space between the textarea and buttons */
+    margin-top: 20px; 
   }
   .wide-button {
-    margin-right: 10px; /* Add space between the buttons */
+    margin-right: 10px; 
   }
   

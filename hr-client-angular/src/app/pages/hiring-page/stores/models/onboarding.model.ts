@@ -6,6 +6,7 @@ export interface DisplayedOnboarding {
 }
 
 export interface Onboarding {
+    [x: string]: any;
     _id: string;
     userAccountId: string;
     email: string;
