@@ -1,0 +1,22 @@
+mat-form-field {
+    width: 100%;
+  }
+  textarea {
+    width: 100%;
+    min-height: 100px; 
+  }
+  
+  /* Styling the feedback message */
+  p {
+    margin-top: 10px;
+    color: green;
+    font-weight: bold; 
+  }
+  
+  .actions {
+    margin-top: 20px; 
+  }
+  .wide-button {
+    margin-right: 10px; 
+  }
+  

@@ -1,4 +1,4 @@
-  export interface RegistrationTokenData {
+export interface RegistrationToken {
     _id: string;
     email: string;
     userFirstName: string;
@@ -10,10 +10,16 @@
     usedDatetime: Date | null;
     __v: number;
   }
-  export interface DisplayedRegiData {
+  export interface DisplayedRegistrationToken {
     email: string;
     name: string;
     registrationLink: string;
     tokenStatus: string;
-
+    createdDatetime: Date;
   }
+  export interface GenerateRegistrationTokenInput {
+    userFirstName: string;
+    userLastName: string;
+    email: string;
+  }
+  

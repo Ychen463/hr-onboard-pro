@@ -21,7 +21,13 @@ textarea {
   width: 100%;
   min-height: 100px; /* Adjust the height as needed */
 }
+.success-message {
+  color: green;
+}
 
+.error-message {
+  color: red;
+}
 /* Styling the feedback message */
 p {
   margin-top: 10px;

@@ -1,11 +1,12 @@
-export interface DisplayedOnboardingData {
+export interface DisplayedOnboarding {
     onboardingStatus: string;
     name: string;
     email: string;
     userAccountId: string;
 }
 
-export interface UserAccountOnboardingData {
+export interface Onboarding {
+    [x: string]: any;
     _id: string;
     userAccountId: string;
     email: string;

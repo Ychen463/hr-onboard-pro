@@ -22,7 +22,7 @@ table {
   justify-content: space-between;
   align-items: center; 
   margin-left: auto;
-  margin-right: auto; /* 添加此行以水平居中 */
+  margin-right: auto; 
 }
 
 #search-btn-div h3 {
@@ -31,11 +31,11 @@ table {
 }
 #search-btn-div .mat-raised-button {
   height: 60%;
-  min-width: 100px; /* 调整按钮的最小宽度 */
+  min-width: 100px; 
 }
 #search-btn-div mat-form-field {
   flex: 1;
-  width: 10%; /* 或者设置其他宽度，以调整 mat-select 的大小 */
+  width: 10%;
 }
 
 
