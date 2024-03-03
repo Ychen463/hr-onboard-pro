@@ -237,4 +237,35 @@ const getAll = async (req, res) => {
   }
 };
 
-export { getVisaDetails, getCurrentStep, updateDoc, updateVisaDecision, getAll };
+
+const getWithOnboardingAll = async (req, res) => {
+  try {
+    const visas = await Visa.aggregate([
+      {
+        $lookup: {
+          from: "onboardings",
+          localField: "userAccountId",
+          foreignField: "userAccountId",
+          as: "onboardingInfo"
+        }
+      },
+      {
+        $match: {
+          "onboardingInfo": { $ne: [] } 
+        }
+      }
+    ]);
+
+    return res.status(200).json(visas);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+
+
+
+
+
+
+
+export { getVisaDetails, getCurrentStep, updateDoc, updateVisaDecision, getAll,getWithOnboardingAll };
