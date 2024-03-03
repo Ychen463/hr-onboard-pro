@@ -4,17 +4,12 @@ import EmergencyContactForm from './EmergencyContactForm.jsx';
 
 function EmergencyContact({ readOnly, emergencyContacts, setEmergencyContacts }) {
   return (
-    <div style={{ marginTop: '50px' }}>
-      <Typography
-        variant="h4"
-        component="h2"
-        gutterBottom
-        textAlign="left"
-        style={{ marginLeft: '8px' }}
-      >
+    <div>
+      <Typography variant="h6" style={{ marginBottom: '12px' }}>
         Emergency Contact Information
       </Typography>
-      <Grid container spacing={10} sx={{ wnameth: '80%', margin: '0 auto' }}>
+
+      <Grid container spacing={2}>
         <Grid item xs={12}>
           <EmergencyContactList
             readOnly={readOnly}

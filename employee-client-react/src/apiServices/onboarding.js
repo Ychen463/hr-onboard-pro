@@ -5,4 +5,4 @@ export const getOnboarding = async (userAccountId) => axiosInstance.get(`/onboar
 export const postOnboarding = async (onboardingData) =>
   axiosInstance.post('/onboarding', onboardingData);
 
-export const getAWSS3PresignedUrl = async () => axiosInstance.get('/awss3/generatePresignedUrl');
+export const getAWSS3PresignedUrl = async ({ fileType }) => axiosInstance.get(`/awss3/generatePresignedUrl?fileType=${fileType}`);
