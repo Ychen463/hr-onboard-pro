@@ -5,7 +5,8 @@ const initialState = {
   isFacilityReportModalOpen: false,
   isAddCommentModalOpen: false,
   isEditCommentModalOpen: false,
-  editModalContent: '',
+  editModalPayload: '',
+  addCommentModalId: null, // New state to store the _id for Add Comment modal
 };
 
 const modalSlice = createSlice({
@@ -18,19 +19,21 @@ const modalSlice = createSlice({
     closeFacilityReportModal: (state) => {
       state.isFacilityReportModalOpen = false;
     },
-    openAddCommentModal: (state) => {
+    openAddCommentModal: (state, action) => {
       state.isAddCommentModalOpen = true;
+      state.addCommentModalId = action.payload; // Set addCommentModalId from payload
     },
     closeAddCommentModal: (state) => {
       state.isAddCommentModalOpen = false;
+      state.addCommentModalId = null; // Reset addCommentModalId when modal is closed
     },
     openEditCommentModal: (state, action) => {
       state.isEditCommentModalOpen = true;
-      state.editModalContent = action.payload; // Set editModalContent from payload
+      state.editModalPayload = action.payload; // Set editModalPayload from payload
     },
     closeEditCommentModal: (state) => {
       state.isEditCommentModalOpen = false;
-      state.editModalContent = ''; // Reset editModalContent when modal is closed
+      state.editModalPayload = ''; // Reset editModalPayload when modal is closed
     },
   },
 });
@@ -44,7 +47,8 @@ export const {
   closeEditCommentModal,
 } = modalSlice.actions;
 
-export const selectEditModalContent = (state) => state.modal.editModalContent;
+export const selecteditModalPayload = (state) => state.modal.editModalPayload;
+export const selectAddCommentModalId = (state) => state.modal.addCommentModalId; // Selector for Add Comment modal _id
 
 export const selectIsFacilityReportModalOpen = (state) => state.modal.isFacilityReportModalOpen;
 export const selectisAddCommentModalOpen = (state) => state.modal.isAddCommentModalOpen;

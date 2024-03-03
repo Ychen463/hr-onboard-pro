@@ -12,17 +12,18 @@ import {
 import {
   selectisAddCommentModalOpen,
   closeAddCommentModal,
+  selectAddCommentModalId,
 } from '../../store/slices/FacilityRportModalSlice.js';
 import { addComment } from '../../store/slices/facilityReportSlice';
 
 function AddCommentModal() {
   const dispatch = useDispatch();
   const open = useSelector(selectisAddCommentModalOpen);
+  const _id = useSelector(selectAddCommentModalId);
   const [comment, setComment] = useState('');
 
   const handleAddComment = () => {
-    // ????? how to get facilityReportId????
-    //dispatch(addComment({ facilityReportId, description: comment }));
+    dispatch(addComment({ facilityReportId: _id, description: comment }));
     console.log(comment);
     setComment('');
     dispatch(closeAddCommentModal());

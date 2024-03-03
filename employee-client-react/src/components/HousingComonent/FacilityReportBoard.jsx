@@ -1,14 +1,25 @@
 /* eslint-disable react/prop-types */
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Box, List } from '@mui/material';
 import FacilityReportCard from './FacilityReportCard.jsx';
 import FacilityReportModal from './FacilityReportModal.jsx';
 
 import { openFacilityReportModal } from '../../store/slices/FacilityRportModalSlice.js';
+import {
+  getFacilityReports,
+  selectFacilityReportState,
+} from '../../store/slices/facilityReportSlice.js';
 
-function FacilityReportBoard({ facilityReportData }) {
+function FacilityReportBoard() {
   const dispatch = useDispatch();
-  console.log('facilityData', facilityReportData);
+
+  useEffect(() => {
+    dispatch(getFacilityReports());
+  }, []);
+
+  const facilityReportData = useSelector(selectFacilityReportState);
+  const facilityReports = facilityReportData?.reports;
 
   // Facility Madal will control through Redux
   const handleCreateFacilityReport = () => {
@@ -33,7 +44,7 @@ function FacilityReportBoard({ facilityReportData }) {
         }}
       >
         <List>
-          {facilityReportData.map((eachReport) => (
+          {facilityReports?.map((eachReport) => (
             <FacilityReportCard reportData={eachReport} key={eachReport.createdDatetime} />
           ))}
         </List>

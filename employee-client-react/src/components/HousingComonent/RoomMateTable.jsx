@@ -8,25 +8,18 @@ import {
   Paper,
   Avatar,
   Typography,
-} from "@mui/material";
+  Box,
+} from '@mui/material';
 
-function RoommateTable({ roommates }) {
+function RoommateTable({ roommates, index }) {
   // Replace this with your actual data fetching logic
 
   return (
-    <>
-      <Typography
-        variant="h6"
-        gutterBottom
-        component="div"
-        sx={{ p: 2, textAlign: "left" }}
-      >
+    <Box>
+      <Typography variant="h6" gutterBottom component="div" sx={{ p: 2, textAlign: 'left' }}>
         Roommates
       </Typography>
-      <TableContainer
-        component={Paper}
-        sx={{ maxWidth: 1024, margin: "auto", mt: 4 }}
-      >
+      <TableContainer component={Paper} sx={{ maxWidth: 1024, margin: 'auto', mt: 4 }}>
         <Table aria-label="roomMateTable">
           <TableHead>
             <TableRow>
@@ -36,7 +29,7 @@ function RoommateTable({ roommates }) {
           </TableHead>
           <TableBody>
             {roommates.map((roommate) => (
-              <TableRow key={roommate.name}>
+              <TableRow key={roommate.phone}>
                 <TableCell component="th" scope="row">
                   {/* <Avatar alt={roommate.name} src={roommate.avatar} sx={{ mr: 2, display: 'inline-flex', verticalAlign: 'middle' }} /> */}
                   {roommate.name}
@@ -47,7 +40,7 @@ function RoommateTable({ roommates }) {
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </Box>
   );
 }
 

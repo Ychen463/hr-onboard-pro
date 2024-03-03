@@ -13,7 +13,7 @@ import {
 
 import {
   selectIsEditCommentModalOpen,
-  selectEditModalContent,
+  selecteditModalPayload,
   closeEditCommentModal,
 } from '../../store/slices/FacilityRportModalSlice';
 
@@ -22,15 +22,17 @@ import { editComment } from '../../store/slices/facilityReportSlice';
 function EditCommentModal() {
   const dispatch = useDispatch();
   const open = useSelector(selectIsEditCommentModalOpen);
-  const defaultComment = useSelector(selectEditModalContent);
+  const commentModalPayload = useSelector(selecteditModalPayload);
+  const { commentId, reportId } = commentModalPayload;
 
   const handleSaveComment = (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const updatedComment = formData.get('comment');
 
-    //dispatch(editComment({ facilityReportId, commentId, description: 'updatedComment' }));
-    console.log("Edit Comment function triggered, api didn't dispatch");
+    dispatch(
+      editComment({ facilityReportId: reportId, commentId: commentId, description: updatedComment })
+    );
     dispatch(closeEditCommentModal());
   };
 
@@ -57,7 +59,7 @@ function EditCommentModal() {
               variant="outlined"
               multiline
               rows={6}
-              defaultValue={defaultComment}
+              defaultValue={commentModalPayload.description}
               placeholder=""
             />
           </DialogContent>

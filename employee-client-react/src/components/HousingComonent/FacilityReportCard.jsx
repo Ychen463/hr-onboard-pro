@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Card,
   CardContent,
@@ -25,28 +25,35 @@ import {
   openEditCommentModal,
 } from '../../store/slices/FacilityRportModalSlice.js';
 
-import { closeFacilityReport } from '../../store/slices/facilityReportSlice.js';
+import {
+  closeFacilityReport,
+  selectFacilityReportById,
+  selectFacilityReportState,
+} from '../../store/slices/facilityReportSlice.js';
 
 function FacilityReportCard({ reportData }) {
   const dispatch = useDispatch();
+
   const [expanded, setExpanded] = useState(false);
 
+  const { createdBy, createdDatetime, description, housing, status, title } = reportData ?? {};
+  const reportId = reportData?._id;
+  const comments = reportData?.comments;
+
+  const createdByUsername = createdBy.username ? createdBy.username : '';
+  const createdDate = createdDatetime.split('T')[0];
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const { comments, status, title, description, createdDatetime, createdBy } = reportData;
-
   const handleCommentReport = () => {
-    dispatch(openAddCommentModal());
+    dispatch(openAddCommentModal(reportId));
   };
-  const handleEditComment = (e) => {
-    const currentComment = e.target.previousSibling.innerText;
-    dispatch(openEditCommentModal(currentComment));
+  const handleEditComment = (payload) => {
+    dispatch(openEditCommentModal(payload));
   };
   const handleCloseReport = () => {
-    //??????facilityReportId???
-    // dispatch(closeFacilityReport(facilityReportId));
+    dispatch(closeFacilityReport(reportId));
   };
 
   return (
@@ -78,10 +85,10 @@ function FacilityReportCard({ reportData }) {
           {description}
         </Typography>
         <Typography variant="body2" align="left">
-          {createdBy}
+          {createdByUsername}
         </Typography>
         <Typography variant="body2" align="left">
-          {createdDatetime}
+          {createdDate}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -95,50 +102,65 @@ function FacilityReportCard({ reportData }) {
             Comments:
           </Typography>
           <List>
-            {comments.map((comment) => (
-              <ListItem key={comment.user} alignItems="flex-start">
-                <ListItemAvatar>
-                  <Avatar>{comment.user}</Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={`${comment.createdBy} (${comment.role})`}
-                  secondary={
-                    <>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                        display="block"
-                        align="left"
-                      >
-                        <span>{comment.description}</span>
-                        <Button onClick={handleEditComment}>EDIT</Button>
-                      </Typography>
-                      <Typography component="span" variant="body2" display="block" align="left">
-                        {comment.lastModifiedDatetime}
-                      </Typography>
-                    </>
-                  }
-                  primaryTypographyProps={{ align: 'left' }}
-                  secondaryTypographyProps={{ align: 'left' }}
-                />
-              </ListItem>
-            ))}
+            {comments &&
+              comments.map((comment) => (
+                <ListItem key={comment._id} alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Avatar>{comment.createdBy.username.split('', 1)}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={`${comment.createdBy.username} (${comment.createdBy.userRole})`}
+                    secondary={
+                      <>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                          display="block"
+                          align="left"
+                        >
+                          <span>{comment.description}</span>
+                          {comment.createdBy.userRole === 'employee' && (
+                            <Button
+                              onClick={() =>
+                                handleEditComment({
+                                  description: comment.description,
+                                  commentId: comment._id,
+                                  reportId: reportId,
+                                })
+                              }
+                            >
+                              EDIT
+                            </Button>
+                          )}
+                        </Typography>
+                        <Typography component="span" variant="body2" display="block" align="left">
+                          {comment.lastModifiedDatetime.split('T')[0]}
+                        </Typography>
+                      </>
+                    }
+                    primaryTypographyProps={{ align: 'left' }}
+                    secondaryTypographyProps={{ align: 'left' }}
+                  />
+                </ListItem>
+              ))}
           </List>
         </CardContent>
-        <CardActions>
-          <Button size="small" variant="contained" onClick={handleCommentReport}>
-            Comment
-          </Button>
-          <Button
-            size="small"
-            variant="outlined"
-            onClick={handleCloseReport}
-            sx={{ marginLeft: 'auto' }}
-          >
-            Close Report
-          </Button>
-        </CardActions>
+        {status !== 'Closed' && (
+          <CardActions>
+            <Button size="small" variant="contained" onClick={handleCommentReport}>
+              Comment
+            </Button>
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={handleCloseReport}
+              sx={{ marginLeft: 'auto' }}
+            >
+              Close Report
+            </Button>
+          </CardActions>
+        )}
       </Collapse>
     </Card>
   );

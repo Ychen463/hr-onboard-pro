@@ -11,7 +11,7 @@ import RoommateTable from '../components/HousingComonent/RoomMateTable.jsx';
 import FacilityReportBoard from '../components/HousingComonent/FacilityReportBoard.jsx';
 
 import { getHousing, selectorCurrentHouseData } from '../store/slices/housingSlice.js';
-import { housingData, housingReportData } from '../MOCK_DATA.jsx';
+
 function HousingPageContainer() {
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
@@ -25,8 +25,6 @@ function HousingPageContainer() {
   // const { address, residents } = housingData ?? {};
   const address = housingData?.address;
   const residents = housingData?.residents;
-
-  console.log('housing Data', housingData);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -69,7 +67,7 @@ function HousingPageContainer() {
           )}
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <FacilityReportBoard facilityReportData={housingReportData} />
+          <FacilityReportBoard />
         </TabPanel>
       </Box>
     </Box>
