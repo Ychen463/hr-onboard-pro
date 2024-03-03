@@ -1,16 +1,16 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-use-before-define */
-/* eslint-disable react/jsx-props-no-spreading */
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppBar, Tabs, Tab, Box, Typography } from '@mui/material';
+import { AppBar, Tabs, Tab, Box, Typography, CircularProgress } from '@mui/material';
 
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import RoommateTable from '../components/HousingComonent/RoomMateTable.jsx';
 import FacilityReportBoard from '../components/HousingComonent/FacilityReportBoard.jsx';
 
-import { getHousing, selectorCurrentHouseData } from '../store/slices/housingSlice.js';
+import {
+  getHousing,
+  selectorCurrentHouseData,
+  selectIsHousingLoading,
+} from '../store/slices/housingSlice.js';
 
 function HousingPageContainer() {
   const [value, setValue] = useState(0);
@@ -21,8 +21,8 @@ function HousingPageContainer() {
   }, []);
 
   const housingData = useSelector(selectorCurrentHouseData);
+  const isLoading = useSelector(selectIsHousingLoading);
 
-  // const { address, residents } = housingData ?? {};
   const address = housingData?.address;
   const residents = housingData?.residents;
 
@@ -58,17 +58,27 @@ function HousingPageContainer() {
           <Tab label="FACILITY REPORTS" {...a11yProps(1)} sx={tabStyle(value === 1)} />
         </Tabs>
       </AppBar>
-      <Box sx={{ width: '1024px', minHeight: '800px' }}>
-        <TabPanel value={value} index={0}>
-          {residents?.length > 0 ? (
-            <RoommateTable roommates={housingData.residents} />
-          ) : (
-            'No Roommate yet!'
-          )}
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <FacilityReportBoard />
-        </TabPanel>
+      <Box sx={{ width: '1024px', minHeight: '800px', position: 'relative' }}>
+        {isLoading && (
+          <CircularProgress
+            sx={{
+              position: 'absolute',
+              top: '20%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          />
+        )}
+        {!isLoading && (
+          <>
+            <TabPanel value={value} index={0}>
+              {residents?.length > 0 ? <RoommateTable roommates={residents} /> : 'No Roommate yet!'}
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <FacilityReportBoard />
+            </TabPanel>
+          </>
+        )}
       </Box>
     </Box>
   );
