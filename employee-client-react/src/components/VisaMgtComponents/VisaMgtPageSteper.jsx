@@ -1,8 +1,6 @@
-import React from 'react';
-
 import { Stepper, Step, StepLabel } from '@mui/material';
 
-const steps = ['OPT Receipt', 'OPT EAD', 'I-983', 'I-20'];
+const steps = ['OPT RECEIPT', 'OPT EAD', 'I-983', 'I20'];
 
 function VisaMgtPageSteper({ status }) {
   const activeStep = steps.indexOf(status);
