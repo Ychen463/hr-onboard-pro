@@ -73,11 +73,14 @@ function OnboardingApplicationPage() {
     );
   }
 
-  if (currentUserData.onboardingStatus !== 'Not Started' && error) {
+  if (error) {
     return <Alert severity="error">{error}</Alert>;
   }
   // Disable form edit at "Pending" status
+  // const readOnlyForm = false;
   const readOnlyForm = onboardingData ? onboardingData.onboardingStatus === 'Pending' : false;
+
+  console.log('onboarding form', onboardingData);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -89,7 +92,6 @@ function OnboardingApplicationPage() {
     dispatch(submitOnboarding(onboardingSubmitData));
   };
 
-  console.log('OnboardingApplicationPag emergencyContacts', emergencyContacts);
   return (
     <div style={{ width: '1080px', margin: '10px auto' }}>
       <h1 style={{ textAlign: 'center' }}>Onboarding Application</h1>
@@ -101,31 +103,16 @@ function OnboardingApplicationPage() {
           </Typography>
         ) : (
           <>
-            <PersonalInfoField
-              readOnly={readOnlyForm}
-              personalInfo={onboardingData?.personalInfo || personalInfo}
-            />
-            <ContactInfoField
-              readOnly={readOnlyForm}
-              personalInfo={onboardingData?.personalInfo || personalInfo}
-            />
-            <AddressInfoField
-              readOnly={readOnlyForm}
-              personalInfo={onboardingData?.personalInfo || personalInfo}
-            />
-            <VisaInfoField
-              readOnly={readOnlyForm}
-              citizenshipStatus={onboardingData?.citizenshipStatus || citizenshipStatus}
-            />
+            <PersonalInfoField readOnly={readOnlyForm} personalInfo={personalInfo} />
+            <ContactInfoField readOnly={readOnlyForm} personalInfo={personalInfo} />
+            <AddressInfoField readOnly={readOnlyForm} personalInfo={personalInfo} />
+            <VisaInfoField readOnly={readOnlyForm} citizenshipStatus={citizenshipStatus} />
             <DriverLicenseInfoField
               readOnly={readOnlyForm}
-              driverLicense={onboardingData?.driverLicense || driverLicense}
-              personalInfo={onboardingData?.personalInfo || personalInfo}
+              driverLicense={driverLicense}
+              personalInfo={personalInfo}
             />
-            <ReferenceField
-              readOnly={readOnlyForm}
-              referral={onboardingData?.referral || referral}
-            />
+            <ReferenceField readOnly={readOnlyForm} referral={referral} />
             <EmergencyContact
               readOnly={readOnlyForm}
               emergencyContacts={emergencyContacts}

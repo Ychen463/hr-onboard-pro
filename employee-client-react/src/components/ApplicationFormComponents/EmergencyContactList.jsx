@@ -27,21 +27,22 @@ const EmergencyContactList = ({ readOnly, contacts, setEmergencyContacts }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {contacts.map((contact, index) => (
-            <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              {!readOnly && (
-                <TableCell component="th" scope="row">
-                  <IconButton edge="end" onClick={() => deleteEmergencyContact(index)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-              )}
-              <TableCell>{`${contact.firstName} ${contact.middleName} ${contact.lastName}`}</TableCell>
-              <TableCell>{contact.phone}</TableCell>
-              <TableCell>{contact.email}</TableCell>
-              <TableCell>{contact.relationship}</TableCell>
-            </TableRow>
-          ))}
+          {contacts &&
+            contacts.map((contact, index) => (
+              <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                {!readOnly && (
+                  <TableCell component="th" scope="row">
+                    <IconButton edge="end" onClick={() => deleteEmergencyContact(index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                )}
+                <TableCell>{`${contact.firstName} ${contact.middleName} ${contact.lastName}`}</TableCell>
+                <TableCell>{contact.phone}</TableCell>
+                <TableCell>{contact.email}</TableCell>
+                <TableCell>{contact.relationship}</TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>
