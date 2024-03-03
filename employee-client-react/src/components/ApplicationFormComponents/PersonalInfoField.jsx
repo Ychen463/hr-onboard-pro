@@ -1,37 +1,32 @@
-import { Typography, Grid } from "@mui/material";
-import InputUnit from "./InputUnit.jsx";
-import { useState, useEffect } from "react";
+import { Typography, Grid } from '@mui/material';
+import InputUnit from './InputUnit.jsx';
+import { useState, useEffect } from 'react';
 
-const genderOptions = ["Male", "Female", "I do not wish to answer"];
+const genderOptions = ['Male', 'Female', 'I do not wish to answer'];
 
 function PersonalInfoField({ readOnly, personalInfo }) {
-
   const [gender, setGender] = useState('Male');
 
   useEffect(() => {
-    if(personalInfo?.gender) {
+    if (personalInfo?.gender) {
       setGender(personalInfo.gender);
     }
   }, [personalInfo]);
-  
 
-  const handleGender= (event) => {
+  const handleGender = (event) => {
     const { value } = event.target;
     setGender(value);
   };
 
+  console.log('PersonalInfoField personalInfo', personalInfo);
+
   return (
     <div>
-      <Typography
-          variant="h4"
-          component="h2"
-          gutterBottom
-          textAlign="left"
-        >
+      <Typography variant="h4" component="h2" gutterBottom textAlign="left">
         Personal Information
       </Typography>
-      <div style={{ marginTop: "50px" }}>
-        <Grid container spacing={10} sx={{ wnameth: "80%", margin: "0 auto" }}>
+      <div style={{ marginTop: '50px' }}>
+        <Grid container spacing={10} sx={{ wnameth: '80%', margin: '0 auto' }}>
           <Grid item xs={6}>
             <InputUnit
               name="personalFirstName"
@@ -85,7 +80,7 @@ function PersonalInfoField({ readOnly, personalInfo }) {
           <Grid item xs={6}>
             <InputUnit
               name="dateOfBirth"
-              value={personalInfo?.dateOfBirth ? personalInfo.dateOfBirth.substring(0, 10) : ""}
+              value={personalInfo?.dateOfBirth ? personalInfo.dateOfBirth.substring(0, 10) : ''}
               label="Date Of Birth"
               type="date"
               required

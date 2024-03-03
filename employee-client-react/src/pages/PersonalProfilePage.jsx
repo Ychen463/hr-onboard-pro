@@ -9,7 +9,8 @@ import PersonalInfoField from '../components/ApplicationFormComponents/PersonalI
 import ContactInfoField from '../components/ApplicationFormComponents/ContactInfoField.jsx';
 import AddressInfoField from '../components/ApplicationFormComponents/AddressInfoField.jsx';
 import VisaInfoField from '../components/ApplicationFormComponents/VisaInfoField.jsx';
-import UserEmailField from '../components/UserEmailField.jsx';
+// import UserEmailField from '../components/UserEmailField.jsx';
+import UserEmailField from '../components/formSections/UserEmailField.jsx';
 
 import EmergencyContact from '../components/ApplicationFormComponents/EmergencyContact.jsx';
 import {
@@ -41,17 +42,9 @@ function PersonalProfilePage() {
   useEffect(() => {
     if (userProfile?.personalInfo) {
       setPersonalInfo(userProfile.personalInfo);
-    }
-    if (userProfile?.citizenshipStatus) {
       setCitizenshipStatus(userProfile.citizenshipStatus);
-    }
-    if (userProfile?.driverLicense) {
       setDriverLicense(userProfile.driverLicense);
-    }
-    if (userProfile?.referral) {
       setReferral(userProfile.referral);
-    }
-    if (userProfile?.emergencyContacts) {
       setEmergencyContacts(userProfile.emergencyContacts);
     }
   }, [userProfile]);
@@ -79,14 +72,56 @@ function PersonalProfilePage() {
   };
 
   return (
-    <div style={{ width: '1080px', margin: '0 auto' }}>
-      <h1 style={{ textAlign: 'center' }}>Personal Profile Page</h1>
-      <Container
-        component="form"
-        onSubmit={handleSubmit}
-        style={{ width: '960px', marginLeft: '-30px' }}
+    <div style={{ width: '1080px', margin: '10px auto' }}>
+      <Typography
+        variant="h4"
+        style={{ textAlign: 'center', marginTop: '24px', marginBottom: '24px' }}
       >
-        <PersonalInfoField readOnly={readOnly} personalInfo={personalInfo} />
+        Personal Profile
+      </Typography>
+      <Container component="form" onSubmit={handleSubmit}>
+        <PersonalInformationFormSection
+          readOnly={readOnly}
+          formData={personalInfo}
+          setFormData={setPersonalInfo}
+        />
+        <br />
+        <UserEmailField />
+        <br />
+        <ContactInformationSection
+          readOnly={readOnly}
+          formData={personalInfo}
+          setFormData={setPersonalInfo}
+        />
+        <br />
+        <CurrentAddressSection
+          readOnly={readOnly}
+          formData={personalInfo}
+          setFormData={setPersonalInfo}
+        />
+        <br />
+        <VisaSection
+          readOnly={true}
+          formData={citizenshipStatus}
+          setFormData={setCitizenshipStatus}
+        />
+        <br />
+        <DriverLicenseSection
+          readOnly={readOnly}
+          formData={driverLicense}
+          setFormData={setDriverLicense}
+          personalInfo={personalInfo}
+          setPersonalInfo={setPersonalInfo}
+        />
+        <br />
+        <ReferralSection readOnly={readOnlyForm} formData={referral} setFormData={setReferral} />
+        <br />
+        <EmergencyContact
+          readOnly={readOnly}
+          emergencyContacts={emergencyContacts}
+          setEmergencyContacts={setEmergencyContacts}
+        />
+        {/* <PersonalInfoField readOnly={readOnly} personalInfo={personalInfo} />
         <UserEmailField />
         <AddressInfoField readOnly={readOnly} personalInfo={personalInfo} />
         <ContactInfoField readOnly={readOnly} personalInfo={personalInfo} />
@@ -95,7 +130,7 @@ function PersonalProfilePage() {
           readOnly={readOnly}
           emergencyContacts={emergencyContacts}
           setEmergencyContacts={setEmergencyContacts}
-        />
+        /> */}
         {readOnly ? (
           <Button
             variant="contained"

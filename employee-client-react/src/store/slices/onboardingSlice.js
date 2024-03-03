@@ -5,6 +5,8 @@ import {
 } from "@reduxjs/toolkit";
 import * as onboardingApiService from "../../apiServices/onboarding.js";
 import { logout } from "./authSlice.js";
+import axios from "axios";
+import fileTypes from "../../constants/fileTypes.js";
 
 const initialState = {
   onboardingData: null,
@@ -30,6 +32,7 @@ export const submitOnboarding = createAsyncThunk(
   async (onboardingData, thunkAPI) => {
     try {
       // upload files to AWS S3
+      console.log("thunk submitOnboarding onboardingData", onboardingData);
       const profilePictureFile = onboardingData.personalInfo?.profilePictureUrl || null;
       const workAuthorizationFile = onboardingData.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' ? onboardingData.citizenshipStatus.workAuthorizationFiles.docUrl : null;
       const driverLicenseCopyFile = onboardingData.driverLicense.hasDriverLicense ? onboardingData.driverLicense.driverLicenseCopyUrl : null;
@@ -39,48 +42,49 @@ export const submitOnboarding = createAsyncThunk(
       console.log("driverLicenseCopyFile", driverLicenseCopyFile);
 
       if (profilePictureFile) {
-        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl();
+        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.AVATAR });
         const presignedUrl = presignedUrlResponse.data.url;
-
+        console.log("presignedUrl", presignedUrl);
         await axios.put(presignedUrl, profilePictureFile, {
           headers: {
-            'Content-Type': file.type,
+            'Content-Type': profilePictureFile.type,
           },
         });
         console.log("presignedUrl", presignedUrl);
 
-        onboardingData.personalInfo.profilePictureUrl = presignedUrl;
+        onboardingData.personalInfo.profilePictureUrl = presignedUrl.split('?')[0];
       }
 
-      // if (workAuthorizationFile) {
-      //   const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl();
-      //   const presignedUrl = presignedUrlResponse.data.url;
+      if (workAuthorizationFile) {
+        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.OPT_RECEIPT });
+        const presignedUrl = presignedUrlResponse.data.url;
 
-      //   await axios.put(presignedUrl, workAuthorizationFile, {
-      //     headers: {
-      //       'Content-Type': file.type,
-      //     },
-      //   });
-      //   onboardingData.citizenshipStatus.workAuthorizationFiles.docUrl = presignedUrl;
-      // }
+        await axios.put(presignedUrl, workAuthorizationFile, {
+          headers: {
+            'Content-Type': workAuthorizationFile.type,
+          },
+        });
+        onboardingData.citizenshipStatus.workAuthorizationFiles.docUrl = presignedUrl.split('?')[0];
+      }
 
-      // if (driverLicenseCopyFile) {
-      //   const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl();
-      //   const presignedUrl = presignedUrlResponse.data.url;
+      if (driverLicenseCopyFile) {
+        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.DRIVER_LICENSE });
+        const presignedUrl = presignedUrlResponse.data.url;
 
-      //   await axios.put(presignedUrl, driverLicenseCopyFile, {
-      //     headers: {
-      //       'Content-Type': file.type,
-      //     },
-      //   });
-      //   onboardingData.driverLicense.driverLicenseCopyUrl = presignedUrl;
-      // }
+        await axios.put(presignedUrl, driverLicenseCopyFile, {
+          headers: {
+            'Content-Type': driverLicenseCopyFile.type,
+          },
+        });
+        onboardingData.driverLicense.driverLicenseCopyUrl = presignedUrl.split('?')[0];
+      }
 
       // post form to the server
       const response =
         await onboardingApiService.postOnboarding(onboardingData);
       return response.data;
     } catch (error) {
+      console.log(error);
       return thunkAPI.rejectWithValue(error.data.message);
     }
   },

@@ -60,7 +60,7 @@ export const userProfileSlice = createSlice({
       })
       .addCase(getUserProfile.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.data;
+        state.error = action.payload;
       })
       // updateUserProfile
       .addCase(updateUserProfile.pending, (state) => {
@@ -73,7 +73,7 @@ export const userProfileSlice = createSlice({
       })
       .addCase(updateUserProfile.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload.data;
+        state.error = action.payload;
       })
       // logout clean state
       .addCase(logout, () => initialState);

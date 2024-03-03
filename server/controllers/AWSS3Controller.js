@@ -14,12 +14,29 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
+const FileTypes = {
+  AVATAR: 'avatar',
+  DRIVER_LICENSE: 'driverLicense',
+  OPT_RECEIPT: 'optReceipt',
+  OPT_EAD: 'optEAD',
+  I983: 'I983',
+  I20: 'I20',
+};
+
 const getPresignedUrl = async (req, res) => {
   const { userId } = req.user;
+  const { fileType } = req.query; // 'avatar', 'driverLicense', 'optReceipt', 'optEAD', 'I983', 'I20'.
+  // Check if fileType is one of the allowed types
+  if (!Object.values(FileTypes).includes(fileType)) {
+    return res.status(400).json({ message: 'Invalid file type' });
+  }
+
+  const key = `${userId}/${fileType}`;
   const params = {
     Bucket: process.env.AWS_S3_BUCKET_NAME,
-    Key: userId,
-    Expires: 300, // URL expires in 300 seconds, 5 mins
+    Key: key,
+    Expires: 60, // URL expires in 300 seconds, 5 mins
+    ContentType: fileType === FileTypes.AVATAR ? 'image/jpeg' : 'application/pdf', // or other appropriate content type
   };
 
   s3.getSignedUrl('putObject', params, (error, url) => {
