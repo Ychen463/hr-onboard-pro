@@ -174,13 +174,20 @@ const VisaSection = ({ readOnly, formData, setFormData }) => {
           formData?.workAuthorization === 'F1(CPT/OPT)' &&
           formData?.workAuthorizationFiles?.length > 0 && (
             <Grid item xs={12}>
-              <a
+              {/* <a
                 href={formData?.workAuthorizationFiles[0].docUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 View Uploaded Document
-              </a>
+              </a> */}
+              {/* <Link
+                href={formData?.workAuthorizationFiles[0].docUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Link
+              </Link> */}
             </Grid>
           )}
       </Grid>

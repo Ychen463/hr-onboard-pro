@@ -32,25 +32,18 @@ export const submitOnboarding = createAsyncThunk(
   async (onboardingData, thunkAPI) => {
     try {
       // upload files to AWS S3
-      console.log("thunk submitOnboarding onboardingData", onboardingData);
       const profilePictureFile = onboardingData.personalInfo?.profilePictureUrl || null;
       const workAuthorizationFile = onboardingData.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' ? onboardingData.citizenshipStatus.workAuthorizationFiles.docUrl : null;
       const driverLicenseCopyFile = onboardingData.driverLicense.hasDriverLicense ? onboardingData.driverLicense.driverLicenseCopyUrl : null;
 
-      console.log("profilePictureFile", profilePictureFile);
-      console.log("workAuthorizationFile", workAuthorizationFile);
-      console.log("driverLicenseCopyFile", driverLicenseCopyFile);
-
       if (profilePictureFile) {
         const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.AVATAR });
         const presignedUrl = presignedUrlResponse.data.url;
-        console.log("presignedUrl", presignedUrl);
         await axios.put(presignedUrl, profilePictureFile, {
           headers: {
             'Content-Type': profilePictureFile.type,
           },
         });
-        console.log("presignedUrl", presignedUrl);
 
         onboardingData.personalInfo.profilePictureUrl = presignedUrl.split('?')[0];
       }
@@ -84,7 +77,6 @@ export const submitOnboarding = createAsyncThunk(
         await onboardingApiService.postOnboarding(onboardingData);
       return response.data;
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(error.data.message);
     }
   },
