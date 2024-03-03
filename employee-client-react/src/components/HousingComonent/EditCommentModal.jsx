@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Dialog,
   DialogTitle,
@@ -7,63 +8,68 @@ import {
   DialogActions,
   TextField,
   Button,
-} from "@mui/material";
+  Box,
+} from '@mui/material';
 
-function EditCommentModal({ currentComment }) {
-  const [open, setOpen] = useState(false);
-  const [comment, setComment] = useState("");
+import {
+  selectIsEditCommentModalOpen,
+  selectEditModalContent,
+  closeEditCommentModal,
+} from '../../store/slices/FacilityRportModalSlice';
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleSaveComment = () => {
-    // Add save comment processing logic here
-    console.log(comment);
-    handleClose();
+import { editComment } from '../../store/slices/facilityReportSlice';
+
+function EditCommentModal() {
+  const dispatch = useDispatch();
+  const open = useSelector(selectIsEditCommentModalOpen);
+  const defaultComment = useSelector(selectEditModalContent);
+
+  const handleSaveComment = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const updatedComment = formData.get('comment');
+
+    //dispatch(editComment({ facilityReportId, commentId, description: 'updatedComment' }));
+    console.log("Edit Comment function triggered, api didn't dispatch");
+    dispatch(closeEditCommentModal());
   };
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleOpen}>
-        test Edit modal
-      </Button>
       <Dialog
         open={open}
-        onClose={handleClose}
         PaperProps={{
           sx: {
-            width: "600px",
-            height: "350px",
+            width: '600px',
+            height: '350px',
           },
         }}
       >
         <DialogTitle>EDIT Comment</DialogTitle>
-        <DialogContent>
-          <TextField
-            fullWidth
-            margin="normal"
-            id="comment"
-            label="Comment"
-            type="text"
-            variant="outlined"
-            multiline
-            rows={6}
-            value={currentComment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder=""
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleSaveComment}
-            variant="contained"
-            color="primary"
-          >
-            SAVE
-          </Button>
-          <Button onClick={handleClose} variant="contained">
-            CANCEL
-          </Button>
-        </DialogActions>
+        <Box component="form" onSubmit={handleSaveComment}>
+          <DialogContent>
+            <TextField
+              fullWidth
+              margin="normal"
+              name="comment"
+              label="Comment"
+              type="text"
+              variant="outlined"
+              multiline
+              rows={6}
+              defaultValue={defaultComment}
+              placeholder=""
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button type="submit" variant="contained" color="primary">
+              SAVE
+            </Button>
+            <Button onClick={() => dispatch(closeEditCommentModal())} variant="contained">
+              CANCEL
+            </Button>
+          </DialogActions>
+        </Box>
       </Dialog>
     </div>
   );

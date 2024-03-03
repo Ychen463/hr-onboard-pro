@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Dialog,
   DialogTitle,
@@ -6,32 +7,35 @@ import {
   DialogActions,
   TextField,
   Button,
-} from "@mui/material";
+} from '@mui/material';
+
+import {
+  selectisAddCommentModalOpen,
+  closeAddCommentModal,
+} from '../../store/slices/FacilityRportModalSlice.js';
+import { addComment } from '../../store/slices/facilityReportSlice';
 
 function AddCommentModal() {
-  const [open, setOpen] = useState(false);
-  const [comment, setComment] = useState("");
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const dispatch = useDispatch();
+  const open = useSelector(selectisAddCommentModalOpen);
+  const [comment, setComment] = useState('');
+
   const handleAddComment = () => {
-    // Add comment processing logic here
-    console.log(comment); // For demonstration
-    handleClose();
+    // ????? how to get facilityReportId????
+    //dispatch(addComment({ facilityReportId, description: comment }));
+    console.log(comment);
+    setComment('');
+    dispatch(closeAddCommentModal());
   };
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleOpen}>
-        Test add modal
-      </Button>
-
       <Dialog
         open={open}
-        onClose={handleClose}
         PaperProps={{
           sx: {
-            width: "600px",
-            height: "350px",
+            width: '600px',
+            height: '350px',
           },
         }}
       >
@@ -53,11 +57,7 @@ function AddCommentModal() {
           />
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={handleAddComment}
-            variant="contained"
-            color="primary"
-          >
+          <Button onClick={handleAddComment} variant="contained" color="primary">
             ADD
           </Button>
         </DialogActions>
