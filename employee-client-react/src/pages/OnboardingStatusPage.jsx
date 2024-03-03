@@ -1,18 +1,11 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Typography } from "@mui/material";
-import {
-  selectorCurrentUser,
-  sessionValidate,
-} from "../store/slices/authSlice.js";
+import { selectorCurrentUser } from "../store/slices/authSlice.js";
 
-// eslint-disable-next-line react/prop-types
 function OnboardingStatusCard() {
   const navigate = useNavigate();
   const currentUserData = useSelector(selectorCurrentUser);
-  console.log("in status page ", currentUserData);
   const { onboardingStatus } = currentUserData;
 
   const rejFeedback =

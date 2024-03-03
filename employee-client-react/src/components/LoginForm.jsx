@@ -25,8 +25,14 @@ function LoginForm() {
 
   useEffect(() => {
     dispatch(sessionValidate())
-    // navigate('/onboarding-status');
   }, []);
+
+  useEffect(() => {
+    if(isLoggedin) {
+      navigate('/onboarding-status');
+    }
+  }, [isLoggedin])
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -36,7 +42,6 @@ function LoginForm() {
     dispatch(login({ username, password }));
   };
 
-
   if (isLoading) {
     return (
       <Box sx={{ display: 'flex' }}>
@@ -44,12 +49,6 @@ function LoginForm() {
       </Box>
     );
   }
-
-  if (isLoggedin) {
-    navigate('/onboarding-status');
-  }
-
-  console.log("LoginForm error", error);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -105,7 +104,7 @@ function LoginForm() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href>Forgot password?</Link>
+                <Link>Forgot password?</Link>
               </Grid>
             </Grid>
           </Box>
@@ -115,6 +114,7 @@ function LoginForm() {
     </ThemeProvider>
   );
 }
+
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
