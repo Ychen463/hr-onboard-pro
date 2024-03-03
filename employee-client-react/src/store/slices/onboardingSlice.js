@@ -29,6 +29,54 @@ export const submitOnboarding = createAsyncThunk(
   "onboarding/submitOnboarding",
   async (onboardingData, thunkAPI) => {
     try {
+      // upload files to AWS S3
+      const profilePictureFile = onboardingData.personalInfo?.profilePictureUrl || null;
+      const workAuthorizationFile = onboardingData.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' ? onboardingData.citizenshipStatus.workAuthorizationFiles.docUrl : null;
+      const driverLicenseCopyFile = onboardingData.driverLicense.hasDriverLicense ? onboardingData.driverLicense.driverLicenseCopyUrl : null;
+
+      console.log("profilePictureFile", profilePictureFile);
+      console.log("workAuthorizationFile", workAuthorizationFile);
+      console.log("driverLicenseCopyFile", driverLicenseCopyFile);
+
+      if (profilePictureFile) {
+        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl();
+        const presignedUrl = presignedUrlResponse.data.url;
+
+        await axios.put(presignedUrl, profilePictureFile, {
+          headers: {
+            'Content-Type': file.type,
+          },
+        });
+        console.log("presignedUrl", presignedUrl);
+
+        onboardingData.personalInfo.profilePictureUrl = presignedUrl;
+      }
+
+      // if (workAuthorizationFile) {
+      //   const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl();
+      //   const presignedUrl = presignedUrlResponse.data.url;
+
+      //   await axios.put(presignedUrl, workAuthorizationFile, {
+      //     headers: {
+      //       'Content-Type': file.type,
+      //     },
+      //   });
+      //   onboardingData.citizenshipStatus.workAuthorizationFiles.docUrl = presignedUrl;
+      // }
+
+      // if (driverLicenseCopyFile) {
+      //   const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl();
+      //   const presignedUrl = presignedUrlResponse.data.url;
+
+      //   await axios.put(presignedUrl, driverLicenseCopyFile, {
+      //     headers: {
+      //       'Content-Type': file.type,
+      //     },
+      //   });
+      //   onboardingData.driverLicense.driverLicenseCopyUrl = presignedUrl;
+      // }
+
+      // post form to the server
       const response =
         await onboardingApiService.postOnboarding(onboardingData);
       return response.data;

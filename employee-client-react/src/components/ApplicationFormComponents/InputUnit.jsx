@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { styled } from "@mui/material/styles";
@@ -50,7 +49,6 @@ const CustomTextField = styled(TextField)({
 });
 
 function InputUnit({
-  // eslint-disable-next-line react/prop-types
   name,
   value,
   label,
@@ -72,10 +70,11 @@ function InputUnit({
         label={label}
         required={required}
         placeholder={placeholder}
-        defaultValue={value}
+        // defaultValue={value}
         fullWidth
         disabled={disabled}
         onChange={onChange}
+        value={value}
       >
         {options.map((option) => (
           <MenuItem value={option} key={option}>

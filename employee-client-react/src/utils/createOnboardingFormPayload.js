@@ -1,4 +1,4 @@
-const createOnboardingFormPayload = (rawData) => {
+const createOnboardingFormPayload = (rawData, emergencyContacts) => {
   const payload = {
     personalInfo: {
       firstName: rawData.personalFirstName,
@@ -17,7 +17,7 @@ const createOnboardingFormPayload = (rawData) => {
         cellPhoneNumber: rawData.personalCellPhoneNumber,
         workPhoneNumber: rawData.personalWorkPhoneNumber,
       },
-      carInformation: {
+      carInformation: rawData.hasCar && {
         make: rawData.carMake,
         model: rawData.carModel,
         color: rawData.carColor,
@@ -28,26 +28,26 @@ const createOnboardingFormPayload = (rawData) => {
     },
     citizenshipStatus: {
       isCitizenOrPermanentResident: rawData.isCitizenOrPermanentResident,
-      statusDetail: rawData.statusDetail,
-      workAuthorization: rawData.workAuthorization,
-      workAuthorizationOtherTitle: rawData.workAuthorizationOtherTitle,
+      statusDetail: rawData.isCitizenOrPermanentResident ? rawData.statusDetail : "None",
+      workAuthorization: rawData.isCitizenOrPermanentResident ? 'None' : rawData.workAuthorization,
+      workAuthorizationOtherTitle: rawData.isCitizenOrPermanentResident ? 'None' : rawData.workAuthorizationOtherTitle,
       workAuthorizationFiles: [
         {
-          docUrl: rawData.workAuthorizationFiles,
+          docUrl: rawData.isCitizenOrPermanentResident ? '' : rawData.workAuthorizationFiles,
         },
       ],
       startEndDate: {
-        startDate: rawData.startDate,
-        endDate: rawData.endDate,
+        startDate: rawData.isCitizenOrPermanentResident ? '' : rawData.startDate,
+        endDate: rawData.isCitizenOrPermanentResident ? '' : rawData.endDate,
       },
     },
     driverLicense: {
       hasDriverLicense: rawData.hasDriverLicense,
-      driverLicenseNumber: rawData.driverLicenseNumber,
-      expirationDate: rawData.driverLicenseExpirationDate,
-      driverLicenseCopyUrl: rawData.driverLicenseCopy,
+      driverLicenseNumber: rawData.hasDriverLicense ? rawData.driverLicenseNumber : '',
+      expirationDate: rawData.hasDriverLicense ? rawData.driverLicenseExpirationDate : '',
+      driverLicenseCopyUrl: rawData.hasDriverLicense ? rawData.driverLicenseCopy : '',
     },
-    referral: {
+    referral: rawData.ifHasReferal && {
       firstName: rawData.referralFirstName,
       lastName: rawData.referralLastName,
       middleName: rawData.referralMiddleName,
@@ -55,16 +55,7 @@ const createOnboardingFormPayload = (rawData) => {
       email: rawData.referralEmail,
       relationship: rawData.referralRelationship,
     },
-    emergencyContacts: [
-      {
-        firstName: rawData.emergencyContactFirstName,
-        lastName: rawData.emergencyContactLastName,
-        middleName: rawData.emergencyContactMiddleName,
-        phone: rawData.emergencyContactPhoneNumber,
-        email: rawData.emergencyContactEmail,
-        relationship: rawData.emergencyContactRelationship,
-      },
-    ],
+    emergencyContacts: emergencyContacts,
   };
   return payload;
 };

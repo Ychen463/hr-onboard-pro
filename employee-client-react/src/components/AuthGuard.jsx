@@ -37,9 +37,7 @@ const AuthGuard = () => {
       <Alert severity="error">{ error }</Alert>
     );
   }
-
-  console.log("AUTH GUARD", isLoggedin);
- 
+  
   return isLoggedin ? <Outlet /> : <Navigate to="/login" />;
 };
 
