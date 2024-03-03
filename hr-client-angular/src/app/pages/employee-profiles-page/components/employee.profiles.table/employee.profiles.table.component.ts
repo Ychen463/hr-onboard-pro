@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
-import { Observable, catchError, of } from 'rxjs';
+import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -51,8 +50,7 @@ export class EmployeeProfilesTableComponent implements OnInit {
   }
 
   navigateToDetails(userAccountId: string) {
-    this.profileService.userAccountIdForDetails = userAccountId;
-    this.router.navigate(['employee-profiles/full-profile']);
+    this.router.navigate(['employee-profiles/full-profile', userAccountId]);
   }
 
   handleSearch(): void {

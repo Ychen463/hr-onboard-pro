@@ -18,11 +18,10 @@ export class FullEmployeeProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.profileService.userAccountIdForDetails) {
-      let response = this.profileService.getProfileById(
-        this.profileService.userAccountIdForDetails
-      );
-
+    let userAccountId = this.route.snapshot.paramMap.get('userAccountId');
+    if(userAccountId){
+      let response = this.profileService.getProfileById(userAccountId);
+      
       response.pipe(catchError((err) => of([{ err }]))).subscribe((body: any) => {
         const profileResponse = body as FullProfileResponse;
 
