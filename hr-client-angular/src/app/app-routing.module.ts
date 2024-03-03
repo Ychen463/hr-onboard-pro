@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'hiring', component: OnboardingComponent },
   { path: 'onboarding/:userAccountId', component: OnboardingDetailComponent },
   { path: 'employee-profiles', loadChildren: () => import('./pages/employee-profiles-page/employee-profiles-page.module').then(m => m.EmployeeProfilesPageModule) },
+  { path: 'housing', loadChildren: () => import('./pages/housing-page/housing-page.module').then(m => m.HousingPageModule) },
   // other routes
   { path: '**', component: NotFoundComponent}
 ];

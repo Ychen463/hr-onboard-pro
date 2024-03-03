@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { authReducer } from './store/auth/auth.reducer';
 import { employeeProfileReducer } from './store/employee-profile/employee.profile.reducer';
+import { housingReducer } from './store/housing/housing.reducer';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -32,11 +33,17 @@ import { ShortenUrlPipe } from './pages/hiring-page/pipe/shorten-url.pipe';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
-  declarations: [AppComponent, NavigationBarComponent, LoginPageComponent, NotFoundComponent, ShortenUrlPipe],
+  declarations: [
+    AppComponent,
+    NavigationBarComponent,
+    LoginPageComponent,
+    NotFoundComponent,
+    ShortenUrlPipe,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({ auth: authReducer, employeeProfile: employeeProfileReducer }),
+    StoreModule.forRoot({ auth: authReducer, employeeProfile: employeeProfileReducer, housing: housingReducer }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
@@ -52,7 +59,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     MatListModule,
     MatDividerModule,
     HiringPageModule,
-
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],

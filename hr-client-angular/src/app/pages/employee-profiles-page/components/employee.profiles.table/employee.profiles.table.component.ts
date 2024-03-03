@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -17,7 +17,7 @@ import { Store } from '@ngrx/store';
   templateUrl: './employee.profiles.table.component.html',
   styleUrls: ['./employee.profiles.table.component.css'],
 })
-export class EmployeeProfilesTableComponent implements OnInit {
+export class EmployeeProfilesTableComponent implements OnInit, OnDestroy {
   columnsToDisplay: string[] = ['name', 'email', 'phone', 'workAuthorization', 'ssn'];
   dataSource = new MatTableDataSource<ProfileSummary>();
 
@@ -47,6 +47,11 @@ export class EmployeeProfilesTableComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       });
+  }
+
+  ngOnDestroy(): void {
+    this.selectProfileSummariesSubscription?.unsubscribe();
+    this.selectProfileSummariesByNameSubscription?.unsubscribe();
   }
 
   navigateToDetails(userAccountId: string) {
