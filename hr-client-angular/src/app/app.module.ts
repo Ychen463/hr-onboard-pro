@@ -10,12 +10,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HttpClientModule } from '@angular/common/http';
 
+
+
 import { authReducer } from './store/auth/auth.reducer';
 import { employeeProfileReducer } from './store/employee-profile/employee.profile.reducer';
 import { onboardingReducer } from './store/hiring/reducers/onboarding.reducer';
 import { registrationTokenReducer } from './store/hiring/reducers/registrationToken.reducer';
-import { housingReducer } from './store/housing/housing.reducer';
-import { facilityReportReducer } from './store/facility-report/facility.report.reducer';
+import { visaReducer} from './store/visa/visa.reducer'
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,6 +26,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';

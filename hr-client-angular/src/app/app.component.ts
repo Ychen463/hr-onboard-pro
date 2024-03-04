@@ -8,10 +8,10 @@ import { AuthActions } from './store/auth/auth.actions';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
+
 export class AppComponent implements OnInit {
   @ViewChild('sidenav') sidenav: any;
   title = 'hr-client-angular';
-
   activeRoute: string = '';
   opened = false;
 
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
     // this.authService.logout(); // Assuming you have an authentication service
     this.router.navigate(['/login']); // Redirect to login page after logout
   }
-
+  
   ngOnInit() {
     const userData = localStorage.getItem('user');
     if (userData) {
@@ -54,4 +54,5 @@ export class AppComponent implements OnInit {
       this.store.dispatch(AuthActions.rehydrateauth({ user: authData }));
     }
   }
+
 }
