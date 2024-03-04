@@ -2,6 +2,8 @@
 import UserAccount from '../models/UserAccountModel.js';
 import UserProfile from '../models/UserProfileModel.js';
 import Onboarding from '../models/OnboardingModel.js';
+import he from 'he';
+import validator from 'validator';
 
 // Get all employees' profile summary, sort by last name alphabetically
 // Name(first, last, preferred), SSN, Work Authorization Title, Phone Number, email(account)
@@ -114,6 +116,14 @@ const updateProfile = async (req, res) => {
   const { newProfile } = req.body;
 
   try {
+    // Validate the email
+    if (newProfile.email && !validator.isEmail(newProfile.email)) {
+      return res.status(422).json({ message: 'Invalid email format.' });
+    }
+
+    // Sanitize inputs that will be rendered in HTML
+    newProfile = sanitizeProfile(newProfile);
+
     // check if the profile exists and whether the user is trying to modify his/her own profile
     const profile = await UserProfile.findById(newProfile._id).lean().exec();
     if (!profile) {
@@ -147,6 +157,16 @@ const updateProfile = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+// Sanitize profile fields
+function sanitizeProfile(profile) {
+  const sanitizedProfile = {};
+  Object.keys(profile).forEach(key => {
+    const value = profile[key];
+    // Assuming all fields are strings; adjust as necessary
+    sanitizedProfile[key] = typeof value === 'string' ? he.encode(value) : value;
+  });
+  return sanitizedProfile;
+}
 
 // Create new profile for an employee who finished onboarding
 const createUserProfile = async (req, res) => {
@@ -156,6 +176,19 @@ const createUserProfile = async (req, res) => {
       message: 'Missing userAccountId and onboardingId to create a user profile.',
     });
   }
+    // Validation for presence
+    if (!(userAccountId && onboardingId)) {
+      return res.status(422).json({
+        message: 'Missing userAccountId and onboardingId to create a user profile.',
+      });
+    }
+  
+    // Validation for format
+    if (!validator.isMongoId(userAccountId) || !validator.isMongoId(onboardingId)) {
+      return res.status(422).json({
+        message: 'Invalid format for userAccountId or onboardingId.',
+      });
+    }
 
   try {
     const account = await UserAccount.findById(userAccountId).lean().exec();

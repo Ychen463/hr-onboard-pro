@@ -1,3 +1,7 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import he from 'he';
+import validator from 'validator';
+
 import Visa from '../models/VisaModel.js';
 import Onboarding from '../models/OnboardingModel.js';
 import UserAccount from '../models/UserAccountModel.js';
@@ -99,11 +103,16 @@ const updateDoc = async (req, res) => {
   const { docUrl } = req.body;
   const docTypeName = docTypeToDocTypeName[docType];
 
+  if (!validator.isURL(docUrl, { protocols: ['http','https'], require_protocol: true })) {
+    return res.status(400).json({ message: 'Invalid URL format.' });
+  }
+
   try {
     const visa = await Visa.findOne({ userAccountId }).exec();
     if (!visa) {
       return res.status(404).json({ message: 'Visa record not found.' });
     }
+    
 
     // Document sequence
     const steps = ['optReceipt', 'optEAD', 'i983', 'i20'];
@@ -163,6 +172,7 @@ const updateDoc = async (req, res) => {
 const updateVisaDecision = async (req, res) => {
   const { userAccountId, docType } = req.params;
   const { decision, rejFeedback } = req.body;
+  const safeRejFeedback = he.encode(rejFeedback);
 
   const docTypes = ['optReceipt', 'optEAD', 'i983', 'i20'];
   const docTypeNames = ['OPT RECEIPT', 'OPT EAD', 'I983', 'I20'];
@@ -186,7 +196,7 @@ const updateVisaDecision = async (req, res) => {
       [`docs.${docType}.status`]: docStatus,
     };
     if (decision === 'Rejected') {
-      update[`docs.${docType}.rejFeedback`] = rejFeedback || 'No feedback provided.';
+      update[`docs.${docType}.rejFeedback`] = safeRejFeedback || 'No feedback provided.';
       update.visaStatus = docStatus;
     } else if (decision === 'Approved') {
       update.visaStatus = docStatus;

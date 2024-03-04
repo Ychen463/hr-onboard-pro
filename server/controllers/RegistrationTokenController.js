@@ -1,10 +1,29 @@
 import RegistrationToken from '../models/RegistrationTokenModel.js';
 import generateRegisterToken from '../utils/generateRegisterToken.js';
 import sendEmail from '../utils/sendEmail.js';
+import validator from 'validator';
 
 const generateRegiToken = async (req, res) => {
   try {
     const { userFirstName, userLastName, email } = req.body;
+
+    // Validate email
+    if (!validator.isEmail(email)) {
+      return res.status(422).json({ message: 'Invalid email format' });
+    }
+
+    // Sanitize email to ensure consistency
+    email = validator.normalizeEmail(email);
+
+    // Optional: Validate names if your application requires
+    if (!userFirstName || !validator.isAlpha(userFirstName, 'en-US', { ignore: ' -' })) {
+      return res.status(422).json({ message: 'Invalid first name format' });
+    }
+    if (!userLastName || !validator.isAlpha(userLastName, 'en-US', { ignore: ' -' })) {
+      return res.status(422).json({ message: 'Invalid last name format' });
+    }
+
+
     // Registration Email should not be used before
     const userEmailExists = await RegistrationToken.findOne({ email }).lean().exec();
     if (userEmailExists) {

@@ -1,5 +1,8 @@
 /* eslint-disable max-len */
 import express from 'express';
+import { body } from 'express-validator';
+
+
 import {
   getVisaDetails,
   getCurrentStep,
@@ -29,6 +32,13 @@ router.post(
   '/:userAccountId/docs/:docType',
   jwtVerifyToken,
   checkRole(['HR', 'employee']),
+  [
+    body('decision').notEmpty().withMessage('Decision is required'),
+    body('rejFeedback')
+      .trim()
+      .isLength({ max: 500 })
+      .withMessage('Feedback must not exceed 500 characters'),
+  ],
   updateDoc
 );
 // HR
