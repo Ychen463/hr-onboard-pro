@@ -37,6 +37,11 @@ const getHouseFacilityReports = async (req, res) => {
   try {
     const reportList = await FacilityReport.find({ housing: housingId })
       .populate({
+        path: 'createdBy', // Populate createdBy in facilityReportSchema
+        model: 'UserAccount',
+        select: '_id username userRole',
+      })
+      .populate({
         path: 'comments.createdBy', // Use dot notation to specify the nested path
         model: 'UserAccount', // Model to populate from
         select: '_id username userRole',
