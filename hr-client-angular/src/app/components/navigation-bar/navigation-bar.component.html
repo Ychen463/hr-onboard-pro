@@ -1,11 +1,14 @@
-<!-- app.component.html -->
+<!-- navigation-bar.component.html -->
 <mat-toolbar color="primary">
-  <button mat-icon-button (click)="toggleSidebar()">
+  <button mat-icon-button *ngIf="!isLoginPage && !isDetailPage" (click)="toggleSidebar()">
     <mat-icon>menu</mat-icon>
+  </button>
+  <button mat-icon-button *ngIf="isDetailPage" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
   </button>
   <span>BeaconFire</span>
   <span class="example-spacer"></span>
-  <button mat-icon-button class="example-icon" (click)="logout()">
+  <button mat-icon-button class="example-icon" *ngIf="!isLoginPage" (click)="logout()">
     <mat-icon>exit_to_app</mat-icon>
   </button>
 </mat-toolbar>
