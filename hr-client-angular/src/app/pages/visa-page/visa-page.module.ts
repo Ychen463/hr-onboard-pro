@@ -8,20 +8,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { VisaFeedbackDialogComponent } from './components/visa-feedback-dialog/visa-feedback-dialog.component'
+import { VisaFeedbackDialogComponent } from './components/visa-feedback-dialog/visa-feedback-dialog.component';
 import { VisaPageComponent } from './visa-page.component';
 import { StoreModule } from '@ngrx/store';
 import { visaReducer } from 'src/app/store/visa/visa.reducer';
+// import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [VisaPageComponent,VisaFeedbackDialogComponent],
+  declarations: [VisaPageComponent, VisaFeedbackDialogComponent],
   imports: [
-    StoreModule.forRoot({ visa: visaReducer}),
+    StoreModule.forRoot({ visa: visaReducer }),
     CommonModule,
     MatDividerModule,
     MatTabsModule,
@@ -35,9 +36,8 @@ import { visaReducer } from 'src/app/store/visa/visa.reducer';
     ReactiveFormsModule,
     MatCardModule,
     BrowserModule,
+    // SharedModule,
   ],
-  exports: [
-    VisaPageComponent,
-  ],
+  exports: [VisaPageComponent],
 })
-export class VisaPageModule { }
+export class VisaPageModule {}

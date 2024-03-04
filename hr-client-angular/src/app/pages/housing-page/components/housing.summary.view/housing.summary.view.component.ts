@@ -21,7 +21,7 @@ import { CreateHousingDialogComponent } from '../create.housing.dialog/create.ho
 @Component({
   selector: 'app-housing-summary-view',
   templateUrl: './housing.summary.view.component.html',
-  styleUrls: ['./housing.summary.view.component.css']
+  styleUrls: ['./housing.summary.view.component.css'],
 })
 export class HousingSummaryViewComponent implements OnInit, OnDestroy {
   newHousingInit: NewHousing = {
@@ -37,7 +37,7 @@ export class HousingSummaryViewComponent implements OnInit, OnDestroy {
       mattresses: 0,
       tables: 0,
       chairs: 0,
-    }
+    },
   };
   newHousing: NewHousing = {
     name: '',
@@ -52,8 +52,8 @@ export class HousingSummaryViewComponent implements OnInit, OnDestroy {
       mattresses: 0,
       tables: 0,
       chairs: 0,
-    }
-  }
+    },
+  };
   pageIndex: number = 0;
   pageSize: number = 4;
 
@@ -63,11 +63,11 @@ export class HousingSummaryViewComponent implements OnInit, OnDestroy {
   selectHousingSummariesSubscription: Subscription | undefined;
 
   constructor(
-    private houseService: HousingService, 
+    private houseService: HousingService,
     private router: Router,
     private store: Store,
-    public dialog: MatDialog,
-    ) { }
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.houseService.getHousingSummary();
@@ -76,6 +76,7 @@ export class HousingSummaryViewComponent implements OnInit, OnDestroy {
       .select(selectHousingSummaries)
       .subscribe((summaries) => {
         if (summaries) {
+          // console.log('housing summaries view', summaries);
           this.dataSource.data = summaries;
         }
         this.dataSource.paginator = this.paginator;
@@ -92,12 +93,12 @@ export class HousingSummaryViewComponent implements OnInit, OnDestroy {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(CreateHousingDialogComponent, {
-      data: this.newHousing, 
+      data: this.newHousing,
       height: '400px',
       width: '600px',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
       if (result) {
         this.newHousing = result;
