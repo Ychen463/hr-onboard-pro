@@ -33,7 +33,7 @@ export const submitOnboarding = createAsyncThunk(
     try {
       // upload files to AWS S3
       const profilePictureFile = onboardingData.personalInfo?.profilePictureUrl || null;
-      const workAuthorizationFile = onboardingData.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' ? onboardingData.citizenshipStatus.workAuthorizationFiles.docUrl : null;
+      const workAuthorizationFile = onboardingData.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' ? onboardingData.citizenshipStatus.workAuthorizationFiles[0].docUrl : null;
       const driverLicenseCopyFile = onboardingData.driverLicense.hasDriverLicense ? onboardingData.driverLicense.driverLicenseCopyUrl : null;
 
       if (profilePictureFile) {
@@ -48,6 +48,8 @@ export const submitOnboarding = createAsyncThunk(
         onboardingData.personalInfo.profilePictureUrl = presignedUrl.split('?')[0];
       }
 
+      console.log("workAuthorizationFile before", workAuthorizationFile);
+
       if (workAuthorizationFile) {
         const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.OPT_RECEIPT });
         const presignedUrl = presignedUrlResponse.data.url;
@@ -57,8 +59,10 @@ export const submitOnboarding = createAsyncThunk(
             'Content-Type': workAuthorizationFile.type,
           },
         });
-        onboardingData.citizenshipStatus.workAuthorizationFiles.docUrl = presignedUrl.split('?')[0];
+        onboardingData.citizenshipStatus.workAuthorizationFiles[0].docUrl = presignedUrl.split('?')[0];
       }
+
+      console.log("workAuthorizationFile after", workAuthorizationFile);
 
       if (driverLicenseCopyFile) {
         const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.DRIVER_LICENSE });

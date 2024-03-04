@@ -54,6 +54,13 @@ const DriverLicenseSection = ({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({ ...prev, driverLicenseCopyUrl: file }));
+    }
+  };
+
   const handleCarChange = (event) => {
     const { name, value } = event.target;
     setPersonalInfo((prev) => ({
@@ -118,7 +125,7 @@ const DriverLicenseSection = ({
                     name="driverLicenseCopyUrl"
                     type="file"
                     hidden
-                    onChange={handleLicenseChange}
+                    onChange={handleFileChange}
                     accept="application/pdf"
                   />
                 </Button>
