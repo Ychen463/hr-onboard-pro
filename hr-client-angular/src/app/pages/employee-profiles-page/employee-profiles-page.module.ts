@@ -14,7 +14,7 @@ import { EmployeeProfilesPageComponent } from './employee-profiles-page.componen
 import { EmployeeProfilesTableComponent } from './components/employee.profiles.table/employee.profiles.table.component';
 import { EmployeeProfilesService } from './services/employee.profiles.service';
 import { FullEmployeeProfileComponent } from './components/full.employee.profile/full.employee.profile.component';
-import { SharedModule } from '../shared/shared.module';
+// import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,7 @@ import { SharedModule } from '../shared/shared.module';
     MatCardModule,
     MatInputModule,
     MatIconModule,
-    SharedModule,
+    // SharedModule,
   ],
   providers: [EmployeeProfilesService],
 })

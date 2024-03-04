@@ -7,10 +7,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
-import { NavigationBarComponent } from 'src/app/components/navigation-bar/navigation-bar.component';
+// import { NavigationBarComponent } from 'src/app/components/navigation-bar/navigation-bar.component';
 
 @NgModule({
-  declarations: [NavigationBarComponent],
+  declarations: [],
   imports: [
     CommonModule,
     MatButtonModule,
@@ -20,6 +20,6 @@ import { NavigationBarComponent } from 'src/app/components/navigation-bar/naviga
     MatIconModule,
     RouterModule,
   ],
-  exports: [NavigationBarComponent], // Export the NavigationBarComponent
+  exports: [], // Export the NavigationBarComponent
 })
 export class SharedModule {}

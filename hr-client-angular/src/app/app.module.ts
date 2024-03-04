@@ -41,9 +41,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { LoginPageModule } from './pages/login-page/login-page.module';
 import { RouterModule } from '@angular/router';
+import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
 
 @NgModule({
-  declarations: [AppComponent, NotFoundComponent],
+  declarations: [AppComponent, NotFoundComponent, NavigationBarComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

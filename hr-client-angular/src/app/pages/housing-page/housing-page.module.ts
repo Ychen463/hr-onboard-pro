@@ -24,7 +24,7 @@ import { ResidentsTabComponent } from './components/residents.tab/residents.tab.
 import { FacilityReportCardComponent } from './components/facility.report.card/facility.report.card.component';
 import { AddCommentDialogComponent } from './components/add.comment.dialog/add.comment.dialog.component';
 import { EditCommentDialogComponent } from './components/edit.comment.dialog/edit.comment.dialog.component';
-import { SharedModule } from '../shared/shared.module';
+// import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -52,7 +52,7 @@ import { SharedModule } from '../shared/shared.module';
     MatDialogModule,
     MatTabsModule,
     MatTableModule,
-    SharedModule,
+    // SharedModule,
   ],
   providers: [HousingService, FacilityReportService],
 })

@@ -1,4 +1,20 @@
-<!-- app.component.html -->
+<mat-sidenav-content>
+    <!-- Main content -->
+    <mat-toolbar color="primary">
+      <button mat-icon-button (click)="toggleSidebar()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>BeaconFire</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
+    </mat-toolbar>
+    <ng-content></ng-content>
+    <!-- Allows you to project content into the layout -->
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
 <mat-toolbar color="primary">
   <button mat-icon-button (click)="toggleSidebar()">
     <mat-icon>menu</mat-icon>
@@ -23,18 +39,19 @@
       >
       <a
         mat-list-item
-        routerLink="/visa"
-        [ngClass]="{ 'active-link': activeRoute === '/visa' }"
-        (click)="toggleSidebar()"
-        >Visa Management</a
-      >
-      <a
-        mat-list-item
         routerLink="/employee-profiles"
         [ngClass]="{ 'active-link': activeRoute === '/employee-profiles' }"
         (click)="toggleSidebar()"
         >Employee Profiles</a
       >
+      <a
+        mat-list-item
+        routerLink="/visa"
+        [ngClass]="{ 'active-link': activeRoute === '/visa' }"
+        (click)="toggleSidebar()"
+        >Visa Status Management</a
+      >
+
       <a
         mat-list-item
         routerLink="/housing"
@@ -48,7 +65,8 @@
       </mat-nav-list>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content class="router-outlet-container">
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
+  <mat-sidenav-content class="router-outlet-container"
+    ><ng-content></ng-content>
+    <!-- Content projection --></mat-sidenav-content
+  >
 </mat-sidenav-container>

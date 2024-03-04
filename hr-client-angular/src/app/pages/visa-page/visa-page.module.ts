@@ -17,7 +17,7 @@ import { VisaFeedbackDialogComponent } from './components/visa-feedback-dialog/v
 import { VisaPageComponent } from './visa-page.component';
 import { StoreModule } from '@ngrx/store';
 import { visaReducer } from 'src/app/store/visa/visa.reducer';
-import { SharedModule } from '../shared/shared.module';
+// import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [VisaPageComponent, VisaFeedbackDialogComponent],
@@ -36,7 +36,7 @@ import { SharedModule } from '../shared/shared.module';
     ReactiveFormsModule,
     MatCardModule,
     BrowserModule,
-    SharedModule,
+    // SharedModule,
   ],
   exports: [VisaPageComponent],
 })

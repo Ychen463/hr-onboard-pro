@@ -34,7 +34,7 @@ import { RejectFeedbackDialogComponent } from './components/reject-feedback-dial
 import { OnboardingDetailComponent } from './components/onboarding-detail/onboarding-detail.component';
 
 import { RegistrationTokenService } from './services/registrationToken.services';
-import { SharedModule } from '../shared/shared.module';
+// import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -69,7 +69,7 @@ import { SharedModule } from '../shared/shared.module';
     MatOptionModule,
     MatListModule,
     MatSnackBarModule,
-    SharedModule,
+    // SharedModule,
   ],
   exports: [
     OnboardingComponent,

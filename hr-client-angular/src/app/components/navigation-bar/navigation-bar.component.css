@@ -1,5 +1,4 @@
-/* app.component.css */
-.router-outlet-container {
+app.component.css .router-outlet-container {
   padding: 20px;
 }
 .example-container {
