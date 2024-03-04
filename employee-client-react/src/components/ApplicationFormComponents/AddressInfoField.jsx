@@ -1,20 +1,10 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import { Typography, Grid } from "@mui/material";
-import { useState } from "react";
 import InputUnit from "./InputUnit.jsx";
 
-function AddressInfoField({ readOnly }) {
-  const [currentAddress, setCurrentAddress] = useState({
-    buildingApt: "",
-    streetName: "",
-    city: "",
-    state: "",
-    zip: "",
-  });
+function AddressInfoField({ readOnly, personalInfo }) {
 
   return (
-    <Typography style={{ marginTop: "50px" }}>
+    <div style={{ marginTop: "50px" }}>
       <Typography
         variant="h4"
         component="h2"
@@ -28,7 +18,7 @@ function AddressInfoField({ readOnly }) {
         <Grid item xs={6}>
           <InputUnit
             name="buildingApt"
-            value={currentAddress.buildingApt}
+            value={personalInfo?.currentAddress?.buildingApt || ""}
             label="Building/Apt Number"
             type="text"
             placeholder="building 300 suite 120"
@@ -39,7 +29,7 @@ function AddressInfoField({ readOnly }) {
         <Grid item xs={6}>
           <InputUnit
             name="streetName"
-            value={currentAddress.streetName}
+            value={personalInfo?.currentAddress?.streetName || ""}
             label="Stree Name"
             type="text"
             placeholder="50 Millstone Rd "
@@ -50,7 +40,7 @@ function AddressInfoField({ readOnly }) {
         <Grid item xs={6}>
           <InputUnit
             name="city"
-            value={currentAddress.city}
+            value={personalInfo?.currentAddress?.city || ""}
             label="City"
             type="text"
             placeholder="East Windsor"
@@ -61,7 +51,7 @@ function AddressInfoField({ readOnly }) {
         <Grid item xs={6}>
           <InputUnit
             name="state"
-            value={currentAddress.buildingApt}
+            value={personalInfo?.currentAddress?.state || ""}
             label="State"
             type="text"
             placeholder="NJ"
@@ -72,7 +62,7 @@ function AddressInfoField({ readOnly }) {
         <Grid item xs={6}>
           <InputUnit
             name="zip"
-            value={currentAddress.buildingApt}
+            value={personalInfo?.currentAddress?.zip || ""}
             label="Zip Code"
             type="text"
             placeholder="08512"
@@ -81,7 +71,7 @@ function AddressInfoField({ readOnly }) {
           />
         </Grid>
       </Grid>
-    </Typography>
+    </div>
   );
 }
 
