@@ -52,7 +52,7 @@
             <td mat-cell *matCellDef="let row"> {{row.nextStep}} </td>
           </ng-container> -->
           <ng-container matColumnDef="nextStep">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Next Step </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header mat-column-nextStep> Next Step </th>
             <td mat-cell *matCellDef="let row" style = "display:flex ;align-items:center">
               {{ row.nextStep.split('-')[0] }}
               <a mat-icon-button [href]="'your-link-here'" *ngIf="row.nextStep.split('-')[1] === 'Pending'" aria-label="Example icon button with a open in new tab icon">

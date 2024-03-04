@@ -1,3 +1,36 @@
 <!-- app.component.html -->
-<router-outlet></router-outlet>
-<!-- <a routerLink="/hiring">Go to Hiring Page</a> -->
+<mat-toolbar color="primary">
+    <button mat-icon-button (click)="toggleSidebar()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>BeaconFire</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon favorite-icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon">
+      <mat-icon>share</mat-icon>
+    </button>
+  </mat-toolbar>
+  
+  <mat-sidenav-container class="example-container">
+    <mat-sidenav #sidenav mode="over" [(opened)]="opened" class="sidenav">
+      <div class="sidenav-header">
+      </div>
+      <mat-nav-list>
+        <a mat-list-item routerLink="/" [ngClass]="{ 'active-link': activeRoute === '/' }" (click)="toggleSidebar()">Home</a>
+<a mat-list-item routerLink="/hiring" [ngClass]="{ 'active-link': activeRoute === '/hiring' }" (click)="toggleSidebar()">Hiring Management</a>
+<a mat-list-item routerLink="/visa" [ngClass]="{ 'active-link': activeRoute === '/visa' }" (click)="toggleSidebar()">Visa Management</a>
+<a mat-list-item routerLink="/employee-profiles" [ngClass]="{ 'active-link': activeRoute === '/employee-profiles' }" (click)="toggleSidebar()">Employee Profiles</a>
+<a mat-list-item routerLink="/housing" [ngClass]="{ 'active-link': activeRoute === '/housing' }" (click)="toggleSidebar()">Housing Management</a>
+<mat-divider></mat-divider>
+        <mat-nav-list>
+          <a mat-list-item (click)="logout()">Logout</a>
+        </mat-nav-list>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content  class="router-outlet-container">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

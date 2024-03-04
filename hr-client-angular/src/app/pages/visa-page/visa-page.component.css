@@ -29,9 +29,15 @@ table {
     width: 25%;
     max-width: 1440px;
   }
-  
-  
-
+  .mat-column-nextStep {
+    min-width: 200px;
+  }
+  .mat-icon-button .mat-icon {
+    font-size: 16px; 
+  }
+  .mat-icon-button {
+    padding: 0; 
+  }
 
   tr.example-detail-row {
     height: 0;
