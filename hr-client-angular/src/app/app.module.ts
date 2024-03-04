@@ -18,6 +18,8 @@ import { authReducer } from './store/auth/auth.reducer';
 import { employeeProfileReducer } from './store/employee-profile/employee.profile.reducer';
 import { onboardingReducer } from './store/hiring/reducers/onboarding.reducer';
 import { registrationTokenReducer } from './store/hiring/reducers/registrationToken.reducer';
+import { housingReducer } from './store/housing/housing.reducer';
+import { facilityReportReducer } from './store/facility-report/facility.report.reducer';
 import { visaReducer} from './store/visa/visa.reducer'
 
 import { MatCardModule } from '@angular/material/card';
@@ -41,7 +43,12 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 
 @NgModule({
-  declarations: [AppComponent, NavigationBarComponent, LoginPageComponent, NotFoundComponent, ],
+  declarations: [
+    AppComponent, 
+    NavigationBarComponent, 
+    LoginPageComponent, 
+    NotFoundComponent, 
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

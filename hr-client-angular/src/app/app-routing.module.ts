@@ -13,6 +13,7 @@ const routes: Routes = [
   { path: 'onboarding/:userAccountId', component: OnboardingDetailComponent },
   { path: 'visa', component: VisaPageComponent },
   { path: 'employee-profiles', loadChildren: () => import('./pages/employee-profiles-page/employee-profiles-page.module').then(m => m.EmployeeProfilesPageModule) },
+  { path: 'housing', loadChildren: () => import('./pages/housing-page/housing-page.module').then(m => m.HousingPageModule) },
   // other routes
   { path: '**', component: NotFoundComponent}
 ];

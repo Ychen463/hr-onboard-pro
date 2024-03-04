@@ -11,7 +11,8 @@ const generateRegiToken = async (req, res) => {
       return res.status(409).json({ message: 'Register Email already exists' });
     }
     const jwtToken = generateRegisterToken(userFirstName, userLastName, email, 'employee');
-    const registrationLink = `${process.env.DOMAIN_NAME}/register?token=${jwtToken}`;
+    // const registrationLink = `${process.env.DOMAIN_NAME}/register?token=${jwtToken}`;
+    const registrationLink = `http://localhost:5173/register?token=${jwtToken}`;
     const tokenInfo = {
       userFirstName,
       userLastName,
@@ -100,6 +101,4 @@ const getAllTokens = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-export {
-  generateRegiToken, updateTokenStatus, getTokenStatus, getAllTokens,
-};
+export { generateRegiToken, updateTokenStatus, getTokenStatus, getAllTokens };

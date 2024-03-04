@@ -77,11 +77,11 @@ const getProfile = async (req, res) => {
 
   try {
     const profile = await UserProfile.findOne({ userAccountId: userId }).lean().exec();
-    const account = await UserAccount.findById(profile.userAccountId).lean().exec();
     // if no profile found
     if (!profile) {
       return res.status(422).json({ message: 'Profile doesn’t exist.' });
     }
+    const account = await UserAccount.findById(profile.userAccountId).lean().exec();
     if (!account) {
       return res.status(422).json({ message: 'Could not find the user account.' });
     }

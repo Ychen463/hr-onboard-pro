@@ -1,0 +1,8 @@
+<h1>Housing Details</h1>
+<mat-divider></mat-divider>
+
+<mat-tab-group>
+  <mat-tab label="Housing Information"> <app-housing-info-tab [housingProfile]="housingProfile"> </app-housing-info-tab> </mat-tab>
+  <mat-tab label="Facility Reports"> <app-facility-reports-tab> </app-facility-reports-tab> </mat-tab>
+  <mat-tab label="Residents"> <app-residents-tab [housingProfile]="housingProfile"> </app-residents-tab> </mat-tab>
+</mat-tab-group>
