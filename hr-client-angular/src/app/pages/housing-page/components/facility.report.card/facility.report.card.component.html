@@ -15,6 +15,10 @@
       <button mat-flat-button disabled *ngSwitchCase="'Closed'">
         Closed
       </button>
+
+      <button mat-flat-button disabled *ngSwitchDefault>
+        Missing Status
+      </button>
     </ng-container>
   </div>
   <br />
@@ -34,15 +38,15 @@
       <mat-divider></mat-divider>
       <br/>
       <div class="flexbox-h flexbox-space-between">
-        <div *ngIf="comment.createdBy._id == userId">
-          <button mat-flat-button color="primary">
-            Edit
-          </button>
-        </div>
         <div>
           <p>{{ comment.description }}</p>
           <br/>
           <p>Last editted by {{ comment.createdBy.username }} at {{ comment.lastModifiedDatetime | date }}</p>
+        </div>
+        <div *ngIf="comment.createdBy._id === userAccountId">
+          <button mat-flat-button color="primary" (click)="openEditCommentDialog(comment._id, comment.description)">
+            Edit
+          </button>
         </div>
       </div>
     </ng-container>
