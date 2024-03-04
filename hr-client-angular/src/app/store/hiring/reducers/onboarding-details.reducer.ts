@@ -1,8 +1,9 @@
 // src/app/store/onboarding/onboarding.reducer.ts
 
-import { createReducer, on } from '@ngrx/store';
+import { createReducer, createSelector, on } from '@ngrx/store';
 import { loadOnboarding, loadOnboardingSuccess, loadOnboardingFailure } from '../actions/onboarding-details.actions';
 import { OnboardingState } from '../models/hiring.models'; 
+import { Onboarding } from 'src/app/pages/hiring-page/interfaces/onboarding.model';
 export interface State {
   onboarding: OnboardingState | null;
   isLoading: boolean, 
@@ -15,10 +16,7 @@ export const initialState: State = {
   error: null 
 };
 
-export const onboardingReducer = createReducer(
-  initialState,
-  on(loadOnboarding, (state) => ({ ...state, isLoading: true })), 
-  on(loadOnboardingSuccess, (state, { onboardingData }) => ({ ...state, onboardingData, 
-    error: null, isLoading: false })),
-  on(loadOnboardingFailure, (state, { error }) => ({ ...state, error, onboardingData: null, isLoading: false }))
+export const selectOnboardingByAccountId = createSelector(
+  (state: OnboardingState) => state.onboardings,
+  (onboardings: Onboarding[], props: { userAccountId: string }) => onboardings.find(onboarding => onboarding.userAccountId === props.userAccountId)
 );
