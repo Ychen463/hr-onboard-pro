@@ -8,11 +8,13 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { AuthActions } from '../store/auth/auth.actions';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   private readonly baseUrl = 'http://localhost:3000';
-  constructor() {}
+  constructor(private store: Store) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Only prepend base URL for relative URLs (not absolute URLs)
@@ -41,6 +43,8 @@ export class AuthInterceptor implements HttpInterceptor {
           if (error.status === 401) {
             // If response is 401 Unauthorized, remove the token
             localStorage.removeItem('jwtToken');
+            // dispatch logout to ngrx store
+            this.store.dispatch(AuthActions.logout());
             // Optionally, redirect the user to the login page or handle the error as required
           }
 

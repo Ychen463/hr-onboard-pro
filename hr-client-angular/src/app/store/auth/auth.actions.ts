@@ -8,5 +8,6 @@ export const AuthActions = createActionGroup({
     logout: emptyProps(),
     loginSuccess: props<{ user: User }>(),
     loginFailure: props<{ error: string }>(),
+    rehydrateAuth: props<{ user: User }>(),
   },
 });

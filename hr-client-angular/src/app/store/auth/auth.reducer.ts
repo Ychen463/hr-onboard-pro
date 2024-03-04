@@ -45,7 +45,16 @@ export const authReducer = createReducer(
       draft.user = null;
       draft.isLoggedIn = false;
     })
-  )
+  ),
 
+  // Handle rehydrate auth state
+  on(AuthActions.rehydrateauth, (state, { user }) =>
+    produce(state, (draft) => {
+      draft.user = user;
+      draft.isLoggedIn = true;
+      draft.isLoading = false;
+      draft.error = null;
+    })
+  )
   // other actions...
 );

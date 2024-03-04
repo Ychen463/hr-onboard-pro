@@ -4,16 +4,23 @@ import { OnboardingDetailComponent } from './pages/hiring-page/components/onboar
 import { OnboardingComponent } from './pages/hiring-page/onboarding.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'login',
     component: LoginPageComponent,
   },
-  { path: 'hiring', component: OnboardingComponent },
-  { path: 'onboarding/:userAccountId', component: OnboardingDetailComponent },
+  { path: 'hiring', component: OnboardingComponent, canActivate: [AuthGuard] },
+  {
+    path: 'onboarding/:userAccountId',
+    component: OnboardingDetailComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: 'employee-profiles',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import('./pages/employee-profiles-page/employee-profiles-page.module').then(
         (m) => m.EmployeeProfilesPageModule
@@ -21,6 +28,7 @@ const routes: Routes = [
   },
   {
     path: 'housing',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import('./pages/housing-page/housing-page.module').then((m) => m.HousingPageModule),
   },
