@@ -12,12 +12,29 @@
 
 
   <div class="example-button-row">
-    <button mat-raised-button color="primary" (click)="handleObUpdate(onboardingData.userAccountId, 'Approved')">
+    <!-- <button mat-raised-button color="primary" (click)="handleObUpdate(onboardingData.userAccountId, 'Approved')">
       Approved
     </button>
     <button mat-raised-button color="warn" (click)="openRejectConfirmationDialog(onboardingData.userAccountId)">
       Rejected
-    </button>
+    </button> -->
+
+    <button 
+  mat-stroked-button 
+  color="accent" 
+  (click)="handleObUpdate(onboardingData.userAccountId, 'Approved')"
+  style="margin-right: 3px;"
+  [disabled]="onboardingData.onboardingStatus === 'Completed' || onboardingData.onboardingStatus === 'Rejected'">
+  Approve
+  </button>
+  <button 
+    mat-stroked-button 
+    color="primary" 
+    (click)="openRejectConfirmationDialog(onboardingData.userAccountId)"
+    [disabled]="onboardingData.onboardingStatus === 'Completed' || onboardingData.onboardingStatus === 'Rejected'">
+    Reject
+  </button>
+
   </div>
 </div>
 
@@ -84,12 +101,18 @@
         <div class="text-content">
           <div *ngIf="citizenshipStatusData">
             <p>
-              Citizenship/Visa Title: {{ citizenshipStatusData.isCitizenOrPermanentResident }} ?
-              {{ citizenshipStatusData.statusDetail }} : {{ citizenshipStatusData.workAuthorization }} 
-              <span *ngIf="citizenshipStatusData.workAuthorization === 'F1(CPT/OPT)'">
-                {{ citizenshipStatusData.workAuthorizationOtherTitle }}
-              </span>
-            </p> 
+              Citizenship/Visa Title:
+              <ng-container *ngIf="citizenshipStatusData.isCitizenOrPermanentResident; else workAuthorizationBlock">
+                {{ citizenshipStatusData.statusDetail }}
+              </ng-container>
+              <ng-template #workAuthorizationBlock>
+                {{ citizenshipStatusData.workAuthorization }}
+                <span *ngIf="citizenshipStatusData.workAuthorization === 'F1(CPT/OPT)'">
+                   {{ citizenshipStatusData.workAuthorizationOtherTitle }}
+                </span>
+              </ng-template>
+            </p>
+            
             <!-- Display OPT Receipt if workAuthorization is 'F1(CPT/OPT)' -->
           <div *ngIf="citizenshipStatusData.workAuthorization === 'F1(CPT/OPT)'">
             <p>OPT Receipt:</p>
@@ -124,24 +147,21 @@
         <div class="text-content">
           <div class="text-content">
             <div *ngIf="driverLicenseData">
-              <p>
-                Has Driver License: {{ driverLicenseData.hasDriverLicense }}
-                <span *ngIf="driverLicenseData.hasDriverLicense">
-                  
-                  <p>Driver Liscence: {{ driverLicenseData.driverLicenseNumber }}</p>
-                  
-                  <p>Expiration Date: {{ driverLicenseData.expirationDate | date:'MM/dd/yyyy'}}</p>
-                  
-                  <a href="{{ driverLicenseData.driverLicenseCopyUrl }}" aria-label="">
-                    Driver Liscence  
-                    <button mat-icon-button aria-label="Download driver license copy">
-                      <mat-icon>open_in_new</mat-icon>
-                    </button>
-                  </a>
-                  
-                </span>
-              </p> 
+              <p>Has Driver License: {{ driverLicenseData.hasDriverLicense }}</p>
+              
+              <ng-container *ngIf="driverLicenseData.hasDriverLicense">
+                <p>Has Driver License: {{ driverLicenseData.hasDriverLicense  ? 'Yes' : 'No' }}</p>
+                <p>Expiration Date: {{ driverLicenseData.expirationDate | date:'MM/dd/yyyy' }}</p>
+                
+                <a href="{{ driverLicenseData.driverLicenseCopyUrl }}" target="_blank" aria-label="Download driver license copy">
+                  Driver License Copy
+                  <button mat-icon-button aria-label="Open driver license copy in new window">
+                    <mat-icon>open_in_new</mat-icon>
+                  </button>
+                </a>
+              </ng-container>
             </div>
+            
             
             
           </div>
