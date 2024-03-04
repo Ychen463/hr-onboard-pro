@@ -13,7 +13,6 @@ import { profileActions } from '../../../store/employee-profile/employee.profile
 })
 
 export class EmployeeProfilesService {
-  userAccountIdForDetails: string | null = null;
 
   constructor(
     private http: HttpClient,

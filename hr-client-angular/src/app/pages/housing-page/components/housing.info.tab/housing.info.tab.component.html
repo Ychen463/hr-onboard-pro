@@ -1,0 +1,23 @@
+<mat-card>
+  <mat-card-title>
+    {{ housingProfile?.name }}
+  </mat-card-title>
+  <br/>
+  <mat-card-content>
+    <mat-card-subtitle> Address </mat-card-subtitle>
+    <p> {{ housingProfile?.address }} </p>
+    <br/>
+
+    <mat-card-subtitle> Landlord </mat-card-subtitle>
+    <p> Full name: {{ housingProfile?.landlord?.fullName }} </p>
+    <p> Phone number: {{ housingProfile?.landlord?.phoneNumber }} </p>
+    <p> Email: {{ housingProfile?.landlord?.email }} </p>
+    <br/>
+
+    <mat-card-subtitle> Facility Information </mat-card-subtitle>
+    <p> Beds: {{ housingProfile?.facilityInfo?.beds }} </p>
+    <p> Mattresses: {{ housingProfile?.facilityInfo?.mattresses }} </p>
+    <p> Tables: {{ housingProfile?.facilityInfo?.tables }} </p>
+    <p> Chairs: {{ housingProfile?.facilityInfo?.chairs }} </p>
+  </mat-card-content>
+</mat-card>

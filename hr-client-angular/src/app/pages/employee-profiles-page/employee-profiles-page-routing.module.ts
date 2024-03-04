@@ -5,7 +5,7 @@ import { FullEmployeeProfileComponent } from './components/full.employee.profile
 
 const routes: Routes = [
   { path: '', component: EmployeeProfilesPageComponent },
-  { path: 'full-profile', component: FullEmployeeProfileComponent },
+  { path: 'full-profile/:userAccountId', component: FullEmployeeProfileComponent },
 ];
 
 @NgModule({

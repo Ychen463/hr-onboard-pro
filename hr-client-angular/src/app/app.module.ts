@@ -16,6 +16,8 @@ import { authReducer } from './store/auth/auth.reducer';
 import { employeeProfileReducer } from './store/employee-profile/employee.profile.reducer';
 import { onboardingReducer } from './store/hiring/reducers/onboarding.reducer';
 import { registrationTokenReducer } from './store/hiring/reducers/registrationToken.reducer';
+import { housingReducer } from './store/housing/housing.reducer';
+import { facilityReportReducer } from './store/facility-report/facility.report.reducer';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -33,14 +35,16 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
-  declarations: [AppComponent, NavigationBarComponent, LoginPageComponent, NotFoundComponent],
+  declarations: [
+    AppComponent, 
+    NavigationBarComponent, 
+    LoginPageComponent, 
+    NotFoundComponent, 
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({ auth: authReducer, 
-                          employeeProfile: employeeProfileReducer, 
-                          registrationToken: registrationTokenReducer,
-                          onboarding:onboardingReducer}),
+    StoreModule.forRoot({ auth: authReducer, employeeProfile: employeeProfileReducer }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
@@ -56,7 +60,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     MatListModule,
     MatDividerModule,
     HiringPageModule,
-
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],
