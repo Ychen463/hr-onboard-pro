@@ -1,5 +1,6 @@
-import { Container, Button } from '@mui/material';
+import { Container, Button, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useState, useEffect } from 'react';
@@ -20,7 +21,12 @@ import {
   selectUserProfileError,
   updateUserProfile,
 } from '../store/slices/userProfileSlice.js';
-
+import PersonalInformationFormSection from '../components/formSections/PersonalInformationSection.jsx';
+import ContactInformationSection from '../components/formSections/ContactInformationSection.jsx';
+import CurrentAddressSection from '../components/formSections/CurrentAddressSection.jsx';
+import VisaSection from '../components/formSections/VisaSection.jsx';
+import DriverLicenseSection from '../components/formSections/DriverLicenseSection.jsx';
+import ReferralSection from '../components/formSections/ReferralSection.jsx';
 function PersonalProfilePage() {
   const [readOnly, setReadOnly] = useState(true);
   const dispatch = useDispatch();
@@ -124,7 +130,7 @@ function PersonalProfilePage() {
           setPersonalInfo={setPersonalInfo}
         />
         <br />
-        <ReferralSection readOnly={readOnlyForm} formData={referral} setFormData={setReferral} />
+        <ReferralSection readOnly={readOnly} formData={referral} setFormData={setReferral} />
         <br />
         <EmergencyContact
           readOnly={readOnly}
