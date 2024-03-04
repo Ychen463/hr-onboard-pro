@@ -25,3 +25,11 @@ export const updateOnboardingStart = createAction(
     '[Onboarding API] Update Onboarding Fail', 
     props<{ error: string; userAccountId: string }>()
   );
+
+export function getOnboardingDatesByUserAccountId(getOnboardingDatesByUserAccountId: any, arg1: (state: import("../../visa/visa.models").VisaState, { userAccountId }: any) => import("../../visa/visa.models").VisaState): import("@ngrx/store").ReducerTypes<import("../../visa/visa.models").VisaState, readonly import("@ngrx/store").ActionCreator[]> {
+    throw new Error('Function not implemented.');
+}
+export const getDatesByUserAccountId = createAction(
+  '[Onboarding] Get Onboarding Dates By UserAccountId',
+  props<{ userAccountId: string }>()
+);

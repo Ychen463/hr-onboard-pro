@@ -28,10 +28,11 @@ import { MatDividerModule } from '@angular/material/divider';
 
 import { LoginPageModule } from './pages/login-page/login-page.module';
 import { HiringPageModule } from './pages/hiring-page/hiring-page.module';
-
+import { VisaPageModule } from './pages/visa-page/visa-page.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [AppComponent, NotFoundComponent],
@@ -61,7 +62,12 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     MatListModule,
     MatDividerModule,
     HiringPageModule,
-    LoginPageModule,
+    VisaPageModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatTabsModule,
+    MatButtonToggleModule,
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],
