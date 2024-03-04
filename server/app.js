@@ -6,6 +6,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import path from 'path';
 import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import RegistrationTokenRouter from './routers/RegistrationTokenRouter.js';
 import UserAccountRouter from './routers/UserAccountRouter.js';
 import OnboardingRouter from './routers/OnboardingRouter.js';
@@ -41,8 +42,17 @@ app.use(
         upgradeInsecureRequests: [],
     },
 })
-
 );
+
+// Set limit for Request, every user can only request 100 times in a minute
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // one minute
+  max: 100, // Max Requests
+  message: 'Too many requests from this IP, please try again later.',
+});
+
+// 应用速率限制到所有请求
+app.use(limiter);
 
 // enable json and urlencoded for express
 app.use(express.json());

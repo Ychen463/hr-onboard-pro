@@ -5,7 +5,8 @@ import validator from 'validator';
 
 const generateRegiToken = async (req, res) => {
   try {
-    const { userFirstName, userLastName, email } = req.body;
+    const { userFirstName, userLastName } = req.body;
+    let { email } = req.body;
 
     // Validate email
     if (!validator.isEmail(email)) {

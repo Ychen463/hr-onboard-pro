@@ -3,6 +3,7 @@
 import Housing from '../models/HousingModel.js';
 import UserAccount from '../models/UserAccountModel.js';
 import RegistrationToken from '../models/RegistrationTokenModel.js';
+import { validationResult } from 'express-validator';
 
 // get a house's full information with its _id
 // TODO: Check if we have better solution to present resident info for who do not have a profile yet
@@ -59,6 +60,10 @@ const getHouseInfo = async (req, res) => {
 // create a new house given a name, an address, landlord information,
 // capacity, basic facility information
 const createNewHouse = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
   // extract information from req body
   const { name, address, landlord, facilityInfo } = req.body;
 
