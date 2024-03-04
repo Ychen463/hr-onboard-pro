@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { authReducer } from './store/auth/auth.reducer';
 import { employeeProfileReducer } from './store/employee-profile/employee.profile.reducer';
 import { housingReducer } from './store/housing/housing.reducer';
+import { facilityReportReducer } from './store/facility-report/facility.report.reducer';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -43,7 +44,12 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({ auth: authReducer, employeeProfile: employeeProfileReducer, housing: housingReducer }),
+    StoreModule.forRoot({ 
+      auth: authReducer, 
+      employeeProfile: employeeProfileReducer, 
+      housing: housingReducer, facilityReport: 
+      facilityReportReducer, 
+    }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,

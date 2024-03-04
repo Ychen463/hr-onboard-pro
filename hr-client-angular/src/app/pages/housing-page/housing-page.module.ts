@@ -21,6 +21,9 @@ import { CreateHousingDialogComponent } from './components/create.housing.dialog
 import { HousingInfoTabComponent } from './components/housing.info.tab/housing.info.tab.component';
 import { FacilityReportsTabComponent } from './components/facility.reports.tab/facility.reports.tab.component';
 import { ResidentsTabComponent } from './components/residents.tab/residents.tab.component';
+import { FacilityReportCardComponent } from './components/facility.report.card/facility.report.card.component';
+import { AddCommentDialogComponent } from './components/add.comment.dialog/add.comment.dialog.component';
+import { EditCommentDialogComponent } from './components/edit.comment.dialog/edit.comment.dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,7 @@ import { ResidentsTabComponent } from './components/residents.tab/residents.tab.
     CreateHousingDialogComponent, 
     HousingInfoTabComponent, 
     FacilityReportsTabComponent, 
-    ResidentsTabComponent
+    ResidentsTabComponent, FacilityReportCardComponent, AddCommentDialogComponent, EditCommentDialogComponent
   ],
   imports: [
     CommonModule,

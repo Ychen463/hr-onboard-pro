@@ -1,4 +1,4 @@
-import { createReducer, on, combineReducers } from "@ngrx/store";
+import { createReducer, on } from "@ngrx/store";
 import { HousingState } from "./housing.models";
 import { housingSummaryActions, housingFullInfoActions, createHousingActions } from "./housing.actions";
 import { produce } from 'immer';

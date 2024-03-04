@@ -4,7 +4,7 @@ import { employeeProfileReducer } from './employee-profile/employee.profile.redu
 // import { visaReducer } from './visa/visa.reducer';
 // import { hiringReducer } from './hiring/hiring.reducer';
 import { housingReducer } from './housing/housing.reducer';
-// import { facilityReportReducer } from './facility-report/facility-report.reducer';
+import { facilityReportReducer } from './facility-report/facility.report.reducer';
 // import other reducers
 
 export const rootReducer = combineReducers({
@@ -13,6 +13,6 @@ export const rootReducer = combineReducers({
   // visa: visaReducer,
   // hiring: hiringReducer,
   housing: housingReducer,
-  // facilityReport: facilityReportReducer,
+  facilityReport: facilityReportReducer,
   // other reducers
 });
