@@ -15,7 +15,7 @@ export interface OnboardingState {
   }
   
   export interface HiringState {
-    employees: OnboardingState;
+    onboardings: OnboardingState;
     registrationTokens: RegistrationTokenState;
   }
   

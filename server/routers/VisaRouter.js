@@ -6,6 +6,7 @@ import {
   updateDoc,
   updateVisaDecision,
   getAll,
+  getWithOnboardingAll,
 } from '../controllers/VisaController.js';
 import jwtVerifyToken from '../middlewares/AuthMiddleware.js';
 import checkRole from '../middlewares/CheckRoleMiddleware.js';
@@ -39,5 +40,11 @@ router.patch(
   updateVisaDecision
 );
 router.get('/all', jwtVerifyToken, checkRole(['HR']), getAll);
+router.get(
+  '/allwithOb',
+  jwtVerifyToken,
+  checkRole(['HR', 'employee']),
+  getWithOnboardingAll
+);
 
 export default router;
