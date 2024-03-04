@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import bcrypt from 'bcrypt';
+import validator from 'validator';
 import generateLoginToken from '../utils/generateLoginToken.js';
 import UserAccount from '../models/UserAccountModel.js';
 import RegistrationToken from '../models/RegistrationTokenModel.js';
@@ -12,6 +13,20 @@ const register = async (req, res) => {
     const { username, password } = req.body;
     const { email } = req.user;
     const hashedPassword = await bcrypt.hash(password, SALT);
+    
+    // Validate email format
+    if (!validator.isEmail(email)) {
+      return res.status(422).json({ message: 'Invalid email format' });
+    }
+
+    // Sanitize email and username
+    email = validator.normalizeEmail(email);
+    username = validator.escape(username);
+
+    // Password validation (example: at least 8 characters)
+    if (!validator.isLength(password, { min: 8 })) {
+      return res.status(422).json({ message: 'Password must be at least 8 characters long' });
+    }
     // Check if email already exists
     const userEmailExists = await UserAccount.findOne({ email }).lean().exec();
     if (userEmailExists) {
@@ -56,7 +71,7 @@ const register = async (req, res) => {
 
     // Update the housing's residents field
     const updatedHousing = await Housing.findByIdAndUpdate(
-      assignedHousing._id, 
+      assignedHousing._id,
       { residents: [ ...assignedHousing.residents, savedUserAccount._id ] },
       { new: true }
     ).exec();

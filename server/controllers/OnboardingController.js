@@ -2,6 +2,7 @@ import Onboarding from '../models/OnboardingModel.js';
 import UserAccount from '../models/UserAccountModel.js';
 import Visa from '../models/VisaModel.js';
 
+
 // 1. Apply onboarding
 const applyUserOnboarding = async (req, res) => {
   // Check if onboarding already exists
@@ -41,13 +42,6 @@ const applyUserOnboarding = async (req, res) => {
   }
 
   const { personalInfo, citizenshipStatus, driverLicense, referral, emergencyContacts } = req.body;
-
-  console.log('personalInfo', personalInfo);
-  console.log('citizenshipStatus', citizenshipStatus);
-  console.log('driverLicense', driverLicense);
-  console.log('referral', referral);
-  console.log('emergencyContacts', emergencyContacts);
-
   try {
     const userAccount = await UserAccount.findOne({ _id: userAccountId });
     if (!userAccount) {
@@ -103,10 +97,18 @@ const getUserOnboarding = async (req, res) => {
 const hrUpdateDecision = async (req, res) => {
   try {
     const { userAccountId } = req.params;
-    const { hrDecision, rejFeedback } = req.body;
-    if (!hrDecision) {
-      return res.status(400).json({ message: 'HR Decision is required.' });
+    let { hrDecision, rejFeedback } = req.body;
+
+    // Validate HR Decision
+    if (!hrDecision || !['Rejected', 'Approved'].includes(hrDecision)) {
+      return res.status(400).json({ message: 'Invalid HR Decision.' });
     }
+
+    // Sanitize rejection feedback if present
+    if (rejFeedback && typeof rejFeedback === 'string') {
+      rejFeedback = he.encode(rejFeedback);
+    }
+
     let ONBOARDING_STATUS;
     if (hrDecision === 'Rejected') {
       ONBOARDING_STATUS = 'Rejected';
@@ -115,21 +117,25 @@ const hrUpdateDecision = async (req, res) => {
     }
 
     const updateFields = { onboardingStatus: ONBOARDING_STATUS };
-    if (ONBOARDING_STATUS === 'Rejected') {
-      updateFields.rejFeedback = rejFeedback; // Only update rejFeedback if rejected
+    if (ONBOARDING_STATUS === 'Rejected' && rejFeedback) {
+      // Ensure rejFeedback is included only if the decision is Rejected
+      updateFields.rejFeedback = rejFeedback;
     }
 
-    const updatedOnboarding = await Onboarding.findOneAndUpdate({ userAccountId }, updateFields, {
-      new: true,
-    });
+    // Update the onboarding status based on the HR decision
+    const updatedOnboarding = await Onboarding.findOneAndUpdate({ userAccountId },
+          updateFields, { new: true });
     if (!updatedOnboarding) {
       return res.status(404).json({ message: 'Onboarding process not found.' });
     }
+
+    // Update the user account onboarding status
     await UserAccount.findOneAndUpdate(
       { _id: userAccountId },
       { onboardingStatus: ONBOARDING_STATUS },
       { new: true }
     );
+
     return res.status(200).json(updatedOnboarding);
   } catch (error) {
     return res.status(500).json({ message: error.message });
