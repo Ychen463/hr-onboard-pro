@@ -1,7 +1,9 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import he from 'he';
 import Onboarding from '../models/OnboardingModel.js';
 import UserAccount from '../models/UserAccountModel.js';
 import Visa from '../models/VisaModel.js';
-
+import UserProfile from '../models/UserProfileModel.js';
 
 // 1. Apply onboarding
 const applyUserOnboarding = async (req, res) => {
@@ -17,30 +19,6 @@ const applyUserOnboarding = async (req, res) => {
   const CURRENT_DOC_VISA_STATUS = 'Pending';
   const CURRENT_DOC = 'OPT RECEIPT';
   const visaStatus = `${CURRENT_DOC}-${CURRENT_DOC_VISA_STATUS}`;
-
-  // VISA CREATE IF NEEDED
-  let visaId = null;
-  if (
-    req.body.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' &&
-    req.body.citizenshipStatus.workAuthorizationFiles
-  ) {
-    const { workAuthorizationFiles } = req.body.citizenshipStatus;
-    console.log('workAuthorizationFiles', workAuthorizationFiles);
-    const visaDocument = await Visa.create({
-      userAccountId,
-      docs: {
-        optReceipt: {
-          docId: `${userAccountId}_optReceipt`,
-          docUrl: workAuthorizationFiles[0].docUrl, // Assuming the first file is the OPT receipt
-          createdDatetime: new Date(),
-          status: visaStatus,
-        },
-      },
-      visaStatus,
-    });
-    visaId = visaDocument._id;
-  }
-
   const { personalInfo, citizenshipStatus, driverLicense, referral, emergencyContacts } = req.body;
   try {
     const userAccount = await UserAccount.findOne({ _id: userAccountId });
@@ -52,11 +30,15 @@ const applyUserOnboarding = async (req, res) => {
     const { email } = userAccount;
     // Update citizenshipStatus with visaId if it exists
     const updatedCitizenshipStatus = { ...citizenshipStatus };
-    if (visaId) {
-      updatedCitizenshipStatus.visaId = visaId;
+
+    if (
+      req.body.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' &&
+      req.body.citizenshipStatus.workAuthorizationFiles
+    ) {
+      updatedCitizenshipStatus.visaId = Object._id;
       updatedCitizenshipStatus.workAuthorizationFiles[0].docId = `${userAccountId}_optReceipt`;
     }
-
+    const { visaId } = updatedCitizenshipStatus;
     // Create the onboarding document
     const onboardingDocument = {
       userAccountId,
@@ -97,7 +79,8 @@ const getUserOnboarding = async (req, res) => {
 const hrUpdateDecision = async (req, res) => {
   try {
     const { userAccountId } = req.params;
-    let { hrDecision, rejFeedback } = req.body;
+    const { hrDecision } = req.body;
+    let { rejFeedback } = req.body;
 
     // Validate HR Decision
     if (!hrDecision || !['Rejected', 'Approved'].includes(hrDecision)) {
@@ -123,18 +106,58 @@ const hrUpdateDecision = async (req, res) => {
     }
 
     // Update the onboarding status based on the HR decision
-    const updatedOnboarding = await Onboarding.findOneAndUpdate({ userAccountId },
-          updateFields, { new: true });
+    const updatedOnboarding = await Onboarding.findOneAndUpdate({ userAccountId }, updateFields, {
+      new: true,
+    });
     if (!updatedOnboarding) {
       return res.status(404).json({ message: 'Onboarding process not found.' });
     }
 
-    // Update the user account onboarding status
-    await UserAccount.findOneAndUpdate(
-      { _id: userAccountId },
-      { onboardingStatus: ONBOARDING_STATUS },
-      { new: true }
-    );
+    // CREATE VISA if needed
+    const visaStatus = 'OPT Receipt-Approved';
+    if (
+      updatedOnboarding.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' &&
+      updatedOnboarding.citizenshipStatus.workAuthorizationFiles
+    ) {
+      const { workAuthorizationFiles } = updatedOnboarding.citizenshipStatus;
+      const visaDocument = await Visa.create({
+        userAccountId,
+        docs: {
+          optReceipt: {
+            docId: `${userAccountId}_optReceipt`,
+            docUrl: workAuthorizationFiles[0].docUrl, // Assuming the first file is the OPT receipt
+            createdDatetime: new Date(),
+            status: visaStatus,
+          },
+        },
+        visaStatus,
+      });
+      // Update the user account onboarding status
+      await UserAccount.findOneAndUpdate(
+        { _id: userAccountId },
+        { visaId: visaDocument._id },
+        { onboardingStatus: ONBOARDING_STATUS },
+        { new: true }
+      );
+    } else {
+      // Update the user account onboarding status
+      await UserAccount.findOneAndUpdate(
+        { _id: userAccountId },
+        { onboardingStatus: ONBOARDING_STATUS },
+        { new: true }
+      );
+    }
+
+    // Create USERPROFILE
+    await UserProfile.create({
+      userAccountId,
+      onboardingId: updatedOnboarding._id,
+      personalInfo: updatedOnboarding.personalInfo,
+      employmentStatus: 'Active',
+      citizenshipStatus: updatedOnboarding.citizenshipStatus,
+      driverLicense: updatedOnboarding.driverLicense,
+      emergencyContacts: updatedOnboarding.emergencyContacts,
+    });
 
     return res.status(200).json(updatedOnboarding);
   } catch (error) {

@@ -10,10 +10,11 @@ const SALT = parseInt(process.env.SALT, 10);
 
 const register = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const { email } = req.user;
+    let { username } = req.body;
+    const { password } = req.body;
+    let { email } = req.user;
     const hashedPassword = await bcrypt.hash(password, SALT);
-    
+
     // Validate email format
     if (!validator.isEmail(email)) {
       return res.status(422).json({ message: 'Invalid email format' });
