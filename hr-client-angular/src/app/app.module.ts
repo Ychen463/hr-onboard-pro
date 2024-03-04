@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
-import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
@@ -28,6 +27,8 @@ import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 
+import { LoginPageModule } from './pages/login-page/login-page.module';
+
 import { HiringPageModule } from './pages/hiring-page/hiring-page.module';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -35,12 +36,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
-  declarations: [
-    AppComponent, 
-    NavigationBarComponent, 
-    LoginPageComponent, 
-    NotFoundComponent, 
-  ],
+  declarations: [AppComponent, NavigationBarComponent, NotFoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -60,6 +56,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     MatListModule,
     MatDividerModule,
     HiringPageModule,
+    LoginPageModule,
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],
