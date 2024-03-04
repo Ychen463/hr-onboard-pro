@@ -106,7 +106,10 @@ const hrUpdateDecision = async (req, res) => {
     }
 
     // Update the onboarding status based on the HR decision
-    const updatedOnboarding = await Onboarding.findOneAndUpdate({ userAccountId }, updateFields, {
+    const updatedOnboarding = await Onboarding.findOneAndUpdate(
+      { userAccountId }, 
+
+      updateFields, {
       new: true,
     });
     if (!updatedOnboarding) {
@@ -137,6 +140,12 @@ const hrUpdateDecision = async (req, res) => {
         { _id: userAccountId },
         { visaId: visaDocument._id },
         { onboardingStatus: ONBOARDING_STATUS },
+        { new: true }
+      );
+      // Update onboarding visaId
+      await Onboarding.findOneAndUpdate(
+        { userAccountId },
+        { visaId: visaDocument._id },
         { new: true }
       );
     } else {
