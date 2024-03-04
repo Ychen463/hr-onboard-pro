@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
 import { authReducer } from './store/auth/auth.reducer';
+import { visaReducer } from './store/visa/visa.reducer';
 import { employeeProfileReducer } from './store/employee-profile/employee.profile.reducer';
 import { onboardingReducer } from './store/hiring/reducers/onboarding.reducer';
 import { registrationTokenReducer } from './store/hiring/reducers/registrationToken.reducer';
@@ -39,9 +40,11 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { LoginPageModule } from './pages/login-page/login-page.module';
+import { RouterModule } from '@angular/router';
+import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
 
 @NgModule({
-  declarations: [AppComponent, NotFoundComponent],
+  declarations: [AppComponent, NotFoundComponent, NavigationBarComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -52,6 +55,7 @@ import { LoginPageModule } from './pages/login-page/login-page.module';
       onboarding: onboardingReducer,
       housing: housingReducer,
       facilityReport: facilityReportReducer,
+      visa: visaReducer,
     }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
@@ -75,6 +79,7 @@ import { LoginPageModule } from './pages/login-page/login-page.module';
     MatTabsModule,
     MatButtonToggleModule,
     LoginPageModule,
+    RouterModule,
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],
