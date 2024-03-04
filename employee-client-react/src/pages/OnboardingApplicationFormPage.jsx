@@ -37,7 +37,37 @@ function OnboardingApplicationPage() {
   const { userId } = currentUserData;
   // These states only take care of init values of the whole form
   // not related to the final submit form values
-  const [personalInfo, setPersonalInfo] = useState({});
+  // const [personalInfo, setPersonalInfo] = useState({});
+  // const [citizenshipStatus, setCitizenshipStatus] = useState({});
+  // const [driverLicense, setDriverLicense] = useState({});
+  // const [referral, setReferral] = useState({});
+  // const [emergencyContacts, setEmergencyContacts] = useState([]);
+  const [personalInfo, setPersonalInfo] = useState({
+    firstName: 'Jane',
+    lastName: 'Doe',
+    middleName: 'A.',
+    preferredName: 'Janie',
+    profilePictureUrl: '',
+    currentAddress: {
+      streetName: '100 Main St',
+      buildingApt: 'Apt 101',
+      city: 'Anytown',
+      state: 'Anystate',
+      zip: '12345',
+    },
+    contactSchema: {
+      cellPhoneNumber: '555-123-4567',
+      workPhoneNumber: '555-765-4321',
+    },
+    carInformation: {
+      make: 'Honda',
+      model: 'Civic',
+      color: 'Blue',
+    },
+    ssn: '123-45-6789',
+    dateOfBirth: '1990-01-01T00:00:00.000Z',
+    gender: 'Female',
+  });
   const [citizenshipStatus, setCitizenshipStatus] = useState({});
   const [driverLicense, setDriverLicense] = useState({});
   const [referral, setReferral] = useState({});

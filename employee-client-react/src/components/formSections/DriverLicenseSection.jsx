@@ -8,6 +8,7 @@ import {
   MenuItem,
   Grid,
   Typography,
+  Link,
   IconButton,
 } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -51,6 +52,13 @@ const DriverLicenseSection = ({
   const handleLicenseChange = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({ ...prev, driverLicenseCopyUrl: file }));
+    }
   };
 
   const handleCarChange = (event) => {
@@ -117,7 +125,7 @@ const DriverLicenseSection = ({
                     name="driverLicenseCopyUrl"
                     type="file"
                     hidden
-                    onChange={handleLicenseChange}
+                    onChange={handleFileChange}
                     accept="application/pdf"
                   />
                 </Button>

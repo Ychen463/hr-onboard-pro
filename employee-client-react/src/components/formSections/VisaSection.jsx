@@ -8,6 +8,7 @@ import {
   Grid,
   Typography,
   Button,
+  Box,
 } from '@mui/material';
 
 const VisaSection = ({ readOnly, formData, setFormData }) => {
@@ -164,10 +165,18 @@ const VisaSection = ({ readOnly, formData, setFormData }) => {
           !formData?.isCitizenOrPermanentResident &&
           formData?.workAuthorization === 'F1(CPT/OPT)' && (
             <Grid item xs={12}>
-              <Button variant="contained" component="label">
-                Upload CPT/OPT Receipt
-                <input type="file" hidden onChange={handleFileChange} accept="application/pdf" />
-              </Button>
+              {/* <Button variant="contained" component="label"> */}
+              {/* Upload CPT/OPT Receipt */}
+              <InputLabel>Upload CPT/OPT Receipt</InputLabel>
+              <TextField
+                // label="Upload CPT/OPT Receipt"
+                type="file"
+                hidden
+                onChange={handleFileChange}
+                accept="application/pdf"
+                file={formData?.workAuthorizationFiles[0].docUrl}
+              />
+              {/* </Button> */}
             </Grid>
           )}
         {!formData?.isCitizenOrPermanentResident &&

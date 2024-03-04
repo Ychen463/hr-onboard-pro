@@ -18,6 +18,7 @@ import {
   selectorUserProfile,
   selectIsUserProfileLoading,
   selectUserProfileError,
+  updateUserProfile,
 } from '../store/slices/userProfileSlice.js';
 
 function PersonalProfilePage() {
@@ -65,10 +66,19 @@ function PersonalProfilePage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const formDataObj = formDataToObject(formData);
+    // const formData = new FormData(event.currentTarget);
+    // const formDataObj = formDataToObject(formData);
 
-    console.log('all form data entries', formDataObj);
+    // console.log('all form data entries', formDataObj);
+    const newUserProfile = {
+      personalInfo,
+      citizenshipStatus,
+      driverLicense,
+      referral,
+      emergencyContacts,
+    };
+    console.log('Form by manual:', newUserProfile);
+    dispatch(updateUserProfile(newOnboardingFrom));
   };
 
   return (

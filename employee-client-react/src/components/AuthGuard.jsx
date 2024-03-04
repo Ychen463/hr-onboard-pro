@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { useEffect } from "react";
-import { Outlet, Navigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from 'react';
+import { Outlet, Navigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   sessionValidate,
   selectIsLoggedIn,
   selectAuthError,
   selectIsAuthLoading,
-} from "../store/slices/authSlice"
+} from '../store/slices/authSlice';
 
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -23,7 +23,6 @@ const AuthGuard = () => {
     dispatch(sessionValidate());
   }, []);
 
-
   if (isLoading) {
     return (
       <Box sx={{ display: 'flex' }}>
@@ -33,11 +32,9 @@ const AuthGuard = () => {
   }
 
   if (error) {
-    return (
-      <Alert severity="error">{ error }</Alert>
-    );
+    return <Alert severity="error">{error}</Alert>;
   }
-  
+
   return isLoggedin ? <Outlet /> : <Navigate to="/login" />;
 };
 
