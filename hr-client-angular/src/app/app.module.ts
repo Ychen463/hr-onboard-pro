@@ -44,7 +44,14 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({ auth: authReducer, employeeProfile: employeeProfileReducer }),
+    StoreModule.forRoot({ 
+      auth: authReducer, 
+      employeeProfile: employeeProfileReducer,
+      registrationToken: registrationTokenReducer,
+      onboarding: onboardingReducer,
+      housing: housingReducer,
+      facilityReport: facilityReportReducer,
+    }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,

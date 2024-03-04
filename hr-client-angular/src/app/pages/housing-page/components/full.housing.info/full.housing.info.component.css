@@ -1,0 +1,9 @@
+h1 {
+  margin: 15px;
+}
+
+mat-tab-group {
+  display: block;
+  width: 90%;
+  margin: auto;
+}

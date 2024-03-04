@@ -1,8 +1,12 @@
 table {
-    width: 100%;
+  width: 100%;
+}
+
+mat-form-field {
+  width: 100%;
 }
 
 .mat-row:hover .mat-cell {
-    border-color: currentColor;
+  border-color: currentColor;
 }
 
