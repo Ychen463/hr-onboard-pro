@@ -1,18 +1,35 @@
 /* eslint-disable react/prop-types */
-import { Button, Box, List } from "@mui/material";
-import FacilityReportCard from "./FacilityReportCard.jsx";
-import FacilityReportModal from "./FacilityReportModal.jsx";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Box, List } from '@mui/material';
+import FacilityReportCard from './FacilityReportCard.jsx';
+import FacilityReportModal from './FacilityReportModal.jsx';
 
-function FacilityReportBoard({ facilityReportData }) {
-  console.log("facilityData", facilityReportData);
+import { openFacilityReportModal } from '../../store/slices/FacilityRportModalSlice.js';
+import {
+  getFacilityReports,
+  selectFacilityReportState,
+} from '../../store/slices/facilityReportSlice.js';
+
+function FacilityReportBoard() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getFacilityReports());
+  }, []);
+
+  const facilityReportData = useSelector(selectFacilityReportState);
+  const facilityReports = facilityReportData?.reports;
 
   // Facility Madal will control through Redux
-  const handleCreateFacilityReport = () => {};
+  const handleCreateFacilityReport = () => {
+    dispatch(openFacilityReportModal());
+  };
   return (
     <>
       <Button
         variant="contained"
-        sx={{ float: "left", mb: 2 }}
+        sx={{ float: 'left', mb: 2 }}
         onClick={handleCreateFacilityReport}
       >
         CREATE FACILITY REPORT
@@ -20,18 +37,15 @@ function FacilityReportBoard({ facilityReportData }) {
       <FacilityReportModal />
       <Box
         sx={{
-          height: "800px",
-          overflow: "auto",
-          width: "100%",
-          bgcolor: "background.paper",
+          height: '800px',
+          overflow: 'auto',
+          width: '100%',
+          bgcolor: 'background.paper',
         }}
       >
         <List>
-          {facilityReportData.map((eachReport) => (
-            <FacilityReportCard
-              reportData={eachReport}
-              key={eachReport.createdDatetime}
-            />
+          {facilityReports?.map((eachReport) => (
+            <FacilityReportCard reportData={eachReport} key={eachReport.createdDatetime} />
           ))}
         </List>
       </Box>
