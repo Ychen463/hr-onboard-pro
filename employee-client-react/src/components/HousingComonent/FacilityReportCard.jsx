@@ -120,7 +120,7 @@ function FacilityReportCard({ reportData }) {
                           align="left"
                         >
                           <span>{comment.description}</span>
-                          {comment.createdBy.userRole === 'employee' && (
+                          {comment.createdBy.userRole === 'employee' && status !== 'Closed' && (
                             <Button
                               onClick={() =>
                                 handleEditComment({

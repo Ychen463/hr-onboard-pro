@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -25,7 +26,8 @@ function RegistrationForm() {
   const error = useSelector(selectAuthError);
   const isLoading = useSelector(selectIsAuthLoading);
   const isLoggedin = useSelector(selectIsLoggedIn);
-  const { email } = useSelector(selectRegistrationInfo);
+  const email = useSelector(selectRegistrationInfo);
+  console.log(email);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

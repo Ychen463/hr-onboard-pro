@@ -28,6 +28,9 @@ function AddCommentModal() {
     setComment('');
     dispatch(closeAddCommentModal());
   };
+  const handleClose = () => {
+    dispatch(closeAddCommentModal());
+  };
 
   return (
     <div>
@@ -60,6 +63,9 @@ function AddCommentModal() {
         <DialogActions>
           <Button onClick={handleAddComment} variant="contained" color="primary">
             ADD
+          </Button>
+          <Button onClick={handleClose} color="error" variant="contained">
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>
