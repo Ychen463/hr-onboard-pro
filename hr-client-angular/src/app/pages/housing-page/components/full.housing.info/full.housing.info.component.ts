@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HousingService } from '../../services/housing.service';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
@@ -11,7 +11,7 @@ import { HousingProfile } from '../../interfaces/housing.interfaces';
   templateUrl: './full.housing.info.component.html',
   styleUrls: ['./full.housing.info.component.css']
 })
-export class FullHousingInfoComponent implements OnInit {
+export class FullHousingInfoComponent implements OnInit, OnDestroy {
   housingProfile: HousingProfile | null = null;
 
   selectProfileByIdSubscription: Subscription | undefined;
@@ -41,4 +41,7 @@ export class FullHousingInfoComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.selectProfileByIdSubscription?.unsubscribe();
+  }
 }
