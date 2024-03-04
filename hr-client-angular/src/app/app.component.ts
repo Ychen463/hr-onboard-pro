@@ -1,16 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AuthActions } from './store/auth/auth.actions';
 
-import { ElementRef, ViewChild } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  constructor(private store: Store) {}
   @ViewChild('sidenav') sidenav: any;
   title = 'hr-client-angular';
 
@@ -19,7 +17,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private _eref: ElementRef,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -46,6 +45,7 @@ export class AppComponent implements OnInit {
     // this.authService.logout(); // Assuming you have an authentication service
     this.router.navigate(['/login']); // Redirect to login page after logout
   }
+
   ngOnInit() {
     const userData = localStorage.getItem('user');
     if (userData) {
