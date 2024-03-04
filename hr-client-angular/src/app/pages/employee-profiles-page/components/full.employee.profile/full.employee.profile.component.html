@@ -2,7 +2,7 @@
 <mat-divider></mat-divider>
 <mat-card class="flexbox-h flexbox-baseline">
   <div class="flex-col-1 flex-right">
-    <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" />
+    <img mat-card-sm-image [src]="profile?.personalInfo?.profilePictureUrl" />
   </div>
   <div class="flex-col-2 flexbox-v">
     <mat-card-title class="flex-row">
@@ -65,11 +65,17 @@
         <mat-card-subtitle> Documents </mat-card-subtitle>
         <br />
         <ng-container *ngIf="profile?.driverLicense?.driverLicenseCopyUrl">
-          A Button for Driver License Copy
+          Driver license 
+          <a mat-icon-button color="primary" [href]="profile?.driverLicense?.driverLicenseCopyUrl" target="_blank">
+            <mat-icon>open_in_new</mat-icon>
+          </a>
           <br/>
         </ng-container>
         <ng-container *ngFor="let doc of profile?.citizenshipStatus?.workAuthorizationFiles">
-          A Button for work Authorization File
+          {{ doc.docId }}
+          <a mat-icon-button color="primary" [href]="doc.docUrl" target="_blank">
+            <mat-icon>open_in_new</mat-icon>
+          </a>
           <br/>
         </ng-container>
         <br />

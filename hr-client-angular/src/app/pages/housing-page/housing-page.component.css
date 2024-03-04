@@ -1,0 +1,9 @@
+h1 {
+  margin: 15px;
+}
+
+app-housing-summary-view {
+  display: block;
+  width: 90%;
+  margin: auto;
+}
