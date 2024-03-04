@@ -67,7 +67,11 @@ function EditCommentModal() {
             <Button type="submit" variant="contained" color="primary">
               SAVE
             </Button>
-            <Button onClick={() => dispatch(closeEditCommentModal())} variant="contained">
+            <Button
+              onClick={() => dispatch(closeEditCommentModal())}
+              variant="contained"
+              color="error"
+            >
               CANCEL
             </Button>
           </DialogActions>

@@ -69,7 +69,7 @@ const DriverLicenseSection = ({
     }));
   };
 
-  console.log('Driver License URL:', formData.driverLicenseCopyUrl);
+  console.log('Driver License URL:', formData?.driverLicenseCopyUrl);
 
   return (
     <div>
@@ -131,7 +131,7 @@ const DriverLicenseSection = ({
                 </Button>
               )}
               {formData?.driverLicenseCopyUrl && (
-                <a href={formData.driverLicenseCopyUrl} target="_blank" rel="noopener noreferrer">
+                <a href={formData?.driverLicenseCopyUrl} target="_blank" rel="noopener noreferrer">
                   View Uploaded License
                 </a>
               )}
