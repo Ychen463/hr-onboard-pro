@@ -54,6 +54,16 @@ const register = async (req, res) => {
       return res.status(404).json({ message: 'Registration token not found.' });
     }
 
+    // Update the housing's residents field
+    const updatedHousing = await Housing.findByIdAndUpdate(
+      assignedHousing._id, 
+      { residents: [ ...assignedHousing.residents, savedUserAccount._id ] },
+      { new: true }
+    ).exec();
+    if (!updatedHousing) {
+      return res.status(404).json({ message: 'Update housing residents failed.' });
+    }
+
     // Generate login JWT
     const loginJwtToken = generateLoginToken(
       savedUserAccount._id,
