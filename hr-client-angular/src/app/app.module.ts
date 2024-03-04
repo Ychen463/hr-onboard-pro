@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
@@ -11,12 +10,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HttpClientModule } from '@angular/common/http';
 
+
+
 import { authReducer } from './store/auth/auth.reducer';
 import { employeeProfileReducer } from './store/employee-profile/employee.profile.reducer';
 import { onboardingReducer } from './store/hiring/reducers/onboarding.reducer';
 import { registrationTokenReducer } from './store/hiring/reducers/registrationToken.reducer';
-import { housingReducer } from './store/housing/housing.reducer';
-import { facilityReportReducer } from './store/facility-report/facility.report.reducer';
+import { visaReducer} from './store/visa/visa.reducer'
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,21 +27,27 @@ import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 
-import { LoginPageModule } from './pages/login-page/login-page.module';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { HiringPageModule } from './pages/hiring-page/hiring-page.module';
-
+import { VisaPageModule } from './pages/visa-page/visa-page.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+
+import { LoginPageModule } from './pages/login-page/login-page.module';
 
 @NgModule({
-  declarations: [AppComponent, NavigationBarComponent, NotFoundComponent],
+  declarations: [AppComponent, NotFoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({ 
-      auth: authReducer, 
+    StoreModule.forRoot({
+      auth: authReducer,
       employeeProfile: employeeProfileReducer,
       registrationToken: registrationTokenReducer,
       onboarding: onboardingReducer,
@@ -63,6 +69,12 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     MatListModule,
     MatDividerModule,
     HiringPageModule,
+    VisaPageModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatTabsModule,
+    MatButtonToggleModule,
     LoginPageModule,
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
