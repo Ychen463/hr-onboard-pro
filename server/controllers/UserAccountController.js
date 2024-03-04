@@ -1,12 +1,32 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import bcrypt from 'bcrypt';
 import validator from 'validator';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import passwordValidator from 'password-validator';
 import generateLoginToken from '../utils/generateLoginToken.js';
 import UserAccount from '../models/UserAccountModel.js';
 import RegistrationToken from '../models/RegistrationTokenModel.js';
 import Housing from '../models/HousingModel.js';
 
+// eslint-disable-next-line new-cap
+const schema = new passwordValidator();
+
 const SALT = parseInt(process.env.SALT, 10);
+
+schema
+  .is()
+  .min(8) // Minimal 9 letter
+  .has()
+  .uppercase()
+  .has()
+  .lowercase() // Must have Upper, Lower Case
+  .has()
+  .digits() // Must have ditgits
+  .has()
+  .symbols() // Must have Specail symbol
+  .is()
+  .not()
+  .oneOf(['Passw0rd', 'Password123']); // Password not allwed
 
 const register = async (req, res) => {
   try {
@@ -24,10 +44,11 @@ const register = async (req, res) => {
     email = validator.normalizeEmail(email);
     username = validator.escape(username);
 
-    // Password validation (example: at least 8 characters)
-    if (!validator.isLength(password, { min: 8 })) {
-      return res.status(422).json({ message: 'Password must be at least 8 characters long' });
+    // Password validation
+    if (!schema.validate(password)) {
+      return res.status(422).json({ message: 'Password does not meet complexity requirements' });
     }
+
     // Check if email already exists
     const userEmailExists = await UserAccount.findOne({ email }).lean().exec();
     if (userEmailExists) {
@@ -73,7 +94,7 @@ const register = async (req, res) => {
     // Update the housing's residents field
     const updatedHousing = await Housing.findByIdAndUpdate(
       assignedHousing._id,
-      { residents: [ ...assignedHousing.residents, savedUserAccount._id ] },
+      { residents: [...assignedHousing.residents, savedUserAccount._id] },
       { new: true }
     ).exec();
     if (!updatedHousing) {
