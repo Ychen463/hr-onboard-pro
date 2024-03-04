@@ -24,16 +24,20 @@ import { ResidentsTabComponent } from './components/residents.tab/residents.tab.
 import { FacilityReportCardComponent } from './components/facility.report.card/facility.report.card.component';
 import { AddCommentDialogComponent } from './components/add.comment.dialog/add.comment.dialog.component';
 import { EditCommentDialogComponent } from './components/edit.comment.dialog/edit.comment.dialog.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
-    HousingPageComponent, 
-    FullHousingInfoComponent, 
-    HousingSummaryViewComponent, 
-    CreateHousingDialogComponent, 
-    HousingInfoTabComponent, 
-    FacilityReportsTabComponent, 
-    ResidentsTabComponent, FacilityReportCardComponent, AddCommentDialogComponent, EditCommentDialogComponent
+    HousingPageComponent,
+    FullHousingInfoComponent,
+    HousingSummaryViewComponent,
+    CreateHousingDialogComponent,
+    HousingInfoTabComponent,
+    FacilityReportsTabComponent,
+    ResidentsTabComponent,
+    FacilityReportCardComponent,
+    AddCommentDialogComponent,
+    EditCommentDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -48,7 +52,8 @@ import { EditCommentDialogComponent } from './components/edit.comment.dialog/edi
     MatDialogModule,
     MatTabsModule,
     MatTableModule,
+    SharedModule,
   ],
-  providers: [ HousingService, FacilityReportService ],
+  providers: [HousingService, FacilityReportService],
 })
 export class HousingPageModule {}
