@@ -11,8 +11,8 @@ import { profileActions } from '../../../store/employee-profile/employee.profile
 @Injectable({
   providedIn: 'root',
 })
+
 export class EmployeeProfilesService {
-  userAccountIdForDetails: string | null = null;
 
   constructor(
     private http: HttpClient,

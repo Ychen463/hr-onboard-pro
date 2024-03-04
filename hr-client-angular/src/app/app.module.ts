@@ -14,6 +14,10 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { authReducer } from './store/auth/auth.reducer';
 import { employeeProfileReducer } from './store/employee-profile/employee.profile.reducer';
+import { onboardingReducer } from './store/hiring/reducers/onboarding.reducer';
+import { registrationTokenReducer } from './store/hiring/reducers/registrationToken.reducer';
+import { housingReducer } from './store/housing/housing.reducer';
+import { facilityReportReducer } from './store/facility-report/facility.report.reducer';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -28,11 +32,15 @@ import { HiringPageModule } from './pages/hiring-page/hiring-page.module';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { ShortenUrlPipe } from './pages/hiring-page/pipe/shorten-url.pipe';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
-  declarations: [AppComponent, NavigationBarComponent, LoginPageComponent, NotFoundComponent, ShortenUrlPipe],
+  declarations: [
+    AppComponent, 
+    NavigationBarComponent, 
+    LoginPageComponent, 
+    NotFoundComponent, 
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -40,7 +48,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
-    }), // enabling NgRx devtools, which you can then use the Redux devtools in your browser to check the states and actions
+    }),
     BrowserAnimationsModule,
     HttpClientModule,
     MatCardModule,
@@ -52,7 +60,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     MatListModule,
     MatDividerModule,
     HiringPageModule,
-
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],

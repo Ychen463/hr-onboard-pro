@@ -5,7 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import * as userProfileApiService from "../../apiServices/userProfile.js";
 import { logout } from "./authSlice.js";
-
+import * as onboardingApiService from "../../apiServices/onboarding.js";
 const initialState = {
   userProfile: null,
   isLoading: false,
@@ -29,9 +29,37 @@ export const updateUserProfile = createAsyncThunk(
   "userProfile/updateUserProfile",
   async (newProfile, thunkAPI) => {
     try {
-      // check if docs has been updated by comparing with state.userProfile.userProfile
-      // if has doc changes
-      // need to do aws s3 request here
+      // upload files to AWS S3
+      console.log("thunk updateUserProfile newProfile", newProfile);
+      const profilePictureFile = newProfile.personalInfo?.profilePictureUrl || null;
+      const driverLicenseCopyFile = newProfile.driverLicense.hasDriverLicense ? newProfile.driverLicense.driverLicenseCopyUrl : null;
+
+      if (profilePictureFile) {
+        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.AVATAR });
+        const presignedUrl = presignedUrlResponse.data.url;
+        console.log("presignedUrl", presignedUrl);
+        await axios.put(presignedUrl, profilePictureFile, {
+          headers: {
+            'Content-Type': profilePictureFile.type,
+          },
+        });
+        console.log("presignedUrl", presignedUrl);
+
+        newProfile.personalInfo.profilePictureUrl = presignedUrl.split('?')[0];
+      }
+
+      if (driverLicenseCopyFile) {
+        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.DRIVER_LICENSE });
+        const presignedUrl = presignedUrlResponse.data.url;
+
+        await axios.put(presignedUrl, driverLicenseCopyFile, {
+          headers: {
+            'Content-Type': driverLicenseCopyFile.type,
+          },
+        });
+        newProfile.driverLicense.driverLicenseCopyUrl = presignedUrl.split('?')[0];
+      }
+
       const response =
         await userProfileApiService.updateUserProfile(newProfile);
       return response.data;
@@ -60,7 +88,7 @@ export const userProfileSlice = createSlice({
       })
       .addCase(getUserProfile.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.data;
+        state.error = action.payload;
       })
       // updateUserProfile
       .addCase(updateUserProfile.pending, (state) => {
@@ -73,7 +101,7 @@ export const userProfileSlice = createSlice({
       })
       .addCase(updateUserProfile.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload.data;
+        state.error = action.payload;
       })
       // logout clean state
       .addCase(logout, () => initialState);

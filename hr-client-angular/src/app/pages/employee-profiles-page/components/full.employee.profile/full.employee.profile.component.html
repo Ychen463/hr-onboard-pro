@@ -1,16 +1,16 @@
 <h1>Employee Detailed Profile</h1>
 <mat-divider></mat-divider>
-<mat-card flex>
-  <div col>
+<mat-card class="flexbox-h flexbox-baseline">
+  <div class="flex-col-1 flex-right">
     <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" />
   </div>
-  <div col>
-    <mat-card-title row>
+  <div class="flex-col-2 flexbox-v">
+    <mat-card-title class="flex-row">
       {{ profile?.personalInfo?.firstName }} {{ profile?.personalInfo?.lastName }}
     </mat-card-title>
     <br />
-    <div row>
-      <div col>
+    <div class="flexbox-h">
+      <div class="flex-col flex-col-even">
         <mat-card-subtitle> Basic Information </mat-card-subtitle>
         <br />
         <p>First Name: {{ profile?.personalInfo?.firstName }}</p>
@@ -40,7 +40,7 @@
         <br />
         <br />
       </div>
-      <div col>
+      <div class="flex-col flex-col-even">
         <mat-card-subtitle> Employment Status </mat-card-subtitle>
         <br />
         <p>Visa title: {{ profile?.citizenshipStatus?.workAuthorization }}</p>
@@ -66,9 +66,11 @@
         <br />
         <ng-container *ngIf="profile?.driverLicense?.driverLicenseCopyUrl">
           A Button for Driver License Copy
+          <br/>
         </ng-container>
         <ng-container *ngFor="let doc of profile?.citizenshipStatus?.workAuthorizationFiles">
           A Button for work Authorization File
+          <br/>
         </ng-container>
         <br />
         <br />

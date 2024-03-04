@@ -1,64 +1,49 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-// import UploadDropzone from './UploadDropzone.jsx';
 import { Typography, Grid } from "@mui/material";
-
-import { useState } from "react";
-
 import InputUnit from "./InputUnit.jsx";
+import { useEffect, useState } from "react";
 
-function VisaInfoField({ readOnly }) {
-  const [citizenshipStatus, setCitizenshipStatus] = useState({
-    isCitizenOrPermanentResident: "No",
-    statusDetail: "", // "Green Card", "Citizen", or "None"
-    workAuthorization: "", // "H1-B", "L2", "F1(CPT/OPT)", "H4", "Other"
-    workAuthorizationOtherTitle: "", // If "Other" is selected
-    workAuthorizationFiles: [
-      // {
-      //   "documentId": "ObjectId",
-      //   "docUrl": "String"
-      // }
-    ], // URLs to uploaded files
-    startEndDate: {
-      startDate: "",
-      endDate: "",
-    },
-  });
-  // const handleFileUpload = (url) => {
-  //   console.log('Uploaded URL:', url);
-  //   // Do whatever you want with the uploaded URL here
-  // };
+const citizenshipOptions = ["Yes", "No"];
+const citizenshipDetailOptions = ["Green Card", "Citizen", ""];
+const workAuthorizationOptions = ["H1-B", "L2", "F1(CPT/OPT)", "H4", "Other", ""];
+
+function VisaInfoField({ readOnly, citizenshipStatus }) {
+
   const [formControl, setFormControl] = useState({
-    isCitizenOrPermanentResident:
-      citizenshipStatus.isCitizenOrPermanentResident,
-    workAuthorization: citizenshipStatus.workAuthorization,
+    isCitizenOrPermanentResident: 'Yes',
+    statusDetail: 'Citizen',
+    workAuthorization: '',
+    workAuthorizationOtherTitle: '',
   });
+  
+  useEffect(() => {
+    if (citizenshipStatus?.isCitizenOrPermanentResident !== undefined) {
+      setFormControl({
+        isCitizenOrPermanentResident:
+          citizenshipStatus.isCitizenOrPermanentResident ? 'Yes' : 'No',
+        statusDetail: citizenshipStatus.statusDetail === "None" ? "" : citizenshipStatus.statusDetail,
+        workAuthorization: citizenshipStatus.workAuthorization === "None" ? "" : citizenshipStatus.workAuthorization,
+        workAuthorizationOtherTitle: citizenshipStatus.workAuthorizationOtherTitle,
+      });
+    }
+  }, [citizenshipStatus]);
+  
   const handleSubmit = (event) => {
     const { name, value } = event.target;
     setFormControl((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileSubmit = (e) => {
-    const { files } = e.target;
-
-    // console.log('uploaded files utl:', files);
-  };
-
-  const citizenshipOptions = ["Yes", "No"];
-  const citizenshipDetailOptions = ["Green Card", "Citizen"];
-  const workAuthorizationOptions = ["H1-B", "L2", "F1(CPT/OPT)", "H4", "Other"];
   return (
-    <Typography style={{ marginTop: "50px" }}>
+    <div style={{ marginTop: "50px" }}>
       <Typography variant="h4" textAlign="left" style={{ marginLeft: "8px" }}>
         Visa status Information
       </Typography>
       <Grid container spacing={8} sx={{ wnameth: "80%", margin: "0 auto" }}>
         <Grid item xs={6}>
           <InputUnit
-            onChange={handleSubmit}
             name="isCitizenOrPermanentResident"
-            value={citizenshipStatus.isCitizenOrPermanentResident}
-            label="Are you Citizen or permanent resident?"
+            value={formControl.isCitizenOrPermanentResident}
+            onChange={handleSubmit}
+            label="Are you citizen or permanent resident?"
             type="dropdown"
             placeholder="Select citizenship"
             options={citizenshipOptions}
@@ -67,11 +52,12 @@ function VisaInfoField({ readOnly }) {
           />
         </Grid>
         <Grid item xs={6} />
-        {formControl.isCitizenOrPermanentResident === "Yes" && (
+        {formControl.isCitizenOrPermanentResident === 'Yes' && (
           <Grid item xs={6}>
             <InputUnit
               name="statusDetail"
-              value={citizenshipStatus.statusDetail}
+              value={formControl.statusDetail}
+              onChange={handleSubmit}
               label="Citizenship Detail"
               type="dropdown"
               placeholder="Select citizenship"
@@ -81,13 +67,13 @@ function VisaInfoField({ readOnly }) {
             />
           </Grid>
         )}
-        {formControl.isCitizenOrPermanentResident === "No" && (
+        {formControl.isCitizenOrPermanentResident === 'No' && (
           <>
             <Grid item xs={6}>
               <InputUnit
-                onChange={handleSubmit}
                 name="workAuthorization"
-                value={citizenshipStatus.workAuthorization}
+                value={formControl.workAuthorization}
+                onChange={handleSubmit}
                 label="What is your work authorization?"
                 type="dropdown"
                 placeholder="Select work authorization"
@@ -100,9 +86,9 @@ function VisaInfoField({ readOnly }) {
             {formControl.workAuthorization === "Other" && (
               <Grid item xs={12}>
                 <InputUnit
-                  onChange={handleSubmit}
                   name="workAuthorizationOtherTitle"
-                  value={citizenshipStatus.workAuthorizationOtherTitle}
+                  value={formControl.workAuthorizationOtherTitle}
+                  onChange={handleSubmit}
                   label="What is your work authorization title?"
                   placeholder="Enter authorization title"
                   required
@@ -114,7 +100,7 @@ function VisaInfoField({ readOnly }) {
             <Grid item xs={6}>
               <InputUnit
                 name="startDate"
-                value={citizenshipStatus.startEndDate.startDate}
+                value={citizenshipStatus?.startEndDate?.startDate ? citizenshipStatus?.startEndDate?.startDate.substring(0, 10) : ""}
                 label="Authorization start date"
                 type="date"
                 required
@@ -124,7 +110,7 @@ function VisaInfoField({ readOnly }) {
             <Grid item xs={6}>
               <InputUnit
                 name="endDate"
-                value={citizenshipStatus.startEndDate.endDate}
+                value={citizenshipStatus?.startEndDate?.endDate ? citizenshipStatus?.startEndDate?.endDate.substring(0, 10) : ""}
                 label="Authorization end date"
                 type="date"
                 required
@@ -135,19 +121,19 @@ function VisaInfoField({ readOnly }) {
               <Grid item xs={6}>
                 <InputUnit
                   name="workAuthorizationFiles"
-                  value={citizenshipStatus.startEndDate.endDate}
+                  // value={citizenshipStatus?.workAuthorizationFiles[0] || ""}
+                  onChange={handleSubmit}
                   label="Upload CPT/OPT Receipt"
                   type="file"
                   required
                   disabled={readOnly}
-                  onChange={handleFileSubmit}
                 />
               </Grid>
             )}
           </>
         )}
       </Grid>
-    </Typography>
+    </div>
   );
 }
 

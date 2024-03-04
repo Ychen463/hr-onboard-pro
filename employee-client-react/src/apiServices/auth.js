@@ -1,20 +1,22 @@
 import axiosInstance from "../interceptors/authInterceptor.js";
+import axios from 'axios';
+
+const base_url_reg = 'http://localhost:3000/api';
 
 export const getRegistrationTokenUsage = async (token) =>
-  axiosInstance.get(`/registrationToken/${token}`);
+  axios.get(`${base_url_reg}/registrationToken/${token}`);
 
 export const invalidateRegistrationToken = async (token) =>
-  axiosInstance.patch(`/registrationToken/${token}`);
+  axios.patch(`${base_url_reg}/registrationToken/${token}`);
 
 export const register = async ({
   username,
   password,
-  email,
   registrationToken,
 }) =>
-  axiosInstance.post(
-    "/register",
-    { username, password, email },
+  axios.post(
+    `${base_url_reg}/register`,
+    { username, password },
     {
       headers: {
         Authorization: `Bearer ${registrationToken}`,

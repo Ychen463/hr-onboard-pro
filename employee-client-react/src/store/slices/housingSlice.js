@@ -1,10 +1,6 @@
-import {
-  createAsyncThunk,
-  createSelector,
-  createSlice,
-} from "@reduxjs/toolkit";
-import * as housingApiService from "../../apiServices/housing.js";
-import { logout } from "./authSlice.js";
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
+import * as housingApiService from '../../apiServices/housing.js';
+import { logout } from './authSlice.js';
 
 const initialState = {
   house: null,
@@ -13,20 +9,17 @@ const initialState = {
 };
 
 // async thunk for housing
-export const getHousing = createAsyncThunk(
-  "housing/getHousing",
-  async (_, thunkAPI) => {
-    try {
-      const response = await housingApiService.getHousing();
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.data.message);
-    }
-  },
-);
+export const getHousing = createAsyncThunk('housing/getHousing', async (_, thunkAPI) => {
+  try {
+    const response = await housingApiService.getHousing();
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.data.message);
+  }
+});
 
 export const housingSlice = createSlice({
-  name: "housing",
+  name: 'housing',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -54,19 +47,13 @@ export default housingSlice.reducer;
 // selectors
 const selectHousingState = (state) => state.housing;
 // get housing data
-export const selectorCurrentHouseData = createSelector(
-  selectHousingState,
-  (state) => state.house,
-);
+export const selectorCurrentHouseData = createSelector(selectHousingState, (state) => state.house);
 
 // check if state is loading
 export const selectIsHousingLoading = createSelector(
   selectHousingState,
-  (state) => state.isLoading,
+  (state) => state.isLoading
 );
 
 // get any error
-export const selectHousingError = createSelector(
-  selectHousingState,
-  (state) => state.error,
-);
+export const selectHousingError = createSelector(selectHousingState, (state) => state.error);

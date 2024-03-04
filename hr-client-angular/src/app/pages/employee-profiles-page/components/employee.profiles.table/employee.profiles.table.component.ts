@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
-import { Observable, catchError, of } from 'rxjs';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -18,7 +17,7 @@ import { Store } from '@ngrx/store';
   templateUrl: './employee.profiles.table.component.html',
   styleUrls: ['./employee.profiles.table.component.css'],
 })
-export class EmployeeProfilesTableComponent implements OnInit {
+export class EmployeeProfilesTableComponent implements OnInit, OnDestroy {
   columnsToDisplay: string[] = ['name', 'email', 'phone', 'workAuthorization', 'ssn'];
   dataSource = new MatTableDataSource<ProfileSummary>();
 
@@ -50,9 +49,13 @@ export class EmployeeProfilesTableComponent implements OnInit {
       });
   }
 
+  ngOnDestroy(): void {
+    this.selectProfileSummariesSubscription?.unsubscribe();
+    this.selectProfileSummariesByNameSubscription?.unsubscribe();
+  }
+
   navigateToDetails(userAccountId: string) {
-    this.profileService.userAccountIdForDetails = userAccountId;
-    this.router.navigate(['employee-profiles/full-profile']);
+    this.router.navigate(['employee-profiles/full-profile', userAccountId]);
   }
 
   handleSearch(): void {

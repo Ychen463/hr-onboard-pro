@@ -1,28 +1,27 @@
-/* eslint-disable react/prop-types */
 import { Typography, Grid } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputUnit from "./InputUnit.jsx";
 
-function ReferenceField({ readOnly }) {
-  // eslint-disable-next-line no-unused-vars
-  const [referral, setReferral] = useState({
-    firstName: "",
-    lastName: "",
-    middleName: "",
-    phone: "",
-    email: "",
-    relationship: "",
-  });
+const hasreferalOptions = ['Yes', 'No'];
+
+function ReferenceField({ readOnly, referral }) {
   const [formControl, setFormControl] = useState({
-    isCitizenOrPermanentResident: false,
+    ifHasReferal: 'No',
   });
+
+  useEffect(()=>{
+    if (referral?.firstName) {
+      setFormControl((prev) => ({ ...prev, ifHasReferal: 'Yes' }));
+    }
+  }, [referral]);
+
   const handleSubmit = (event) => {
     const { name, value } = event.target;
     setFormControl((prev) => ({ ...prev, [name]: value }));
   };
-  const hasreferalOptions = ["Yes", "No"];
+
   return (
-    <Typography style={{ marginTop: "50px" }}>
+    <div style={{ marginTop: "50px" }}>
       <Typography
         variant="h4"
         component="h2"
@@ -30,8 +29,7 @@ function ReferenceField({ readOnly }) {
         textAlign="left"
         style={{ marginLeft: "8px" }}
       >
-        {" "}
-        Reference Information
+        Referal Information
       </Typography>
       <Grid container spacing={10} sx={{ wnameth: "80%", margin: "0 auto" }}>
         <Grid item xs={6}>
@@ -39,7 +37,7 @@ function ReferenceField({ readOnly }) {
             onChange={handleSubmit}
             name="ifHasReferal"
             required={true}
-            value=""
+            value={formControl.ifHasReferal}
             label="Do you have a referal?"
             type="dropdown"
             placeholder="Select citizenship"
@@ -53,10 +51,9 @@ function ReferenceField({ readOnly }) {
             <Grid item xs={6}>
               <InputUnit
                 name="referralFirstName"
-                value={referral.firstName}
+                value={referral?.firstName || ""}
                 label="First Name"
                 type="text"
-                placeholder="John"
                 required
                 disabled={readOnly}
               />
@@ -64,10 +61,9 @@ function ReferenceField({ readOnly }) {
             <Grid item xs={6}>
               <InputUnit
                 name="referralLastName"
-                value={referral.lastName}
+                value={referral?.lastName || ""}
                 label="Last Name"
                 type="text"
-                placeholder="Doe"
                 required
                 disabled={readOnly}
               />
@@ -76,20 +72,18 @@ function ReferenceField({ readOnly }) {
             <Grid item xs={6}>
               <InputUnit
                 name="referralMiddleName"
-                value={referral.middleName}
+                value={referral?.middleName || ""}
                 label="Middle Name"
                 type="text"
-                placeholder="Tommy"
                 disabled={readOnly}
               />
             </Grid>
             <Grid item xs={6}>
               <InputUnit
                 name="referralPreferredName"
-                value={referral.preferredName}
+                value={referral?.preferredName || ""}
                 label="Preferred Name"
                 type="text"
-                placeholder="Johnny"
                 disabled={readOnly}
               />
             </Grid>
@@ -98,7 +92,7 @@ function ReferenceField({ readOnly }) {
               <InputUnit
                 name="referralPhoneNumber"
                 required
-                value={referral.phone}
+                value={referral?.phone || ""}
                 label="Referral's Phone Number"
                 type="text"
                 placeholder="(666) 666-6666"
@@ -109,7 +103,7 @@ function ReferenceField({ readOnly }) {
               <InputUnit
                 name="referralEmail"
                 required
-                value={referral.email}
+                value={referral?.email || ""}
                 label="Referral's Email"
                 type="email"
                 placeholder="sampleemail@gmail.com"
@@ -120,7 +114,7 @@ function ReferenceField({ readOnly }) {
               <InputUnit
                 name="referralRelationship"
                 required
-                value={referral.email}
+                value={referral?.relationship || "" }
                 label="Referral's Relationship"
                 type="text"
                 placeholder="Enter relationship"
@@ -130,7 +124,7 @@ function ReferenceField({ readOnly }) {
           </>
         )}
       </Grid>
-    </Typography>
+    </div>
   );
 }
 

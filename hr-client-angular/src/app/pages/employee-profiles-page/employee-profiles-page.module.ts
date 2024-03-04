@@ -7,7 +7,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
-// import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { EmployeeProfilesPageRoutingModule } from './employee-profiles-page-routing.module';
 import { EmployeeProfilesPageComponent } from './employee-profiles-page.component';
@@ -32,6 +31,6 @@ import { FullEmployeeProfileComponent } from './components/full.employee.profile
     MatCardModule,
     MatInputModule,
   ],
-  providers: [EmployeeProfilesService],
+  providers: [ EmployeeProfilesService ],
 })
 export class EmployeeProfilesPageModule {}

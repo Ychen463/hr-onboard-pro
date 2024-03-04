@@ -1,19 +1,10 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { Typography, Grid } from "@mui/material";
-
-import { useState } from "react";
 import InputUnit from "./InputUnit.jsx";
 
-function ContactInfoField({ readOnly }) {
-  // select Data from Redux directly
-  const [contactInfo, setContactInfo] = useState({
-    cellPhoneNumber: "",
-    workPhoneNumber: "",
-  });
+function ContactInfoField({ readOnly, personalInfo }) {
 
   return (
-    <Typography style={{ marginTop: "50px" }}>
+    <div style={{ marginTop: "50px" }}>
       <Typography variant="h4" textAlign="left" style={{ marginLeft: "8px" }}>
         Contact Information
       </Typography>
@@ -21,7 +12,7 @@ function ContactInfoField({ readOnly }) {
         <Grid item xs={6}>
           <InputUnit
             name="personalCellPhoneNumber"
-            value={contactInfo.cellPhoneNumber}
+            value={personalInfo?.contactSchema?.cellPhoneNumber || ""}
             label="Cell Phone Number"
             type="tel"
             placeholder="(666)666-6666"
@@ -32,7 +23,7 @@ function ContactInfoField({ readOnly }) {
         <Grid item xs={6}>
           <InputUnit
             name="personalWorkPhoneNumber"
-            value={contactInfo.workPhoneNumber}
+            value={personalInfo?.contactSchema?.workPhoneNumber || ""}
             label="Work Phone Number"
             type="tel"
             placeholder="(666)666-6666"
@@ -40,7 +31,7 @@ function ContactInfoField({ readOnly }) {
           />
         </Grid>
       </Grid>
-    </Typography>
+    </div>
   );
 }
 

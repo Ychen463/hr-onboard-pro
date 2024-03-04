@@ -1,0 +1,59 @@
+<h2 mat-dialog-title>Create New Housing</h2>
+<mat-dialog-content>
+  <p>Give new housing a name as an identifier</p>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="data.name">
+  </mat-form-field>
+  <br/>
+
+  <p>Address</p>
+  <mat-form-field>
+    <mat-label>Address</mat-label>
+    <input matInput [(ngModel)]="data.address">
+  </mat-form-field>
+  <br/>
+
+  <p>Landlord Info</p>
+  <mat-form-field>
+    <mat-label>Full name</mat-label>
+    <input matInput [(ngModel)]="data.landlord.fullName">
+  </mat-form-field>
+  <br/>
+  <mat-form-field>
+    <mat-label>Phone number</mat-label>
+    <input matInput [(ngModel)]="data.landlord.phoneNumber">
+  </mat-form-field>
+  <br/>
+  <mat-form-field> 
+    <mat-label>Email</mat-label>
+    <input matInput [(ngModel)]="data.landlord.email">
+  </mat-form-field>   
+  <br/>
+
+  <p>Facility Info</p>
+  <mat-form-field> 
+    <p>Beds</p>
+    <input matInput type="number" min="0" max="20" [(ngModel)]="data.facilityInfo.beds">
+  </mat-form-field> 
+  <br/>
+  <mat-form-field> 
+    <p>Mattresses</p>
+    <input matInput type="number" min="0" max="20" [(ngModel)]="data.facilityInfo.mattresses">
+  </mat-form-field> 
+  <br/>
+  <mat-form-field> 
+    <p>Tables</p>
+    <input matInput type="number" min="0" max="20" [(ngModel)]="data.facilityInfo.tables">
+  </mat-form-field> 
+  <br/>
+  <mat-form-field> 
+    <p>Chairs</p>
+    <input matInput type="number" min="0" max="20" [(ngModel)]="data.facilityInfo.chairs">
+  </mat-form-field> 
+  
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Submit</button>
+</mat-dialog-actions>
