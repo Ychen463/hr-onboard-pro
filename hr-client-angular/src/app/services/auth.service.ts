@@ -12,7 +12,9 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private store: Store
-  ) {}
+  ) {
+    this.rehydrateAuth();
+  }
 
   login(username: string, password: string) {
     this.store.dispatch(AuthActions.login());
@@ -32,6 +34,10 @@ export class AuthService {
 
           // Extract necessary user info and dispatch success action
           const { userId, username, userRole, email } = response.user;
+          // Store user data into local storage as well to rehydrate Store auth
+          // Example of setting user data in localStorage after successful login
+          localStorage.setItem('user', JSON.stringify({ userId, username, userRole, email }));
+
           this.store.dispatch(
             AuthActions.loginsuccess({
               user: { userId, username, userRole, email },
@@ -47,6 +53,15 @@ export class AuthService {
   // Additional methods like logout could also remove the token from local storage
   logout() {
     localStorage.removeItem('jwtToken');
+    localStorage.removeItem('user');
     this.store.dispatch(AuthActions.logout());
+  }
+
+  rehydrateAuth() {
+    const userJson = localStorage.getItem('user');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      this.store.dispatch(AuthActions.rehydrateauth({ user: user }));
+    }
   }
 }

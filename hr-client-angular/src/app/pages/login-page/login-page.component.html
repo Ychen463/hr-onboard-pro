@@ -1,22 +1,24 @@
-<mat-card>
-  <mat-card-header class="form-container">
-    <mat-card-title>Welcome to BeaconFire (HR)</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <form (ngSubmit)="onLogin(username, password)">
-      <div class="form-container">
-        <mat-form-field appearance="fill">
-          <mat-label>Username</mat-label>
-          <input matInput [(ngModel)]="username" name="username" required />
-        </mat-form-field>
+<app-navigation-bar>
+  <mat-card>
+    <mat-card-header class="form-container">
+      <mat-card-title>Welcome to BeaconFire (HR)</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form (ngSubmit)="onLogin(username, password)">
+        <div class="form-container">
+          <mat-form-field appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput [(ngModel)]="username" name="username" required />
+          </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Password</mat-label>
-          <input matInput [(ngModel)]="password" name="password" type="password" required />
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput [(ngModel)]="password" name="password" type="password" required />
+          </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit">Login</button>
-      </div>
-    </form>
-  </mat-card-content>
-</mat-card>
+          <button mat-raised-button color="primary" type="submit">Login</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</app-navigation-bar>
