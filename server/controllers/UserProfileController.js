@@ -6,7 +6,6 @@ import Onboarding from '../models/OnboardingModel.js';
 // Get all employees' profile summary, sort by last name alphabetically
 // Name(first, last, preferred), SSN, Work Authorization Title, Phone Number, email(account)
 // Note: email here is the email in UserAccountSchema and can not be modified
-// TODO: error handling, if userAccountId/onboardingId not found in their collection?
 const getAllProfileSummary = async (req, res) => {
   try {
     const profileListFound = await UserProfile.find()
@@ -15,7 +14,15 @@ const getAllProfileSummary = async (req, res) => {
       .sort({ 'personalInfo.lastName': 1 })
       .lean()
       .exec();
-    // console.log(profileListFound);
+    
+    const validProfiles = profileListFound.filter((profile) => profile.userAccountId !== null);
+
+    if (validProfiles.length !== profileListFound.length) {
+      return res.status(404).json({
+        message: 'UserAccount not found for one or more profiles.',
+      });
+    }
+      
     const profileList = profileListFound.map((profile) => ({
       userProfileId: profile._id,
       userAccountId: profile.userAccountId._id,
