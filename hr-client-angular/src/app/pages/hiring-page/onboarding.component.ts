@@ -201,38 +201,40 @@ private applyPaginatorAndSort(): void {
   }
 
   handleObUpdate(userAccountId: string, hrDecision: string): void {
-    // if (hrDecision === 'Approved') {
-    //   this.onboardingService.updateOnboarding(userAccountId, { hrDecision }).subscribe({
-    //     next: () => {
-    //       this.store.dispatch(updateOnboardingSuccess({ userAccountId, onboardingStatus: hrDecision }));
-    //       this.snackBar.open(`Onboarding has been approved for: ${userAccountId}`, 'Close', {
-    //         duration: 5000, 
-    //       });
-    //     },
-    //     error: (error) => this.handleUpdateError(error)
-    //   });
-    // } else if (hrDecision === 'Rejected') {
-      const dialogRef = this.dialog.open(RejectFeedbackDialogComponent, {
-        width: '500px',
-        height: 'auto',
-        data: { userAccountId,hrDecision }
-      });
-      dialogRef.afterClosed().subscribe(rejFeedback => {
-        if (rejFeedback) {
-          this.onboardingService.updateOnboarding(userAccountId, { hrDecision: 'Rejected', rejFeedback }).subscribe({
-            next: () => {
-              this.store.dispatch(updateOnboardingSuccess({ userAccountId, onboardingStatus: 'Rejected', rejFeedback }));
-            },
-            error: (error) => this.handleUpdateError(error)
+    if (hrDecision === 'Approved') {
+      this.onboardingService.updateOnboarding(userAccountId, { hrDecision }).subscribe({
+        next: () => {
+          this.store.dispatch(updateOnboardingSuccess({ userAccountId, onboardingStatus: hrDecision }));
+          this.snackBar.open(`Onboarding has been approved for: ${userAccountId}`, 'Close', {
+            duration: 5000, 
           });
-        }
+        },
+        error: (error) => this.handleUpdateError(error)
       });
-    // }
+    } else if (hrDecision === 'Rejected') {
+      this.openRejectConfirmationDialog(userAccountId);
+    }
     
   }
   
   
-
+  openRejectConfirmationDialog(userAccountId: string): void {
+    const dialogRef = this.dialog.open(RejectFeedbackDialogComponent, {
+      width: '500px',
+      height: 'auto',
+      data: { userAccountId }
+    });
+    dialogRef.afterClosed().subscribe(rejFeedback => {
+      if (rejFeedback) {
+        this.onboardingService.updateOnboarding(userAccountId, { hrDecision: 'Rejected', rejFeedback }).subscribe({
+          next: () => {
+            this.store.dispatch(updateOnboardingSuccess({ userAccountId, onboardingStatus: 'Rejected', rejFeedback }));
+          },
+          error: (error) => this.handleUpdateError(error)
+        });
+      }
+    });
+  }
   
 
 

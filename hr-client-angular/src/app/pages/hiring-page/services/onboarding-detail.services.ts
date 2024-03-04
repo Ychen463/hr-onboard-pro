@@ -32,12 +32,12 @@ import { ApiService } from '../../hiring-page/services/api.service';
             );
         }
 
-        updateOnboarding(userAccountId: string,  hrDecision: string, rejFeedback?: string ): Observable<any> {
+        updateOnboarding(userAccountId: string, data: { hrDecision: string; rejFeedback?: string }): Observable<any> {
             const apiPatchDecisionUrl = this.apiService.getOnboardingDecisionUrl(userAccountId);
             const headers = new HttpHeaders({
                 'Content-Type': 'application/json',
             });
-            return this.httpClient.patch(apiPatchDecisionUrl, {hrDecision,rejFeedback}, { headers })
+            return this.httpClient.patch(apiPatchDecisionUrl, data, { headers })
                 .pipe(
                 catchError(error => {
                     return throwError(error);

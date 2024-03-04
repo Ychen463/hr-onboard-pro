@@ -45,7 +45,7 @@
             <p>First Name: {{ personalInfoData.firstName }} {{ personalInfoData.middleName }} {{ personalInfoData.lastName }}</p> 
             <p>Preferred Name: {{ personalInfoData.preferredName }}</p>
             <p>SSN: {{ personalInfoData.ssn }}</p>
-            <p>DOB: {{ personalInfoData.dateOfBirth | date:'MM/dd/yyyy' }}</p>
+            <p>DOB: {{ personalInfoData.dateOfBirth }}</p>
             <p>Gender: {{ personalInfoData.gender }}</p>
           </div>
           <div *ngIf="currentAddressData">
@@ -94,17 +94,12 @@
           <div *ngIf="citizenshipStatusData.workAuthorization === 'F1(CPT/OPT)'">
             <p>OPT Receipt:</p>
             <ul>
-              <ul *ngFor="let file of citizenshipStatusData.workAuthorizationFiles">
-                <a href="{{ file.docUrl }}" aria-label="">
-                  Work Authorization File - OPT Receipt 
-                  <button mat-icon-button aria-label="Download driver license copy">
-                    <mat-icon>open_in_new</mat-icon>
-                  </button>
-                </a>
-              </ul>
+              <li *ngFor="let file of citizenshipStatusData.workAuthorizationFiles">
+                {{ file.docUrl }}
+              </li>
             </ul>
           </div>
-          <p>Start/End Date: {{ citizenshipStatusData.startEndDate.startDate | date:'MM/dd/yyyy' }} - {{ citizenshipStatusData.startEndDate.endDate | date:'MM/dd/yyyy'}}</p>
+          <p>Start/End Date: {{ citizenshipStatusData.startEndDate.startDate }} - {{ citizenshipStatusData.startEndDate.endDate }}</p>
         </div>
           </div>
           
@@ -127,18 +122,9 @@
               <p>
                 Has Driver License: {{ driverLicenseData.hasDriverLicense }}
                 <span *ngIf="driverLicenseData.hasDriverLicense">
-                  
                   <p>Driver Liscence: {{ driverLicenseData.driverLicenseNumber }}</p>
-                  
-                  <p>Expiration Date: {{ driverLicenseData.expirationDate | date:'MM/dd/yyyy'}}</p>
-                  
-                  <a href="{{ driverLicenseData.driverLicenseCopyUrl }}" aria-label="">
-                    Driver Liscence  
-                    <button mat-icon-button aria-label="Download driver license copy">
-                      <mat-icon>open_in_new</mat-icon>
-                    </button>
-                  </a>
-                  
+                  <p>Expiration Date: {{ driverLicenseData.expirationDate }}</p>
+                  <p>Driver Liscence URL: {{ driverLicenseData.driverLicenseCopyUrl }}</p>
                 </span>
               </p> 
             </div>

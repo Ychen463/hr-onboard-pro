@@ -24,7 +24,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
 
+
 import { GenerateTokenComponent } from './components/generate-token/generate-token.component';
+
 import { OnboardingComponent } from '../hiring-page/onboarding.component';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -39,8 +41,7 @@ import { RegistrationTokenService } from './services/registrationToken.services'
                 RejectFeedbackDialogComponent, 
                 OnboardingDetailComponent  ],
   imports: [
-    StoreModule.forRoot({ 
-      onboardings: onboardingReducer, 
+    StoreModule.forRoot({ onboardings: onboardingReducer, 
                       registrationTokens: registrationTokenReducer}),
     CommonModule,
     FormsModule,

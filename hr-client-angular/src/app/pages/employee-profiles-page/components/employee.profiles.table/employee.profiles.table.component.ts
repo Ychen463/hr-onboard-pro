@@ -11,7 +11,6 @@ import {
 } from 'src/app/store/employee-profile/employee.profile.selectors';
 import { ProfileSummary } from '../../interfaces/employee.profile.interfaces';
 import { Store } from '@ngrx/store';
-import { VisaState } from 'src/app/store/visa/visa.models';
 
 @Component({
   selector: 'app-employee-profiles-table',
@@ -33,7 +32,7 @@ export class EmployeeProfilesTableComponent implements OnInit, OnDestroy {
   constructor(
     private profileService: EmployeeProfilesService,
     private router: Router,
-    private store: Store<VisaState>,
+    private store: Store
   ) {}
 
   ngOnInit(): void {

@@ -12,15 +12,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HttpClientModule } from '@angular/common/http';
 
-
-
 import { authReducer } from './store/auth/auth.reducer';
 import { employeeProfileReducer } from './store/employee-profile/employee.profile.reducer';
 import { onboardingReducer } from './store/hiring/reducers/onboarding.reducer';
 import { registrationTokenReducer } from './store/hiring/reducers/registrationToken.reducer';
 import { housingReducer } from './store/housing/housing.reducer';
 import { facilityReportReducer } from './store/facility-report/facility.report.reducer';
-import { visaReducer} from './store/visa/visa.reducer'
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,17 +27,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
-import {MatIconModule} from '@angular/material/icon';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 import { HiringPageModule } from './pages/hiring-page/hiring-page.module';
-import { VisaPageModule} from './pages/visa-page/visa-page.module'
+
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import {MatSidenavModule} from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -52,11 +44,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({ auth: authReducer, 
-                          employeeProfile: employeeProfileReducer, 
-                          registrationToken: registrationTokenReducer,
-                          onboarding:onboardingReducer,
-                          visa: visaReducer}),
+    StoreModule.forRoot({ auth: authReducer, employeeProfile: employeeProfileReducer }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
@@ -72,12 +60,6 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     MatListModule,
     MatDividerModule,
     HiringPageModule,
-    VisaPageModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatTabsModule,
-    MatButtonToggleModule,
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],
