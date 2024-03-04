@@ -7,16 +7,15 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { HttpClientModule } from '@angular/common/http';
-
-
 
 import { authReducer } from './store/auth/auth.reducer';
 import { employeeProfileReducer } from './store/employee-profile/employee.profile.reducer';
 import { onboardingReducer } from './store/hiring/reducers/onboarding.reducer';
 import { registrationTokenReducer } from './store/hiring/reducers/registrationToken.reducer';
-import { visaReducer} from './store/visa/visa.reducer'
+import { visaReducer} from './store/visa/visa.reducer';
+import { housingReducer } from './store/housing/housing.reducer';
+import { facilityReportReducer } from './store/facility-report/facility.report.reducer';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
