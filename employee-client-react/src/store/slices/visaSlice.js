@@ -27,10 +27,10 @@ export const getVisaStatus = createAsyncThunk(
 
 export const submitOptReceipt = createAsyncThunk(
   "visa/submitOptReceipt",
-  async (docUrl, thunkAPI) => {
+  async ({ docUrl, userAccountId }, thunkAPI) => {
     try {
       // need to make aws s3 request first
-      const response = await visaApiService.postOptReceipt(docUrl);
+      const response = await visaApiService.postOptReceipt({ docUrl, userAccountId });
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data.message);
@@ -40,10 +40,10 @@ export const submitOptReceipt = createAsyncThunk(
 
 export const submitOptEAD = createAsyncThunk(
   "visa/submitOptEAD",
-  async (docUrl, thunkAPI) => {
+  async ({ docUrl, userAccountId }, thunkAPI) => {
     try {
       // need to make aws s3 request first
-      const response = await visaApiService.postOptEAD(docUrl);
+      const response = await visaApiService.postOptEAD({ docUrl, userAccountId });
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data.message);
@@ -53,10 +53,10 @@ export const submitOptEAD = createAsyncThunk(
 
 export const submiti983 = createAsyncThunk(
   "visa/submiti983",
-  async (docUrl, thunkAPI) => {
+  async ({ docUrl, userAccountId }, thunkAPI) => {
     try {
       // need to make aws s3 request first
-      const response = await visaApiService.posti983(docUrl);
+      const response = await visaApiService.posti983({ docUrl, userAccountId });
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data.message);
@@ -66,10 +66,10 @@ export const submiti983 = createAsyncThunk(
 
 export const submiti20 = createAsyncThunk(
   "visa/submiti20",
-  async (docUrl, thunkAPI) => {
+  async ({ docUrl, userAccountId }, thunkAPI) => {
     try {
       // need to make aws s3 request first
-      const response = await visaApiService.posti20(docUrl);
+      const response = await visaApiService.posti20({ docUrl, userAccountId });
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data.message);
@@ -175,4 +175,10 @@ export const selectIsVisaLoading = createSelector(
 export const selectVisaError = createSelector(
   selectVisaState,
   (state) => state.error,
+);
+
+// get {currentStep, currentStatus, rejFeedback}
+export const selectOurVisaStatus = createSelector(
+  selectVisaState,
+  (state) => ({ currentStep: state.visa?.currentStep, currentStatus: state.visa?.currentStatus, rejFeedback: state.visa?.rejFeedback }),
 );
