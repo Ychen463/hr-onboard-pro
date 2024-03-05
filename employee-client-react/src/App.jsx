@@ -30,13 +30,13 @@ function App() {
               <Route path="/onboarding-application" element={<OnboardingApplicationPage />} />
             </Route>
           </Route>
-          <Route element={<HomeGuard />}>
-            <Route element={<HomeLayout />}>
-              <Route path="/" element={<PersonalProfilePage />} />
-              <Route path="/visa" element={<VisaStatusMgtPage />} />
-              <Route path="/housing" element={<HousingPage />} />
-            </Route>
+          {/* <Route element={<HomeGuard />}> */}
+          <Route element={<HomeLayout />}>
+            <Route path="/" element={<PersonalProfilePage />} />
+            <Route path="/visa" element={<VisaStatusMgtPage />} />
+            <Route path="/housing" element={<HousingPage />} />
           </Route>
+          {/* </Route> */}
         </Route>
       </Routes>
     </Router>
