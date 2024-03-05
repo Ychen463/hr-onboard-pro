@@ -53,26 +53,34 @@ export class RejectFeedbackDialogComponent implements OnInit {
   }
 
   submitForm(): void {
-    const rejFeedback = this.rejForm.get('rejFeedback')?.value || '';
+    let rejFeedback = ''
+    if (this.hrDecision === "Rejected"){
+      rejFeedback = this.rejForm.get('rejFeedback')?.value || '';
+    }
+    
     if (this.hrDecision === "Rejected" && !rejFeedback.trim()) {
       alert('Please type in your feedback before submitting.');
       return; 
     }
-    console.log(this.onboarding$);
       this.onboardingDetailService.updateOnboarding(this.userAccountId, 
-      'Rejected', rejFeedback ).subscribe({
+      this.hrDecision, rejFeedback ).subscribe({
       next: () => {
-        console.log('Reject successfully');
-        this.feedbackMessage = 'Rejection successful!';
-        this.messageColor = 'green'; 
+        console.log(`${this.hrDecision} successfully`);
+        this.feedbackMessage = `${this.hrDecision} successful!` ;
+        if (this.hrDecision == "Approved") {
+          this.messageColor = 'green';
+        } else {
+          this.messageColor = 'red';
+        }
+         
         this.rejForm.reset();
-        this.store.dispatch(updateOnboardingSuccess({ userAccountId: this.userAccountId, onboardingStatus: 'Rejected', rejFeedback }));
+        this.store.dispatch(updateOnboardingSuccess({ userAccountId: this.userAccountId, onboardingStatus: this.hrDecision, rejFeedback }));
 
       },
       error: (error) => {
-        console.error('Error occurred during rejection:', error);
+        console.error(`Error occurred during onboarding ${this.hrDecision}:`, error);
         const backendMessage = error.error?.message || 'Unknown error occurred. Please try again later.';
-        this.feedbackMessage = `Error occurred during rejection: ${backendMessage}`;
+        this.feedbackMessage = `Error occurred during onboarding ${this.hrDecision}: ${backendMessage}`;
         this.messageColor = 'red';
         this.rejForm.reset();
         this.store.dispatch(updateOnboardingFailure({ error: backendMessage }));
@@ -84,7 +92,6 @@ export class RejectFeedbackDialogComponent implements OnInit {
   closeDialog(): void {
     this.dialogRef.close();
   }
-  
 }
 function updateOnboardingFailure(arg0: { error: any; }): any {
   throw new Error('Function not implemented.');
