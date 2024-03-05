@@ -22,12 +22,6 @@ import CurrentAddressSection from '../components/formSections/CurrentAddressSect
 import VisaSection from '../components/formSections/VisaSection.jsx';
 import DriverLicenseSection from '../components/formSections/DriverLicenseSection.jsx';
 import ReferralSection from '../components/formSections/ReferralSection.jsx';
-// import PersonalInfoField from '../components/ApplicationFormComponents/PersonalInfoField.jsx';
-// import ContactInfoField from '../components/ApplicationFormComponents/ContactInfoField.jsx';
-// import AddressInfoField from '../components/ApplicationFormComponents/AddressInfoField.jsx';
-// import VisaInfoField from '../components/ApplicationFormComponents/VisaInfoField.jsx';
-// import ReferenceField from '../components/ApplicationFormComponents/ReferenceField.jsx';
-// import DriverLicenseInfoField from '../components/ApplicationFormComponents/DriverLicenseInfoField.jsx';
 
 function OnboardingApplicationPage() {
   const currentUserData = useSelector(selectorCurrentUser);
@@ -110,12 +104,6 @@ function OnboardingApplicationPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // const formData = new FormData(event.currentTarget);
-    // const formDataObj = formDataToObject(formData);
-    // console.log('formDataObj', formDataObj);
-    // const onboardingSubmitData = createOnboardingFormPayload(formDataObj, emergencyContacts);
-    // console.log('onboardingSubmitData', onboardingSubmitData);
-
     const newOnboardingFrom = {
       personalInfo,
       citizenshipStatus,
@@ -123,8 +111,7 @@ function OnboardingApplicationPage() {
       referral,
       emergencyContacts,
     };
-    console.log('Form by manual:', newOnboardingFrom);
-    // dispatch(submitOnboarding(onboardingSubmitData));
+    console.log('newOnboardingFrom:', newOnboardingFrom);
     dispatch(submitOnboarding(newOnboardingFrom));
   };
 
@@ -143,40 +130,24 @@ function OnboardingApplicationPage() {
           setFormData={setPersonalInfo}
         />
         <br />
-        {/* <PersonalInfoField
-          readOnly={readOnlyForm}
-          personalInfo={onboardingData?.personalInfo || personalInfo}
-        /> */}
         <ContactInformationSection
           readOnly={readOnlyForm}
           formData={personalInfo}
           setFormData={setPersonalInfo}
         />
         <br />
-        {/* <ContactInfoField
-          readOnly={readOnlyForm}
-          personalInfo={onboardingData?.personalInfo || personalInfo}
-        /> */}
         <CurrentAddressSection
           readOnly={readOnlyForm}
           formData={personalInfo}
           setFormData={setPersonalInfo}
         />
         <br />
-        {/* <AddressInfoField
-          readOnly={readOnlyForm}
-          personalInfo={onboardingData?.personalInfo || personalInfo}
-        /> */}
         <VisaSection
           readOnly={readOnlyForm}
           formData={citizenshipStatus}
           setFormData={setCitizenshipStatus}
         />
         <br />
-        {/* <VisaInfoField
-          readOnly={readOnlyForm}
-          citizenshipStatus={onboardingData?.citizenshipStatus || citizenshipStatus}
-        /> */}
         <DriverLicenseSection
           readOnly={readOnlyForm}
           formData={driverLicense}
@@ -185,14 +156,8 @@ function OnboardingApplicationPage() {
           setPersonalInfo={setPersonalInfo}
         />
         <br />
-        {/* <DriverLicenseInfoField
-          readOnly={readOnlyForm}
-          driverLicense={driverLicense}
-          personalInfo={onboardingData?.personalInfo || personalInfo}
-        /> */}
         <ReferralSection readOnly={readOnlyForm} formData={referral} setFormData={setReferral} />
         <br />
-        {/* <ReferenceField readOnly={readOnlyForm} referral={onboardingData?.referral || referral} /> */}
         <EmergencyContact
           readOnly={readOnlyForm}
           emergencyContacts={emergencyContacts}

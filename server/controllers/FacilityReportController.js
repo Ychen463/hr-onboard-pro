@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { validationResult } from 'express-validator';
 import FacilityReport from '../models/FacilityReportModel.js';
 import UserAccount from '../models/UserAccountModel.js';
 
@@ -62,6 +64,13 @@ const getHouseFacilityReports = async (req, res) => {
 const createFacilityReport = async (req, res) => {
   const { userId } = req.user;
   const { title, description } = req.body;
+
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+  
   // if no title or no description
   if (!(title && description)) {
     return res.status(422).json({ message: 'Missing title or description to create.' });

@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { selectFacilityReports } from 'src/app/store/facility-report/facility.report.selectors';
 import { FacilityReport } from '../../interfaces/facility.report.interfaces';
+import { selectCurrentUser } from 'src/app/store/auth/auth.selectors';
 
 @Component({
   selector: 'app-facility-reports-tab',
@@ -15,7 +16,9 @@ import { FacilityReport } from '../../interfaces/facility.report.interfaces';
 })
 export class FacilityReportsTabComponent implements OnInit, OnDestroy {
   housingId: string | null = null;
+  userAccountId: string | undefined;
   selectFacilityReportsSubscription: Subscription | undefined;
+  selectUserSubsciption: Subscription | undefined;
   pageIndex: number = 0;
   pageSize: number = 4;
 
@@ -35,14 +38,23 @@ export class FacilityReportsTabComponent implements OnInit, OnDestroy {
       this.facilityReportService.getFacilityReportsByHouseId(this.housingId);
 
       this.selectFacilityReportsSubscription = this.store
-      .select(selectFacilityReports)
-      .subscribe((reports) => {
-        if(reports){
-          this.dataSource.data = reports;
-          console.log(reports);
-        }
-        this.dataSource.paginator = this.paginator;
-      });
+        .select(selectFacilityReports)
+        .subscribe((reports) => {
+          if(reports){
+            this.dataSource.data = reports;
+            console.log(reports);
+          }
+          this.dataSource.paginator = this.paginator;
+        });
+
+      this.selectUserSubsciption = this.store
+        .select(selectCurrentUser)
+        .subscribe((user) => {
+          if(user){
+            this.userAccountId = user.userId;
+          }
+        });
+
     } else {
       //error handling
     }

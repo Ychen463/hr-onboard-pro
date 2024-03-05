@@ -1,7 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable prettier/prettier */
+/* eslint-disable quotes */
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import path from 'path';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import RegistrationTokenRouter from './routers/RegistrationTokenRouter.js';
 import UserAccountRouter from './routers/UserAccountRouter.js';
 import OnboardingRouter from './routers/OnboardingRouter.js';
@@ -12,7 +17,6 @@ import FacilityReportRouter from './routers/FacilityReportRouter.js';
 import AWSS3Router from './routers/AWSS3Router.js';
 
 const app = express();
-app.use(express.json());
 
 // eslint-disable-next-line no-unused-vars
 const __dirname = path.resolve();
@@ -21,7 +25,7 @@ const __dirname = path.resolve();
 app.use(
   cors({
     origin(origin, callback) {
-      const allowedOrigins = ['http://localhost:4200', 'http://localhost:5173'];
+      const allowedOrigins = ['http://localhost:4200', 'http://localhost:3000', 'http://localhost:5173'];
       if (!origin || allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
@@ -29,10 +33,26 @@ app.use(
       }
     },
     credentials: true, // enable cookies for cors
-  })
+  }),
+  helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+    },
+})
 );
-// enable cookies for express
-// app.use(cookieParser());
+
+// Set limit for Request, every user can only request 100 times in a minute
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // one minute
+  max: 100, // Max Requests
+  message: 'Too many requests from this IP, please try again later.',
+});
+
+// 应用速率限制到所有请求
+app.use(limiter);
 
 // enable json and urlencoded for express
 app.use(express.json());

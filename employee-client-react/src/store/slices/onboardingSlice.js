@@ -36,7 +36,7 @@ export const submitOnboarding = createAsyncThunk(
       const workAuthorizationFile = onboardingData.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' ? onboardingData.citizenshipStatus.workAuthorizationFiles[0].docUrl : null;
       const driverLicenseCopyFile = onboardingData.driverLicense.hasDriverLicense ? onboardingData.driverLicense.driverLicenseCopyUrl : null;
 
-      if (profilePictureFile) {
+      if (profilePictureFile && profilePictureFile?.type) {
         const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.AVATAR });
         const presignedUrl = presignedUrlResponse.data.url;
         await axios.put(presignedUrl, profilePictureFile, {
@@ -50,7 +50,7 @@ export const submitOnboarding = createAsyncThunk(
 
       console.log("workAuthorizationFile before", workAuthorizationFile);
 
-      if (workAuthorizationFile) {
+      if (workAuthorizationFile && workAuthorizationFile?.type) {
         const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.OPT_RECEIPT });
         const presignedUrl = presignedUrlResponse.data.url;
 
@@ -64,7 +64,7 @@ export const submitOnboarding = createAsyncThunk(
 
       console.log("workAuthorizationFile after", workAuthorizationFile);
 
-      if (driverLicenseCopyFile) {
+      if (driverLicenseCopyFile && driverLicenseCopyFile?.type) {
         const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.DRIVER_LICENSE });
         const presignedUrl = presignedUrlResponse.data.url;
 

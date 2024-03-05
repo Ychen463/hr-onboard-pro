@@ -2,7 +2,7 @@
   dataSource.paginator?dataSource.paginator.pageIndex * dataSource.paginator.pageSize:pageIndex * pageSize,
   dataSource.paginator?(dataSource.paginator.pageIndex + 1) * dataSource.paginator.pageSize:(pageIndex + 1) * pageSize
 )">
-  <app-facility-report-card [report]="report"></app-facility-report-card>
+  <app-facility-report-card [report]="report" [userAccountId]="userAccountId"></app-facility-report-card>
 </ng-container>
 
 <mat-paginator [pageSizeOptions]="[4, 10, 25]" showFirstLastButtons></mat-paginator>

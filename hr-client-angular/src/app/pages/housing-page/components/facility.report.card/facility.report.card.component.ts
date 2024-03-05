@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FacilityReport, NewComment } from '../../interfaces/facility.report.interfaces';
+import { CommentToBeUpdated, FacilityReport, NewComment } from '../../interfaces/facility.report.interfaces';
 import { FacilityReportService } from '../../services/facility.report.service';
 import { Store } from '@ngrx/store';
 import {
@@ -21,7 +21,7 @@ import { EditCommentDialogComponent } from '../edit.comment.dialog/edit.comment.
 })
 export class FacilityReportCardComponent implements OnInit {
   @Input() report: FacilityReport | undefined;
-  @Input() userId: string | undefined;
+  @Input() userAccountId: string | undefined;
 
   newCommentInit: NewComment = {
     facilityReportId: '',
@@ -30,6 +30,11 @@ export class FacilityReportCardComponent implements OnInit {
   newComment: NewComment = {
     facilityReportId: '',
     description: ''
+  }
+  commentEditing: CommentToBeUpdated = {
+    facilityReportId: '',
+    commentId: '',
+    description: '',
   }
 
   isCollapsed: boolean = false;
@@ -72,28 +77,32 @@ export class FacilityReportCardComponent implements OnInit {
     }
   }
 
-  // openEditCommentDialog(): void {
-  //   const dialogRef = this.dialog.open(EditCommentDialogComponent, {
-  //     data: this.newComment, 
-  //     height: '400px',
-  //     width: '600px',
-  //   });
+  openEditCommentDialog(commentId: string, description: string): void {
+    this.commentEditing.commentId = commentId;
+    this.commentEditing.description = description;
+    
+    const dialogRef = this.dialog.open(EditCommentDialogComponent, {
+      data: this.commentEditing, 
+      height: '300px',
+      width: '600px',
+    });
 
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed');
-  //     if (result) {
-  //       this.newComment = result;
-  //       this.editComment();
-  //     } else {
-  //       this.newComment = this.newCommentInit;
-  //     }
-  //     console.log(this.newComment);
-  //   });
-  // }
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result) {
+        this.commentEditing = result;
+        this.editComment();
+      } else {
+        this.commentEditing.commentId = '';
+        this.commentEditing.description = '';
+      }
+      console.log(this.newComment);
+    });
+  }
 
-  // editComment(): void {
-  //   if (this.report) {
-  //     this.facilityReportService.addComment({ ...this.newComment, facilityReportId: this.report._id });
-  //   }
-  // }
+  editComment(): void {
+    if (this.report) {
+      this.facilityReportService.editComment({ ...this.commentEditing, facilityReportId: this.report._id });
+    }
+  }
 }
