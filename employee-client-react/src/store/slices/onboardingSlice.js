@@ -86,6 +86,66 @@ export const submitOnboarding = createAsyncThunk(
   },
 );
 
+export const updateOnboarding = createAsyncThunk(
+  "onboarding/updateOnboarding",
+  async ({ onboardingData, userAccountId }, thunkAPI) => {
+    try {
+      // upload files to AWS S3
+      const profilePictureFile = onboardingData.personalInfo?.profilePictureUrl || null;
+      const workAuthorizationFile = onboardingData.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' ? onboardingData.citizenshipStatus.workAuthorizationFiles[0].docUrl : null;
+      const driverLicenseCopyFile = onboardingData.driverLicense.hasDriverLicense ? onboardingData.driverLicense.driverLicenseCopyUrl : null;
+
+      if (profilePictureFile && profilePictureFile?.type) {
+        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.AVATAR });
+        const presignedUrl = presignedUrlResponse.data.url;
+        await axios.put(presignedUrl, profilePictureFile, {
+          headers: {
+            'Content-Type': profilePictureFile.type,
+          },
+        });
+
+        onboardingData.personalInfo.profilePictureUrl = presignedUrl.split('?')[0];
+      }
+
+      console.log("workAuthorizationFile before", workAuthorizationFile);
+
+      if (workAuthorizationFile && workAuthorizationFile?.type) {
+        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.OPT_RECEIPT });
+        const presignedUrl = presignedUrlResponse.data.url;
+
+        await axios.put(presignedUrl, workAuthorizationFile, {
+          headers: {
+            'Content-Type': workAuthorizationFile.type,
+          },
+        });
+        onboardingData.citizenshipStatus.workAuthorizationFiles[0].docUrl = presignedUrl.split('?')[0];
+      }
+
+      console.log("workAuthorizationFile after", workAuthorizationFile);
+
+      if (driverLicenseCopyFile && driverLicenseCopyFile?.type) {
+        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.DRIVER_LICENSE });
+        const presignedUrl = presignedUrlResponse.data.url;
+
+        await axios.put(presignedUrl, driverLicenseCopyFile, {
+          headers: {
+            'Content-Type': driverLicenseCopyFile.type,
+          },
+        });
+        onboardingData.driverLicense.driverLicenseCopyUrl = presignedUrl.split('?')[0];
+      }
+
+      // post form to the server
+      const response =
+        await onboardingApiService.updateOnboarding({ onboardingData, userAccountId });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.data.message);
+    }
+  },
+);
+
 export const onboardingSlice = createSlice({
   name: "onboarding",
   initialState,
@@ -117,6 +177,19 @@ export const onboardingSlice = createSlice({
         state.onboardingData = action.payload;
       })
       .addCase(submitOnboarding.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      // updateOnboarding
+      .addCase(updateOnboarding.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateOnboarding.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.onboardingData = action.payload;
+      })
+      .addCase(updateOnboarding.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })

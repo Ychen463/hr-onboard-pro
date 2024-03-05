@@ -13,7 +13,12 @@ import checkRole from '../middlewares/CheckRoleMiddleware.js';
 const router = express.Router();
 // Emp
 router.post('/onboarding', jwtVerifyToken, checkRole(['employee']), applyUserOnboarding);
-router.post('/onboardin/update', jwtVerifyToken, checkRole(['employee']), updateUserOnboarding);
+router.post(
+  '/onboardin/update/:userAccountId',
+  jwtVerifyToken,
+  checkRole(['employee']),
+  updateUserOnboarding
+);
 
 router.get(
   '/onboarding/:userAccountId',

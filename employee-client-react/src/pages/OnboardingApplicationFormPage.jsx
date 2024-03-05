@@ -10,6 +10,7 @@ import {
   selectorCurrentOnboardingData,
   selectIsOnboardingLoading,
   submitOnboarding,
+  updateOnboarding,
 } from '../store/slices/onboardingSlice.js';
 import { selectorCurrentUser } from '../store/slices/authSlice.js';
 
@@ -99,9 +100,6 @@ function OnboardingApplicationPage() {
   console.log('onboardingData.onboardingStatus', onboardingData?.onboardingStatus);
   const readOnlyForm = onboardingData ? onboardingData.onboardingStatus === 'Pending' : false;
 
-  console.log('onboarding form', onboardingData);
-  console.log('readOnlyForm', readOnlyForm);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -113,7 +111,11 @@ function OnboardingApplicationPage() {
       emergencyContacts,
     };
     console.log('newOnboardingFrom:', newOnboardingFrom);
-    dispatch(submitOnboarding(newOnboardingFrom));
+    if (onboardingData?.onboardingStatus === 'Rejected') {
+      dispatch(updateOnboarding({ onboardingData: newOnboardingFrom, userAccountId: userId }));
+    } else {
+      dispatch(submitOnboarding(newOnboardingFrom));
+    }
   };
 
   return (
