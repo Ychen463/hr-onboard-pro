@@ -42,7 +42,7 @@ export class FacilityReportsTabComponent implements OnInit, OnDestroy {
         .subscribe((reports) => {
           if(reports){
             this.dataSource.data = reports;
-            console.log(reports);
+            // console.log(reports);
           }
           this.dataSource.paginator = this.paginator;
         });
