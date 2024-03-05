@@ -1,7 +1,8 @@
-import axiosInstance from "../interceptors/authInterceptor.js";
+import axiosInstance from '../interceptors/authInterceptor.js';
 
 export const getVisaStatus = async (userAccountId) =>
   axiosInstance.get(`/visa/${userAccountId}/currentStatus`);
+
 
 export const postOptReceipt = async ({ docUrl, userAccountId }) =>
   axiosInstance.post(`/visa/${userAccountId}/docs/optReceipt`, {

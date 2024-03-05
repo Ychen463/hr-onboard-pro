@@ -1,10 +1,9 @@
-import {
-  createAsyncThunk,
-  createSelector,
-  createSlice,
-} from "@reduxjs/toolkit";
-import * as visaApiService from "../../apiServices/visa.js";
-import { logout } from "./authSlice.js";
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
+import * as visaApiService from '../../apiServices/visa.js';
+import { logout } from './authSlice.js';
+import axios from 'axios';
+import fileTypes from '../../constants/fileTypes.js';
+import * as onboardingApiService from '../../apiServices/onboarding.js';
 
 const initialState = {
   visa: null,
@@ -14,7 +13,7 @@ const initialState = {
 
 // async thunk for visa
 export const getVisaStatus = createAsyncThunk(
-  "visa/getVisaStatus",
+  'visa/getVisaStatus',
   async ({ userAccountId }, thunkAPI) => {
     try {
       const repsonse = await visaApiService.getVisaStatus(userAccountId);
@@ -22,7 +21,7 @@ export const getVisaStatus = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data.message);
     }
-  },
+  }
 );
 
 export const submitOptReceipt = createAsyncThunk(
@@ -35,7 +34,7 @@ export const submitOptReceipt = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data.message);
     }
-  },
+  }
 );
 
 export const submitOptEAD = createAsyncThunk(
@@ -78,7 +77,7 @@ export const submiti20 = createAsyncThunk(
 );
 
 export const visaSlice = createSlice({
-  name: "visa",
+  name: 'visa',
   initialState,
   reducers: {
     // reducers for visa
@@ -160,16 +159,10 @@ export default visaSlice.reducer;
 // selectors
 const selectVisaState = (state) => state.visa;
 // get current visa status
-export const selectorVisa = createSelector(
-  selectVisaState,
-  (state) => state.visa,
-);
+export const selectorVisa = createSelector(selectVisaState, (state) => state.visa);
 
 // check if state is loading
-export const selectIsVisaLoading = createSelector(
-  selectVisaState,
-  (state) => state.isLoading,
-);
+export const selectIsVisaLoading = createSelector(selectVisaState, (state) => state.isLoading);
 
 // get any error
 export const selectVisaError = createSelector(

@@ -18,12 +18,10 @@ import { VisaMgtPendingBoard } from '../components/VisaMgtComponents/VisaMgtPend
 import VisaUpload from '../components/VisaMgtComponents/VisaUpload.jsx';
 import currentDocOfPage from '../utils/visaHelper.js';
 
+import { docUrlExample } from '../constants/docUrlExample.js';
+
 const VisaStatusMgtPage = () => {
   const dispatch = useDispatch();
-  const files = [
-    { name: 'File1.pdf', url: 'http://example.com/file1.pdf' },
-    { name: 'File2.jpg', url: 'http://example.com/file2.jpg' },
-  ];
 
   const visaStatus = useSelector(selectorVisa);
   const currentUser = useSelector(selectorCurrentUser);
@@ -38,7 +36,6 @@ const VisaStatusMgtPage = () => {
   const userAccountId = currentUserData.userId;
 
   useEffect(() => {
-    console.log('fetch getVisaStatus userAccountId', userAccountId);
     dispatch(getVisaStatus({ userAccountId }));
   }, [userAccountId]);
 
