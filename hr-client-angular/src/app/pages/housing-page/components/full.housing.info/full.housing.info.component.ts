@@ -58,5 +58,7 @@ export class FullHousingInfoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.selectProfileByIdSubscription?.unsubscribe();
+    this.selectLoadingSubscription?.unsubscribe();
+    this.selectErrorSubscription?.unsubscribe();
   }
 }

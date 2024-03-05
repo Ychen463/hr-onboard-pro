@@ -102,6 +102,8 @@ export class HousingSummaryViewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.selectHousingSummariesSubscription?.unsubscribe();
+    this.selectLoadingSubscription?.unsubscribe();
+    this.selectErrorSubscription?.unsubscribe();
   }
 
   openDialog(): void {
