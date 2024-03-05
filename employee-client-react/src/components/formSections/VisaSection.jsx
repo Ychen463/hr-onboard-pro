@@ -174,7 +174,11 @@ const VisaSection = ({ readOnly, formData, setFormData }) => {
                 hidden
                 onChange={handleFileChange}
                 accept="application/pdf"
-                file={formData?.workAuthorizationFiles[0].docUrl}
+                file={
+                  formData?.workAuthorizationFiles
+                    ? formData?.workAuthorizationFiles[0].docUrl
+                    : null
+                }
               />
               {/* </Button> */}
             </Grid>

@@ -1,7 +1,7 @@
+import validator from 'validator';
 import RegistrationToken from '../models/RegistrationTokenModel.js';
 import generateRegisterToken from '../utils/generateRegisterToken.js';
 import sendEmail from '../utils/sendEmail.js';
-import validator from 'validator';
 
 const generateRegiToken = async (req, res) => {
   try {
@@ -14,7 +14,7 @@ const generateRegiToken = async (req, res) => {
     }
 
     // Sanitize email to ensure consistency
-    email = validator.normalizeEmail(email);
+    const normalizeEmail = validator.normalizeEmail(email);
 
     // Optional: Validate names if your application requires
     if (!userFirstName || !validator.isAlpha(userFirstName, 'en-US', { ignore: ' -' })) {
@@ -24,19 +24,20 @@ const generateRegiToken = async (req, res) => {
       return res.status(422).json({ message: 'Invalid last name format' });
     }
 
-
     // Registration Email should not be used before
-    const userEmailExists = await RegistrationToken.findOne({ email }).lean().exec();
+    const userEmailExists = await RegistrationToken.findOne({ email: normalizeEmail })
+      .lean()
+      .exec();
     if (userEmailExists) {
       return res.status(409).json({ message: 'Register Email already exists' });
     }
-    const jwtToken = generateRegisterToken(userFirstName, userLastName, email, 'employee');
+    const jwtToken = generateRegisterToken(userFirstName, userLastName, normalizeEmail, 'employee');
     // const registrationLink = `${process.env.DOMAIN_NAME}/register?token=${jwtToken}`;
     const registrationLink = `http://localhost:5173/register?token=${jwtToken}`;
     const tokenInfo = {
       userFirstName,
       userLastName,
-      email,
+      email: normalizeEmail,
       token: jwtToken,
       tokenStatus: 'Unused',
       createdDatetime: Date.now(),
@@ -46,7 +47,7 @@ const generateRegiToken = async (req, res) => {
 
     // Send out the email to new employee
     await sendEmail({
-      toEmail: email,
+      toEmail: normalizeEmail,
       subject: 'Onboarding Registration Link',
       htmlBody: `<h4>Hi ${userFirstName},</h4>
                    <p>Please click on the link below to complete your onboarding registration:</p>
