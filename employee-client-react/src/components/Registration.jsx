@@ -26,8 +26,9 @@ function RegistrationForm() {
   const error = useSelector(selectAuthError);
   const isLoading = useSelector(selectIsAuthLoading);
   const isLoggedin = useSelector(selectIsLoggedIn);
-  const email = useSelector(selectRegistrationInfo);
-  console.log(email);
+  const registrationInfo = useSelector(selectRegistrationInfo);
+  const email = registrationInfo?.email || '';
+  console.log('registrationInfo email', registrationInfo?.email);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
