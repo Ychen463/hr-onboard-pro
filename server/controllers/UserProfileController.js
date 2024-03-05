@@ -1,9 +1,8 @@
 // TODO: error handling check: add isValidObjectId check
+import validator from 'validator';
 import UserAccount from '../models/UserAccountModel.js';
 import UserProfile from '../models/UserProfileModel.js';
 import Onboarding from '../models/OnboardingModel.js';
-import he from 'he';
-import validator from 'validator';
 
 // Get all employees' profile summary, sort by last name alphabetically
 // Name(first, last, preferred), SSN, Work Authorization Title, Phone Number, email(account)
@@ -16,7 +15,7 @@ const getAllProfileSummary = async (req, res) => {
       .sort({ 'personalInfo.lastName': 1 })
       .lean()
       .exec();
-    
+
     const validProfiles = profileListFound.filter((profile) => profile.userAccountId !== null);
 
     if (validProfiles.length !== profileListFound.length) {
@@ -24,7 +23,7 @@ const getAllProfileSummary = async (req, res) => {
         message: 'UserAccount not found for one or more profiles.',
       });
     }
-      
+
     const profileList = profileListFound.map((profile) => ({
       userProfileId: profile._id,
       userAccountId: profile.userAccountId._id,
@@ -122,7 +121,8 @@ const updateProfile = async (req, res) => {
     }
 
     // Sanitize inputs that will be rendered in HTML
-    newProfile = sanitizeProfile(newProfile);
+    // newProfile = sanitizeProfile(newProfile);
+    console.log('newProfile', newProfile);
 
     // check if the profile exists and whether the user is trying to modify his/her own profile
     const profile = await UserProfile.findById(newProfile._id).lean().exec();
@@ -160,7 +160,7 @@ const updateProfile = async (req, res) => {
 // Sanitize profile fields
 function sanitizeProfile(profile) {
   const sanitizedProfile = {};
-  Object.keys(profile).forEach(key => {
+  Object.keys(profile).forEach((key) => {
     const value = profile[key];
     // Assuming all fields are strings; adjust as necessary
     sanitizedProfile[key] = typeof value === 'string' ? he.encode(value) : value;
@@ -176,19 +176,19 @@ const createUserProfile = async (req, res) => {
       message: 'Missing userAccountId and onboardingId to create a user profile.',
     });
   }
-    // Validation for presence
-    if (!(userAccountId && onboardingId)) {
-      return res.status(422).json({
-        message: 'Missing userAccountId and onboardingId to create a user profile.',
-      });
-    }
-  
-    // Validation for format
-    if (!validator.isMongoId(userAccountId) || !validator.isMongoId(onboardingId)) {
-      return res.status(422).json({
-        message: 'Invalid format for userAccountId or onboardingId.',
-      });
-    }
+  // Validation for presence
+  if (!(userAccountId && onboardingId)) {
+    return res.status(422).json({
+      message: 'Missing userAccountId and onboardingId to create a user profile.',
+    });
+  }
+
+  // Validation for format
+  if (!validator.isMongoId(userAccountId) || !validator.isMongoId(onboardingId)) {
+    return res.status(422).json({
+      message: 'Invalid format for userAccountId or onboardingId.',
+    });
+  }
 
   try {
     const account = await UserAccount.findById(userAccountId).lean().exec();
