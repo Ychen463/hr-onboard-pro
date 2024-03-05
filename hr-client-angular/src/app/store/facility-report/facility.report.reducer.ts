@@ -29,7 +29,7 @@ export const facilityReportReducer = createReducer(
   on(facilityReportForHouseActions.getreportsfail, (state, { error }) =>
     produce(state, (draft) => {
       draft.isLoading = false;
-      draft.error = error;
+      draft.error = `GetReportsFail: ${error}`;
     })
   ),
 
@@ -59,7 +59,7 @@ export const facilityReportReducer = createReducer(
   on(addCommentActions.addcommentfail, (state, { error }) =>
     produce(state, (draft) => {
       draft.isLoading = false;
-      draft.error = error;
+      draft.error = `AddCommentFail: ${error}`;
     })
   ),
 
@@ -89,7 +89,7 @@ export const facilityReportReducer = createReducer(
   on(editCommentActions.editcommentfail, (state, { error }) =>
     produce(state, (draft) => {
       draft.isLoading = false;
-      draft.error = error;
+      draft.error = `EditCommentFail: ${error}`;
     })
   ),
 )

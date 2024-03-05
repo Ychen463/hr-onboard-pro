@@ -43,7 +43,7 @@
           <br/>
           <p>Last editted by {{ comment.createdBy.username }} at {{ comment.lastModifiedDatetime | date }}</p>
         </div>
-        <div *ngIf="comment.createdBy._id === userAccountId">
+        <div *ngIf="comment.createdBy._id === userAccountId && report?.status !== 'Closed'">
           <button mat-flat-button color="primary" (click)="openEditCommentDialog(comment._id, comment.description)">
             Edit
           </button>
@@ -51,7 +51,7 @@
       </div>
     </ng-container>
     <mat-divider></mat-divider>
-    <mat-card-actions>
+    <mat-card-actions *ngIf="report?.status !== 'Closed'">
       <button mat-button color="primary" (click)="openAddCommentDialog()">Add Comment</button>
     </mat-card-actions>
   </div>

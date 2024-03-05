@@ -62,5 +62,6 @@ export class FacilityReportsTabComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.selectFacilityReportsSubscription?.unsubscribe();
+    this.selectUserSubsciption?.unsubscribe();
   }
 }

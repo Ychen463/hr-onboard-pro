@@ -29,7 +29,12 @@ export class HousingService {
         }
       },
       error: (error) => {
-        this.store.dispatch(housingSummaryActions.addsummariesfail(error));
+        // Extracting and dispatching the error message
+        const errorMessage = error.error instanceof ErrorEvent
+          ? `Client-side error: ${error.error.message}`
+          : `Server-side error: ${error.status} - ${error.error.message}`;
+
+        this.store.dispatch(housingSummaryActions.addsummariesfail({ error: errorMessage }));
       },
     });
   }
@@ -49,7 +54,12 @@ export class HousingService {
         }
       },
       error: (error) => {
-        this.store.dispatch(housingFullInfoActions.getfullinfofail(error));
+        // Extracting and dispatching the error message
+        const errorMessage = error.error instanceof ErrorEvent
+          ? `Client-side error: ${error.error.message}`
+          : `Server-side error: ${error.status} - ${error.error.message}`;
+
+        this.store.dispatch(housingFullInfoActions.getfullinfofail({ error: errorMessage }));
       },
     });
   }
@@ -69,7 +79,11 @@ export class HousingService {
         }
       },
       error: (error) => {
-        this.store.dispatch(createHousingActions.createhousingfail(error));
+        const errorMessage = error.error instanceof ErrorEvent
+          ? `Client-side error: ${error.error.message}`
+          : `Server-side error: ${error.status} - ${error.error.message}`;
+
+        this.store.dispatch(createHousingActions.createhousingfail({ error: errorMessage }));
       },
     });
   }
