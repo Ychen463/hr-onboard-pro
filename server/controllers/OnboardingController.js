@@ -168,7 +168,8 @@ const hrUpdateDecision = async (req, res) => {
     }
 
     // CREATE VISA if needed
-    const visaStatus = 'OPT EAD-Pending';
+    // const visaStatus = 'OPT EAD-Pending';
+    // const visaStatus = 'OPT EAD-Await';
     let updateVisaFields;
     if (
       updatedOnboarding.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' &&
@@ -182,10 +183,11 @@ const hrUpdateDecision = async (req, res) => {
             docId: `${userAccountId}_optReceipt`,
             docUrl: workAuthorizationFiles[0].docUrl, // Assuming the first file is the OPT receipt
             createdDatetime: new Date(),
-            status: visaStatus,
+            // status: visaStatus,
+            status: 'OPT Receipt-Approved',
           },
         },
-        visaStatus,
+        visaStatus: 'OPT Receipt-Approved',
       });
       // Update the user account onboarding status
       updateVisaFields = {

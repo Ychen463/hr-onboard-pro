@@ -31,15 +31,47 @@ const getCurrentStep = async (req, res) => {
     const stepNames = ['OPT RECEIPT', 'OPT EAD', 'I983', 'I20'];
     let currentStepIndex = -1;
 
-    // Find the index of the current step
+    // for Approved
+    // Find the index of the current step, which still
+    // for (let i = 0; i < steps.length; i += 1) {
+    //   const statusToCheck = `${stepNames[i]}-Approved`;
+    //   if (visa.docs[steps[i]].status !== statusToCheck) {
+    //     currentStepIndex = i;
+    //     console.log('i', i);
+    //     console.log('visa.docs', visa.docs);
+    //     console.log('statusToCheck', statusToCheck);
+    //     console.log('visa.docs[steps[i]]', visa.docs[steps[i]]);
+    //     console.log('run approve');
+    //     break;
+    //   }
+    // }
+
     for (let i = 0; i < steps.length; i += 1) {
+      const step = steps[i];
       const statusToCheck = `${stepNames[i]}-Approved`;
-      if (visa.docs[steps[i]].status !== statusToCheck) {
-        currentStepIndex = i;
-        break;
+
+      if (visa.docs[step] && visa.docs[step].status) {
+        console.log(`步骤: ${stepNames[i]}, 状态: ${visa.docs[step].status}`);
+        if (visa.docs[step].status !== statusToCheck) {
+          currentStepIndex = i;
+          console.log('此步骤尚未批准。');
+          // 如果你只想找到第一个未批准的步骤，你可以选择在这里中断循环
+        }
+      } else {
+        console.log(`步骤: ${stepNames[i]}, 状态: 无法获取`);
       }
     }
 
+    // for Rejected
+    for (let i = 0; i < steps.length; i += 1) {
+      const statusToCheck = `${stepNames[i]}-Rejected`;
+      if (visa.docs[steps[i]].status === statusToCheck) {
+        currentStepIndex = i;
+        console.log('run Rejected');
+        break;
+      }
+    }
+    console.log('currentStepIndex', currentStepIndex); // opt receipt
     let currentStep;
     let nextStep;
 
@@ -51,7 +83,7 @@ const getCurrentStep = async (req, res) => {
       currentStep = steps[currentStepIndex];
       nextStep =
         currentStepIndex + 1 < steps.length &&
-        visa.docs[steps[currentStepIndex]].status === `${stepNames[currentStepIndex]}-Approved`
+          visa.docs[steps[currentStepIndex]].status === `${stepNames[currentStepIndex]}-Approved`
           ? steps[currentStepIndex + 1]
           : steps[currentStepIndex];
     }
@@ -68,7 +100,10 @@ const getCurrentStep = async (req, res) => {
     // console.log(currentStep)
     console.log(visa.docs[currentStep]);
     console.log(visa.docs[currentStep].status);
-
+    console.log(
+      'get current status visa.docs[currentStep].rejFeedback',
+      visa.docs[currentStep].rejFeedback
+    );
     return res.status(200).json({
       message: responseMessage,
       visa: {
@@ -153,7 +188,7 @@ const updateDoc = async (req, res) => {
         currentStatus: 'Pending',
         feedback: '',
         docId: `${userAccountId}_${docType}`,
-        docUrl: docUrl,
+        docUrl,
       },
     });
   } catch (error) {
@@ -164,7 +199,7 @@ const updateDoc = async (req, res) => {
 
 const updateVisaDecision = async (req, res) => {
   const { userAccountId, docType } = req.params;
-  const { decision, rejFeedback } = req.body;
+  const { decision, rejFeedback } = req.body; // decision: "Approved" | "Rejected"
   const safeRejFeedback = he.encode(rejFeedback);
 
   const docTypes = ['optReceipt', 'optEAD', 'i983', 'i20'];
@@ -179,8 +214,9 @@ const updateVisaDecision = async (req, res) => {
     if (!visa) {
       return res.status(404).json({ message: 'Visa record not found.' });
     }
-    const currentDoc = visa.docs[docType];
+    const currentDoc = visa.docs[docType]; // user currentDoc object
     if (!currentDoc.url && currentDoc.status !== `${docTypeName}-Pending`) {
+      // hr can only make desicion when the doc has url and is in pending
       return res.status(400).json({
         message: `Error: Document for ${docTypeName} must be uploaded before HR can make a ${decision} decision.`,
       });
@@ -199,13 +235,14 @@ const updateVisaDecision = async (req, res) => {
     await Visa.findOneAndUpdate({ userAccountId }, update, {
       new: true,
     }).exec();
+    // nextIndex is not clear, casue if Approved nextIndex++, if rejected, nextIndex = index ???
     const nextIndex = index + 1;
     if (nextIndex < docTypes.length && decision === 'Approved') {
       const nextDocType = docTypes[nextIndex];
       const nextDocTypeName = docTypeNames[nextIndex];
       await Visa.findOneAndUpdate(
         { userAccountId },
-        { [`docs.${nextDocType}.status`]: `${nextDocTypeName}-Await` },
+        { [`docs.${nextDocType}.status`]: `${nextDocTypeName}-Await` }, // need to update visaStatus as well, otherwise it is still preDoc-Approved
         { new: true }
       ).exec();
     }

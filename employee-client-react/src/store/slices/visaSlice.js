@@ -25,11 +25,11 @@ export const getVisaStatus = createAsyncThunk(
 );
 
 export const submitOptReceipt = createAsyncThunk(
-  'visa/submitOptReceipt',
-  async (docUrl, thunkAPI) => {
+  "visa/submitOptReceipt",
+  async ({ docUrl, userAccountId }, thunkAPI) => {
     try {
       // need to make aws s3 request first
-      const response = await visaApiService.postOptReceipt(docUrl);
+      const response = await visaApiService.postOptReceipt({ docUrl, userAccountId });
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data.message);
@@ -37,68 +37,44 @@ export const submitOptReceipt = createAsyncThunk(
   }
 );
 
-export const submitOptEAD = createAsyncThunk('visa/submitOptEAD', async (docUrl, thunkAPI) => {
-  try {
-    const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({
-      fileType: fileTypes.OPT_EAD,
-    });
-    const presignedUrl = presignedUrlResponse.data.url;
-    await axios.put(presignedUrl, docUrl, {
-      headers: {
-        'Content-Type': docUrl.type,
-      },
-    });
+export const submitOptEAD = createAsyncThunk(
+  "visa/submitOptEAD",
+  async ({ docUrl, userAccountId }, thunkAPI) => {
+    try {
+      // need to make aws s3 request first
+      const response = await visaApiService.postOptEAD({ docUrl, userAccountId });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.data.message);
+    }
+  },
+);
 
-    docUrl = presignedUrl.split('?')[0];
+export const submiti983 = createAsyncThunk(
+  "visa/submiti983",
+  async ({ docUrl, userAccountId }, thunkAPI) => {
+    try {
+      // need to make aws s3 request first
+      const response = await visaApiService.posti983({ docUrl, userAccountId });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.data.message);
+    }
+  },
+);
 
-    const response = await visaApiService.postOptEAD(docUrl);
-    return response.data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.data.message);
-  }
-});
-
-export const submiti983 = createAsyncThunk('visa/submiti983', async (docUrl, thunkAPI) => {
-  try {
-    const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({
-      fileType: fileTypes.I983,
-    });
-    const presignedUrl = presignedUrlResponse.data.url;
-    await axios.put(presignedUrl, docUrl, {
-      headers: {
-        'Content-Type': docUrl.type,
-      },
-    });
-
-    docUrl = presignedUrl.split('?')[0];
-
-    const response = await visaApiService.posti983(docUrl);
-    return response.data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.data.message);
-  }
-});
-
-export const submiti20 = createAsyncThunk('visa/submiti20', async (docUrl, thunkAPI) => {
-  try {
-    const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({
-      fileType: fileTypes.I20,
-    });
-    const presignedUrl = presignedUrlResponse.data.url;
-    await axios.put(presignedUrl, docUrl, {
-      headers: {
-        'Content-Type': docUrl.type,
-      },
-    });
-
-    docUrl = presignedUrl.split('?')[0];
-    // need to make aws s3 request first
-    const response = await visaApiService.posti20(docUrl);
-    return response.data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.data.message);
-  }
-});
+export const submiti20 = createAsyncThunk(
+  "visa/submiti20",
+  async ({ docUrl, userAccountId }, thunkAPI) => {
+    try {
+      // need to make aws s3 request first
+      const response = await visaApiService.posti20({ docUrl, userAccountId });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.data.message);
+    }
+  },
+);
 
 export const visaSlice = createSlice({
   name: 'visa',
@@ -189,4 +165,13 @@ export const selectorVisa = createSelector(selectVisaState, (state) => state.vis
 export const selectIsVisaLoading = createSelector(selectVisaState, (state) => state.isLoading);
 
 // get any error
-export const selectVisaError = createSelector(selectVisaState, (state) => state.error);
+export const selectVisaError = createSelector(
+  selectVisaState,
+  (state) => state.error,
+);
+
+// get {currentStep, currentStatus, rejFeedback}
+export const selectOurVisaStatus = createSelector(
+  selectVisaState,
+  (state) => ({ currentStep: state.visa?.currentStep, currentStatus: state.visa?.currentStatus, rejFeedback: state.visa?.rejFeedback }),
+);

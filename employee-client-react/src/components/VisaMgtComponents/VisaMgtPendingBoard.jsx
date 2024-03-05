@@ -1,7 +1,10 @@
 import React from 'react';
 import FileListTable from '../FileListTable';
+
+import { Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectorVisa } from '../../store/slices/visaSlice';
+
 
 export const VisaMgtPendingBoard = () => {
   const visaData = useSelector(selectorVisa);
@@ -9,10 +12,10 @@ export const VisaMgtPendingBoard = () => {
   // const files = docUrlExample;
   return (
     <>
-      <div
-        style={{ marginTop: '100px' }}
-      >{`Waiting for HR to approve your ${visaData?.currentStep} `}</div>
-      <FileListTable files={files} example={false} />
+      <div style={{ marginTop: '100px' }}>
+        <Typography>{`Waiting for HR to approve your ${message} `}</Typography>
+      </div>
+      <FileListTable files={files} />
     </>
   );
 };
