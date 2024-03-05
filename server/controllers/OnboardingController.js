@@ -107,11 +107,13 @@ const hrUpdateDecision = async (req, res) => {
 
     // Update the onboarding status based on the HR decision
     const updatedOnboarding = await Onboarding.findOneAndUpdate(
-      { userAccountId }, 
+      { userAccountId },
 
-      updateFields, {
-      new: true,
-    });
+      updateFields,
+      {
+        new: true,
+      }
+    );
     if (!updatedOnboarding) {
       return res.status(404).json({ message: 'Onboarding process not found.' });
     }
