@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { HousingPageRoutingModule } from './housing-page-routing.module';
 import { HousingPageComponent } from './housing-page.component';
@@ -53,6 +54,7 @@ import { EditCommentDialogComponent } from './components/edit.comment.dialog/edi
     MatDialogModule,
     MatTabsModule,
     MatTableModule,
+    MatSnackBarModule,
     // SharedModule,
   ],
   providers: [HousingService, FacilityReportService],

@@ -29,7 +29,7 @@ export const employeeProfileReducer = createReducer(
   on(profileActions.addsummariesfail, (state, { error }) =>
     produce(state, (draft) => {
       draft.isLoading = false;
-      draft.error = error;
+      draft.error = `addsummariesfail: ${error}`;
     })
   )
 );

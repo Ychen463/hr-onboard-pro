@@ -2,9 +2,11 @@ import { Component, OnInit, Inject, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { HousingService } from '../../services/housing.service';
 import { HousingSummary, NewHousing } from '../../interfaces/housing.interfaces';
 import { Store } from '@ngrx/store';
+import { selectError } from 'src/app/store/housing/housing.selectors';
 import { Subscription } from 'rxjs';
 import {
   MatDialog,
@@ -61,12 +63,15 @@ export class HousingSummaryViewComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   selectHousingSummariesSubscription: Subscription | undefined;
+  selectLoadingSubscription: Subscription | undefined;
+  selectErrorSubscription: Subscription | undefined;
 
   constructor(
     private houseService: HousingService,
     private router: Router,
     private store: Store,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -81,6 +86,14 @@ export class HousingSummaryViewComponent implements OnInit, OnDestroy {
         }
         this.dataSource.paginator = this.paginator;
       });
+
+    this.selectErrorSubscription = this.store
+    .select(selectError)
+    .subscribe((error) => {
+      if(error){
+        this.snackBar.open(error, 'Okay');
+      }
+    });
   }
 
   ngAfterViewInit(): void {

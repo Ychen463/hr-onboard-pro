@@ -29,7 +29,12 @@ export class FacilityReportService {
         }
       },
       error: (error) => {
-        this.store.dispatch(facilityReportForHouseActions.getreportsfail(error));
+        // Extracting and dispatching the error message
+        const errorMessage = error.error instanceof ErrorEvent
+          ? `Client-side error: ${error.error.message}`
+          : `Server-side error: ${error.status} - ${error.error.message}`;
+
+        this.store.dispatch(facilityReportForHouseActions.getreportsfail({ error: errorMessage }));
       },
     });
   }
@@ -49,7 +54,12 @@ export class FacilityReportService {
         }
       },
       error: (error) => {
-        this.store.dispatch(addCommentActions.addcommentfail(error));
+        // Extracting and dispatching the error message
+        const errorMessage = error.error instanceof ErrorEvent
+          ? `Client-side error: ${error.error.message}`
+          : `Server-side error: ${error.status} - ${error.error.message}`;
+
+        this.store.dispatch(addCommentActions.addcommentfail({ error: errorMessage }));
       },
     });
   }
@@ -69,7 +79,12 @@ export class FacilityReportService {
         }
       },
       error: (error) => {
-        this.store.dispatch(editCommentActions.editcommentfail(error));
+        // Extracting and dispatching the error message
+        const errorMessage = error.error instanceof ErrorEvent
+          ? `Client-side error: ${error.error.message}`
+          : `Server-side error: ${error.status} - ${error.error.message}`;
+
+        this.store.dispatch(editCommentActions.editcommentfail({ error: errorMessage }));
       },
     });
   }
