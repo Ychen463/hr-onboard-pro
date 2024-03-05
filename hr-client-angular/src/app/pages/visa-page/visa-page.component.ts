@@ -54,7 +54,6 @@ export class VisaPageComponent implements OnInit, AfterViewInit {
   @ViewChild('inPsort') inPMatSort!: MatSort;
 // Function to check if a row is expanded
 isExpanded(row: any): boolean {
-  // Define your logic here to determine if the row is expanded
   return false; // Example: always return false for demonstration
 }
   constructor(
@@ -85,7 +84,6 @@ isExpanded(row: any): boolean {
   
   async loadVisas(): Promise<void> {
     try {
-      // Assuming this.visaService.getAllVisas() returns an Observable<Visa[] | undefined>
       const response = await this.visaService.getAllVisas().toPromise();
   
       // Check if the response is not undefined

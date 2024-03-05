@@ -53,10 +53,9 @@ export class VisaPageComponent implements OnInit, AfterViewInit {
   @ViewChild('allSort') allMatSort!: MatSort;
   @ViewChild('inPsort') inPMatSort!: MatSort;
 // Function to check if a row is expanded
-isExpanded(row: any): boolean {
-  // Define your logic here to determine if the row is expanded
-  return false; // Example: always return false for demonstration
-}
+    isExpanded(row: any): boolean {
+      return false; 
+    }
   constructor(
     public dialog: MatDialog,
     private visaService: VisaService,

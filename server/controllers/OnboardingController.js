@@ -61,6 +61,59 @@ const applyUserOnboarding = async (req, res) => {
     return res.status(400).json({ message: error.message });
   }
 };
+// 2. Update
+const updateUserOnboarding = async (req, res) => {
+  // Check if onboarding already exists
+
+  const userAccountId = req.user.userId;
+  const ONBOARDING_STATUS = 'Pending';
+  const CURRENT_DOC_VISA_STATUS = 'Pending';
+  const CURRENT_DOC = 'OPT RECEIPT';
+  const visaStatus = `${CURRENT_DOC}-${CURRENT_DOC_VISA_STATUS}`;
+  const { personalInfo, citizenshipStatus, driverLicense, referral, emergencyContacts } = req.body;
+  try {
+    const userAccount = await UserAccount.findOne({ _id: userAccountId });
+    if (!userAccount) {
+      return res.status(404).json({ message: 'User Account not found.' });
+    }
+    userAccount.visaStatus = visaStatus;
+    await userAccount.save();
+    const { email } = userAccount;
+    // Update citizenshipStatus with visaId if it exists
+    const updatedCitizenshipStatus = { ...citizenshipStatus };
+
+    if (
+      req.body.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' &&
+      req.body.citizenshipStatus.workAuthorizationFiles
+    ) {
+      updatedCitizenshipStatus.visaId = Object._id;
+      updatedCitizenshipStatus.workAuthorizationFiles[0].docId = `${userAccountId}_optReceipt`;
+    }
+    const { visaId } = updatedCitizenshipStatus;
+    // Create the onboarding document
+    const filter = { userAccountId };
+    const update = {
+      email, // prefilled, cannot be changed by user
+      onboardingStatus: ONBOARDING_STATUS,
+      rejFeedback: '',
+      personalInfo,
+      citizenshipStatus: updatedCitizenshipStatus,
+      driverLicense,
+      referral,
+      emergencyContacts,
+      visaId,
+    };
+
+    const savedOnboardingData = await Onboarding.findOneAndUpdate(filter, update, { new: true });
+
+    userAccount.onboardingStatus = ONBOARDING_STATUS;
+    await userAccount.save();
+
+    return res.status(201).json(savedOnboardingData);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
 
 // Get Onboarding Record API
 const getUserOnboarding = async (req, res) => {
@@ -101,7 +154,7 @@ const hrUpdateDecision = async (req, res) => {
 
     const updateFields = { onboardingStatus: ONBOARDING_STATUS };
     if (ONBOARDING_STATUS === 'Rejected' && rejFeedback) {
-// Ensure rejFeedback is included only if the decision is Rejected
+      // Ensure rejFeedback is included only if the decision is Rejected
       updateFields.rejFeedback = rejFeedback;
     }
 
@@ -212,4 +265,5 @@ export {
   hrUpdateDecision,
   viewOnboardingApplicationsByStatus,
   getAllTokens,
+  updateUserOnboarding,
 };
