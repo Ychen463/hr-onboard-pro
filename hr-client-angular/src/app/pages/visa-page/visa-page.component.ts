@@ -115,8 +115,9 @@ isExpanded(row: any): boolean {
       
       const keysInOrder = ['optReceipt', 'optEAD', 'i983', 'i20'];
       const key = keysInOrder.reverse().find(key => visa.docs[key]?.docUrl);
-      
+      const docUrl = visa.docs[key as string].docUrl;
       const daysRemaining = Math.ceil((endDate.getTime() - currentTime.getTime()) / (1000 * 60 * 60 * 24)); 
+      console.log(docUrl,key)
             return {
             lastDocUploadedKey : key,
             userAccountId: visa.userAccountId,
@@ -136,7 +137,8 @@ isExpanded(row: any): boolean {
               optReceipt: visa.docs.optReceipt.docUrl,
               i20: visa.docs.i20.docUrl,
               i983:visa.docs.i983.docUrl
-            }
+            } ,
+            lastDocUrl: docUrl,
         };
     });
 }
