@@ -16,3 +16,13 @@ export const selectHousingProfileById = (housingId: string) =>
           profile._id == housingId
       )
 );
+
+export const selectLoading = createSelector(
+  selectHousingState,
+  (state: HousingState) => state.isLoading
+);
+
+export const selectError = createSelector(
+  selectHousingState,
+  (state: HousingState) => state.error
+);

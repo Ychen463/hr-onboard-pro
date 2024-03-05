@@ -17,3 +17,13 @@ export const selectProfileSummariesByName = (name: string) =>
         profile.preferredName?.toLowerCase().includes(name.toLowerCase())
     )
   );
+
+export const selectLoading = createSelector(
+  selectProfileSummaryState,
+  (state: ProfileState) => state.isLoading
+);
+
+export const selectError = createSelector(
+  selectProfileSummaryState,
+  (state: ProfileState) => state.error
+);
