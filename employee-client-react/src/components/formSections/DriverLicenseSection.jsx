@@ -24,7 +24,6 @@ const DriverLicenseSection = ({
     hasDriverLicense: 'No',
     hasCar: 'No',
   });
-  const [driverLicensePreview, setDriverLicensePreview] = useState('');
 
   useEffect(() => {
     if (formData?.hasDriverLicense) {
@@ -68,8 +67,6 @@ const DriverLicenseSection = ({
       carInformation: { ...prev.carInformation, [name]: value },
     }));
   };
-
-  console.log('Driver License URL:', formData?.driverLicenseCopyUrl);
 
   return (
     <div>
@@ -132,7 +129,7 @@ const DriverLicenseSection = ({
               )}
               {formData?.driverLicenseCopyUrl && (
                 <a href={formData?.driverLicenseCopyUrl} target="_blank" rel="noopener noreferrer">
-                  View Uploaded License
+                  <Typography>View Uploaded License</Typography>
                 </a>
               )}
             </Grid>

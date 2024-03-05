@@ -84,6 +84,7 @@ function PersonalProfilePage() {
     };
     console.log('Form by manual:', newUserProfile);
     dispatch(updateUserProfile(newUserProfile));
+    setReadOnly(true);
   };
 
   return (
@@ -130,23 +131,14 @@ function PersonalProfilePage() {
           setPersonalInfo={setPersonalInfo}
         />
         <br />
-        <ReferralSection readOnly={readOnly} formData={referral} setFormData={setReferral} />
-        <br />
+        {/* <ReferralSection readOnly={readOnly} formData={referral} setFormData={setReferral} />
+        <br /> */}
         <EmergencyContact
           readOnly={readOnly}
           emergencyContacts={emergencyContacts}
           setEmergencyContacts={setEmergencyContacts}
         />
-        {/* <PersonalInfoField readOnly={readOnly} personalInfo={personalInfo} />
-        <UserEmailField />
-        <AddressInfoField readOnly={readOnly} personalInfo={personalInfo} />
-        <ContactInfoField readOnly={readOnly} personalInfo={personalInfo} />
-        <VisaInfoField readOnly />
-        <EmergencyContact
-          readOnly={readOnly}
-          emergencyContacts={emergencyContacts}
-          setEmergencyContacts={setEmergencyContacts}
-        /> */}
+
         {readOnly ? (
           <Button
             variant="contained"

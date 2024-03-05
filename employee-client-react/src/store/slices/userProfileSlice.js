@@ -37,35 +37,82 @@ export const updateUserProfile = createAsyncThunk(
       const profilePictureFile = newProfile.personalInfo?.profilePictureUrl || null;
       const driverLicenseCopyFile = newProfile.driverLicense.hasDriverLicense ? newProfile.driverLicense.driverLicenseCopyUrl : null;
 
-      // if (profilePictureFile && profilePictureFile?.type) {
-      //   const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.AVATAR });
-      //   const presignedUrl = presignedUrlResponse.data.url;
-      //   console.log("presignedUrl", presignedUrl);
-      //   await axios.put(presignedUrl, profilePictureFile, {
-      //     headers: {
-      //       'Content-Type': profilePictureFile.type,
-      //     },
-      //   });
-      //   console.log("presignedUrl", presignedUrl);
+      let newProfileUrl = null;
+      let newDriverLicenseUrl = null;
 
-      //   newProfile.personalInfo.profilePictureUrl = presignedUrl.split('?')[0];
-      // }
+      if (profilePictureFile && profilePictureFile?.type) {
+        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.AVATAR });
+        const presignedUrl = presignedUrlResponse.data.url;
+        console.log("presignedUrl", presignedUrl);
+        await axios.put(presignedUrl, profilePictureFile, {
+          headers: {
+            'Content-Type': profilePictureFile.type,
+          },
+        });
+        console.log("presignedUrl", presignedUrl);
 
-      // if (driverLicenseCopyFile && driverLicenseCopyFile?.type) {
-      //   const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.DRIVER_LICENSE });
-      //   const presignedUrl = presignedUrlResponse.data.url;
+        // newProfile.personalInfo.profilePictureUrl = presignedUrl.split('?')[0];
+        newProfileUrl = presignedUrl.split('?')[0];
+      }
 
-      //   await axios.put(presignedUrl, driverLicenseCopyFile, {
-      //     headers: {
-      //       'Content-Type': driverLicenseCopyFile.type,
-      //     },
-      //   });
-      //   newProfile.driverLicense.driverLicenseCopyUrl = presignedUrl.split('?')[0];
-      // }
+      if (driverLicenseCopyFile && driverLicenseCopyFile?.type) {
+        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.DRIVER_LICENSE });
+        const presignedUrl = presignedUrlResponse.data.url;
 
-      const response =
-        await userProfileApiService.updateUserProfile(newProfile);
+        await axios.put(presignedUrl, driverLicenseCopyFile, {
+          headers: {
+            'Content-Type': driverLicenseCopyFile.type,
+          },
+        });
+        newDriverLicenseUrl = presignedUrl.split('?')[0];
+      }
+
+      if (newProfileUrl === null && newDriverLicenseUrl === null) {
+        const response =
+          await userProfileApiService.updateUserProfile(newProfile);
+        return response.data;
+      }
+
+      if (newProfileUrl !== null && newDriverLicenseUrl === null) {
+        const updatedProfile = {
+          ...initialProfile,
+          personalInfo: {
+            ...initialProfile.personalInfo,
+            profilePictureUrl: newProfileUrl
+          }
+        };
+        await userProfileApiService.updateUserProfile(updatedProfile);
+        return response.data;
+      }
+
+      if (newProfileUrl === null && newDriverLicenseUrl !== null) {
+        const updatedProfile = {
+          ...initialProfile,
+          driverLicense: {
+            ...initialProfile.driverLicense,
+            driverLicenseCopyUrl: presignedUrl.split('?')[0]
+          }
+        };
+        await userProfileApiService.updateUserProfile(updatedProfile);
+        return response.data;
+      }
+
+
+      const updatedProfile = {
+        ...initialProfile,
+        personalInfo: {
+          ...initialProfile.personalInfo,
+          profilePictureUrl: presignedUrl.split('?')[0]
+        },
+        driverLicense: {
+          ...initialProfile.driverLicense,
+          driverLicenseCopyUrl: presignedUrl.split('?')[0]
+        }
+      };
+      await userProfileApiService.updateUserProfile(updatedProfile);
       return response.data;
+
+
     } catch (error) {
       console.log("thunk update profile", error);
       return thunkAPI.rejectWithValue(error.data.message);

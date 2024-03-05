@@ -192,7 +192,7 @@ const VisaSection = ({ readOnly, formData, setFormData }) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                View Uploaded Document
+                <Typography>View Uploaded Document</Typography>
               </a>
             </Grid>
           )}
