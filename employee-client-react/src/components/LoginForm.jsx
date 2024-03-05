@@ -50,9 +50,9 @@ function LoginForm() {
     );
   }
 
-  if (error) {
-    return <Alert severity="error">{error}</Alert>;
-  }
+  // if (error) {
+  //   return <Alert severity="error">{error}</Alert>;
+  // }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -92,9 +92,10 @@ function LoginForm() {
               id="password"
               autoComplete="current-password"
             />
-            <Typography style={{ color: 'red' }}>
+            {/* <Typography style={{ color: 'red' }}>
               {error !== 'No token provided' && error}
-            </Typography>
+            </Typography> */}
+            {error && <Alert severity="error">{error}</Alert>}
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>

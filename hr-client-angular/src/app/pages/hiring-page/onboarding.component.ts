@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
 
 import { DisplayedRegistrationToken } from './interfaces/registrationToken.model';
-import { DisplayedOnboarding } from './interfaces/onboarding.model';
+import { DisplayedOnboarding, Onboarding } from './interfaces/onboarding.model';
 
 import { GenerateTokenComponent } from './components/generate-token/generate-token.component';
 import { RejectFeedbackDialogComponent} from './components/reject-feedback-dialog/reject-feedback-dialog.component'
@@ -19,7 +19,7 @@ import { RegistrationTokenService } from './services/registrationToken.services'
 
 import { OnboardingState, RegistrationTokenState } from '../../store/hiring/models/hiring.models';
 import { loadOnboardingsFailure, loadOnboardingsStart, loadOnboardingsSuccess, updateOnboardingSuccess } from '../../store/hiring/actions/onboarding.actions';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 
 @Component({
@@ -61,6 +61,8 @@ export class OnboardingComponent implements OnInit,OnDestroy {
 
   RegidataSource: MatTableDataSource<DisplayedRegistrationToken>;
   OnbdataSource : MatTableDataSource<DisplayedOnboarding>;
+  onboardingData$: Observable<Onboarding>;
+
   @ViewChild('paginator1') RegiMatPaginator!: MatPaginator;
   @ViewChild('paginator2') OnbMatPaginator!: MatPaginator;
   @ViewChild('sort1') RegiMatSort!: MatSort;
@@ -68,13 +70,13 @@ export class OnboardingComponent implements OnInit,OnDestroy {
 
   constructor(
     public dialog: MatDialog,
-    private snackBar: MatSnackBar,
     private onboardingService: OnboardingService,
     private registrationTokenService: RegistrationTokenService,
-    private store: Store<{ onboarding: OnboardingState, registrationToken :RegistrationTokenState}>
+    private store: Store<{ onboarding: Onboarding, registrationToken :RegistrationTokenState}>
   ) {
     this.RegidataSource = new MatTableDataSource<DisplayedRegistrationToken>();
     this.OnbdataSource = new MatTableDataSource<DisplayedOnboarding>();
+    this.onboardingData$ = this.store.select((state) => state.onboarding['Onboarding']);
 
 
   }
@@ -87,6 +89,8 @@ ngOnInit(): void {
   this.OnbdataSource.sort = this.OnbMatSort;
   this.store.dispatch(loadOnboardingsStart());
   this.store.dispatch(RegistrationTokenActions.loadtokensstart());
+  console.log(this.onboardingData$);
+
 
   this.selectedStatus = 'None';
   this.updatesSubscription.add(
@@ -100,14 +104,14 @@ ngOnInit(): void {
       this.fetchDataFromTokenApi();
     })
   );
-
+  
 }
 ngAfterViewInit() {
   this.OnbdataSource.paginator = this.OnbMatPaginator;
   this.OnbdataSource.sort = this.OnbMatSort;
 }
 ngOnDestroy(): void {
-  this.updatesSubscription.unsubscribe();
+  // this.updatesSubscription.unsubscribe();
 }
 private initializeData(): void {
   this.fetchDataFromTokenApi();
@@ -192,42 +196,12 @@ private applyPaginatorAndSort(): void {
     });
   }
 
-
-  private handleUpdateError(error: any) {
-    console.error('Error occurred during onboarding update:', error);
-    this.snackBar.open('Error occurred during approval: ' + error.message, 'Close', {
-      duration: 5000, 
-    });
-  }
-
   handleObUpdate(userAccountId: string, hrDecision: string): void {
-    // if (hrDecision === 'Approved') {
-    //   this.onboardingService.updateOnboarding(userAccountId, { hrDecision }).subscribe({
-    //     next: () => {
-    //       this.store.dispatch(updateOnboardingSuccess({ userAccountId, onboardingStatus: hrDecision }));
-    //       this.snackBar.open(`Onboarding has been approved for: ${userAccountId}`, 'Close', {
-    //         duration: 5000, 
-    //       });
-    //     },
-    //     error: (error) => this.handleUpdateError(error)
-    //   });
-    // } else if (hrDecision === 'Rejected') {
-      const dialogRef = this.dialog.open(RejectFeedbackDialogComponent, {
+      this.dialog.open(RejectFeedbackDialogComponent, {
         width: '500px',
         height: 'auto',
         data: { userAccountId,hrDecision }
       });
-      dialogRef.afterClosed().subscribe(rejFeedback => {
-        if (rejFeedback) {
-          this.onboardingService.updateOnboarding(userAccountId, { hrDecision: 'Rejected', rejFeedback }).subscribe({
-            next: () => {
-              this.store.dispatch(updateOnboardingSuccess({ userAccountId, onboardingStatus: 'Rejected', rejFeedback }));
-            },
-            error: (error) => this.handleUpdateError(error)
-          });
-        }
-      });
-    // }
     
   }
   

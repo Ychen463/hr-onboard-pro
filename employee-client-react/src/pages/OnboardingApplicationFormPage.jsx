@@ -96,6 +96,7 @@ function OnboardingApplicationPage() {
   }
   // Disable form edit at "Pending" status
   // const readOnlyForm = false;
+  console.log('onboardingData.onboardingStatus', onboardingData?.onboardingStatus);
   const readOnlyForm = onboardingData ? onboardingData.onboardingStatus === 'Pending' : false;
 
   console.log('onboarding form', onboardingData);

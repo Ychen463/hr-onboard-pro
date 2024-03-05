@@ -51,6 +51,7 @@ export class VisaFeedbackDialogComponent implements OnInit {
     
   
   submitForm(): void {
+    
     const rejFeedback = this.rejForm.get('rejFeedback')?.value || '';
     if (!rejFeedback.trim()) {
       alert('Please type in your feedback before submitting.');
@@ -86,7 +87,6 @@ export class VisaFeedbackDialogComponent implements OnInit {
 
   confirmAction(): void {
     const rejFeedback = '';
-    console.log(this.visa$);
     this.visaService.updateHRDecision(this.userAccountId, 
                                       this.lastDocKey, 
                                       this.hrDecision, 

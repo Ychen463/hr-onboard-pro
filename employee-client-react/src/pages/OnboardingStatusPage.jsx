@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Card, Typography } from '@mui/material';
 import { selectorCurrentUser } from '../store/slices/authSlice.js';
 import { selectorCurrentOnboardingData, getOnboarding } from '../store/slices/onboardingSlice.js';
-import { decodeHtml } from '../utils/decodeHTML.JS';
+import { decodeHtml } from '../utils/decodeHtml.js';
 
 function OnboardingStatusCard() {
   const navigate = useNavigate();

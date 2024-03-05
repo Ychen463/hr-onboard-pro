@@ -160,8 +160,6 @@ isExpanded(row: any): boolean {
   }
 
   openRejDialog(hrDecision: string, userAccountId: string, lastDocKey:string): void {
-
-    console.log(userAccountId,lastDocKey,hrDecision);
       this.dialog.open(VisaFeedbackDialogComponent, {
         width: '500px',
         height: 'auto',

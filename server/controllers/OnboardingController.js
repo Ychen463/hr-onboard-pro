@@ -101,29 +101,28 @@ const hrUpdateDecision = async (req, res) => {
 
     const updateFields = { onboardingStatus: ONBOARDING_STATUS };
     if (ONBOARDING_STATUS === 'Rejected' && rejFeedback) {
-      // Ensure rejFeedback is included only if the decision is Rejected
+// Ensure rejFeedback is included only if the decision is Rejected
       updateFields.rejFeedback = rejFeedback;
     }
 
     // Update the onboarding status based on the HR decision
-    const updatedOnboarding = await Onboarding.findOneAndUpdate(
-      { userAccountId }, 
-
-      updateFields, {
+    const updatedOnboarding = await Onboarding.findOneAndUpdate({ userAccountId }, updateFields, {
       new: true,
     });
+
     if (!updatedOnboarding) {
       return res.status(404).json({ message: 'Onboarding process not found.' });
     }
 
     // CREATE VISA if needed
-    const visaStatus = 'OPT Receipt-Approved';
+    const visaStatus = 'OPT EAD-Pending';
+    let updateVisaFields;
     if (
       updatedOnboarding.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' &&
       updatedOnboarding.citizenshipStatus.workAuthorizationFiles
     ) {
       const { workAuthorizationFiles } = updatedOnboarding.citizenshipStatus;
-      const visaDocument = await Visa.create({
+      const visa = await Visa.create({
         userAccountId,
         docs: {
           optReceipt: {
@@ -136,26 +135,18 @@ const hrUpdateDecision = async (req, res) => {
         visaStatus,
       });
       // Update the user account onboarding status
-      await UserAccount.findOneAndUpdate(
-        { _id: userAccountId },
-        { visaId: visaDocument._id },
-        { onboardingStatus: ONBOARDING_STATUS },
-        { new: true }
-      );
+      updateVisaFields = {
+        visaId: visa._id,
+        onboardingStatus: ONBOARDING_STATUS,
+      };
       // Update onboarding visaId
-      await Onboarding.findOneAndUpdate(
-        { userAccountId },
-        { visaId: visaDocument._id },
-        { new: true }
-      );
+      await Onboarding.findOneAndUpdate({ userAccountId }, { visaId: visa._id }, { new: true });
     } else {
-      // Update the user account onboarding status
-      await UserAccount.findOneAndUpdate(
-        { _id: userAccountId },
-        { onboardingStatus: ONBOARDING_STATUS },
-        { new: true }
-      );
+      updateVisaFields = {
+        onboardingStatus: ONBOARDING_STATUS,
+      };
     }
+    await UserAccount.findOneAndUpdate({ _id: userAccountId }, updateVisaFields, { new: true });
 
     // Create USERPROFILE
     await UserProfile.create({

@@ -30,7 +30,7 @@ schema
 
 const register = async (req, res) => {
   try {
-    let { username } = req.body;
+    const { username } = req.body;
     const { password } = req.body;
     let { email } = req.user;
     const hashedPassword = await bcrypt.hash(password, SALT);
@@ -42,7 +42,7 @@ const register = async (req, res) => {
 
     // Sanitize email and username
     email = validator.normalizeEmail(email);
-    username = validator.escape(username);
+    // username = validator.escape(username);
 
     // Password validation
     if (!schema.validate(password)) {

@@ -61,7 +61,6 @@ export class OnboardingDetailComponent implements OnInit, OnDestroy {
     private apiService: ApiService,
     private onboardingDetailService: OnboardingDetailService,
     private store: Store<{ onboarding: Onboarding }>,
-    private changeDetectorRef: ChangeDetectorRef
   ) {
     this.onboardingData$ = this.store.select((state) => state.onboarding['Onboarding']);
   }
