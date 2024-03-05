@@ -1,12 +1,8 @@
-import {
-  createAsyncThunk,
-  createSelector,
-  createSlice,
-} from "@reduxjs/toolkit";
-import * as onboardingApiService from "../../apiServices/onboarding.js";
-import { logout } from "./authSlice.js";
-import axios from "axios";
-import fileTypes from "../../constants/fileTypes.js";
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
+import { logout } from './authSlice.js';
+import axios from 'axios';
+import fileTypes from '../../constants/fileTypes.js';
+import * as onboardingApiService from '../../apiServices/onboarding.js';
 
 const initialState = {
   onboardingData: null,
@@ -16,7 +12,7 @@ const initialState = {
 
 // async thunk for onboarding
 export const getOnboarding = createAsyncThunk(
-  "onboarding/getOnboarding",
+  'onboarding/getOnboarding',
   async ({ userId }, thunkAPI) => {
     try {
       const response = await onboardingApiService.getOnboarding(userId);
@@ -24,20 +20,27 @@ export const getOnboarding = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data.message);
     }
-  },
+  }
 );
 
 export const submitOnboarding = createAsyncThunk(
-  "onboarding/submitOnboarding",
+  'onboarding/submitOnboarding',
   async (onboardingData, thunkAPI) => {
     try {
       // upload files to AWS S3
       const profilePictureFile = onboardingData.personalInfo?.profilePictureUrl || null;
-      const workAuthorizationFile = onboardingData.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)' ? onboardingData.citizenshipStatus.workAuthorizationFiles[0].docUrl : null;
-      const driverLicenseCopyFile = onboardingData.driverLicense.hasDriverLicense ? onboardingData.driverLicense.driverLicenseCopyUrl : null;
+      const workAuthorizationFile =
+        onboardingData.citizenshipStatus.workAuthorization === 'F1(CPT/OPT)'
+          ? onboardingData.citizenshipStatus.workAuthorizationFiles[0].docUrl
+          : null;
+      const driverLicenseCopyFile = onboardingData.driverLicense.hasDriverLicense
+        ? onboardingData.driverLicense.driverLicenseCopyUrl
+        : null;
 
       if (profilePictureFile && profilePictureFile?.type) {
-        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.AVATAR });
+        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({
+          fileType: fileTypes.AVATAR,
+        });
         const presignedUrl = presignedUrlResponse.data.url;
         await axios.put(presignedUrl, profilePictureFile, {
           headers: {
@@ -48,10 +51,12 @@ export const submitOnboarding = createAsyncThunk(
         onboardingData.personalInfo.profilePictureUrl = presignedUrl.split('?')[0];
       }
 
-      console.log("workAuthorizationFile before", workAuthorizationFile);
+      console.log('workAuthorizationFile before', workAuthorizationFile);
 
       if (workAuthorizationFile && workAuthorizationFile?.type) {
-        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.OPT_RECEIPT });
+        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({
+          fileType: fileTypes.OPT_RECEIPT,
+        });
         const presignedUrl = presignedUrlResponse.data.url;
 
         await axios.put(presignedUrl, workAuthorizationFile, {
@@ -59,13 +64,16 @@ export const submitOnboarding = createAsyncThunk(
             'Content-Type': workAuthorizationFile.type,
           },
         });
-        onboardingData.citizenshipStatus.workAuthorizationFiles[0].docUrl = presignedUrl.split('?')[0];
+        onboardingData.citizenshipStatus.workAuthorizationFiles[0].docUrl =
+          presignedUrl.split('?')[0];
       }
 
-      console.log("workAuthorizationFile after", workAuthorizationFile);
+      console.log('workAuthorizationFile after', workAuthorizationFile);
 
       if (driverLicenseCopyFile && driverLicenseCopyFile?.type) {
-        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({ fileType: fileTypes.DRIVER_LICENSE });
+        const presignedUrlResponse = await onboardingApiService.getAWSS3PresignedUrl({
+          fileType: fileTypes.DRIVER_LICENSE,
+        });
         const presignedUrl = presignedUrlResponse.data.url;
 
         await axios.put(presignedUrl, driverLicenseCopyFile, {
@@ -77,17 +85,16 @@ export const submitOnboarding = createAsyncThunk(
       }
 
       // post form to the server
-      const response =
-        await onboardingApiService.postOnboarding(onboardingData);
+      const response = await onboardingApiService.postOnboarding(onboardingData);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data.message);
     }
-  },
+  }
 );
 
 export const onboardingSlice = createSlice({
-  name: "onboarding",
+  name: 'onboarding',
   initialState,
   reducers: {
     // reducers for onboarding
@@ -132,17 +139,14 @@ const selectOnboardingState = (state) => state.onboarding;
 // get onboarding data
 export const selectorCurrentOnboardingData = createSelector(
   selectOnboardingState,
-  (state) => state.onboardingData,
+  (state) => state.onboardingData
 );
 
 // check if state is loading
 export const selectIsOnboardingLoading = createSelector(
   selectOnboardingState,
-  (state) => state.isLoading,
+  (state) => state.isLoading
 );
 
 // get any error
-export const selectOnboardingError = createSelector(
-  selectOnboardingState,
-  (state) => state.error,
-);
+export const selectOnboardingError = createSelector(selectOnboardingState, (state) => state.error);
