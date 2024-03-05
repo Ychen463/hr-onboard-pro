@@ -33,7 +33,9 @@ export const registration = createAsyncThunk(
   "auth/registration",
   async ({ username, password }, thunkAPI) => {
     try {
-      const registrationToken = localStorage.getItem("registrationToken");
+      const state = thunkAPI.getState();
+      const registrationToken = state.auth.registrationInfo.token;
+      console.log("registrationToken", registrationToken);
       const response = await authApiService.register({
         username,
         password,
@@ -197,5 +199,5 @@ export const selectAuthError = createSelector(
 // get registrationToken
 export const selectRegistrationToken = createSelector(
   selectAuthState,
-  (state) => state.registrationToken,
+  (state) => state.registrationInfo.token,
 );

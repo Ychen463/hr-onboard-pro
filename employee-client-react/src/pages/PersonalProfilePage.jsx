@@ -27,11 +27,13 @@ import CurrentAddressSection from '../components/formSections/CurrentAddressSect
 import VisaSection from '../components/formSections/VisaSection.jsx';
 import DriverLicenseSection from '../components/formSections/DriverLicenseSection.jsx';
 import ReferralSection from '../components/formSections/ReferralSection.jsx';
+import { selectorCurrentUser } from '../store/slices/authSlice.js';
 function PersonalProfilePage() {
   const [readOnly, setReadOnly] = useState(true);
   const dispatch = useDispatch();
 
   const userProfile = useSelector(selectorUserProfile);
+  const currentUser = useSelector(selectorCurrentUser);
   const isLoading = useSelector(selectIsUserProfileLoading);
   const error = useSelector(selectUserProfileError);
   // These states only take care of init values of the whole form
@@ -67,16 +69,13 @@ function PersonalProfilePage() {
   if (error) {
     return <Alert severity="error">{error}</Alert>;
   }
-
   console.log('userProfile', userProfile);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // const formData = new FormData(event.currentTarget);
-    // const formDataObj = formDataToObject(formData);
-
-    // console.log('all form data entries', formDataObj);
     const newUserProfile = {
+      _id: userProfile._id,
+      email: userProfile.email,
       personalInfo,
       citizenshipStatus,
       driverLicense,
@@ -84,7 +83,7 @@ function PersonalProfilePage() {
       emergencyContacts,
     };
     console.log('Form by manual:', newUserProfile);
-    dispatch(updateUserProfile(newOnboardingFrom));
+    dispatch(updateUserProfile(newUserProfile));
   };
 
   return (
@@ -95,6 +94,7 @@ function PersonalProfilePage() {
       >
         Personal Profile
       </Typography>
+      {error}
       <Container component="form" onSubmit={handleSubmit}>
         <PersonalInformationFormSection
           readOnly={readOnly}
