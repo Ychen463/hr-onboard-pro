@@ -33,4 +33,17 @@ export class EditCommentDialogComponent {
     this.dialogRef.close();
   }
 
+  onSubmit(): void {
+    if (this.commentForm.valid) {
+      // Set the 'data' property to the form values
+      this.data = {
+        ...this.data,
+        description: this.commentForm.get('description')?.value,
+      };
+
+      // Close the dialog with the updated 'data'
+      this.dialogRef.close(this.data);
+    }
+  }
+
 }

@@ -44,4 +44,14 @@ export class CreateHousingDialogComponent {
   onCancelClick(): void {
     this.dialogRef.close();
   }
+
+  onSubmit(): void {
+    if (this.newHousingForm.valid) {
+      // Set the 'data' property to the form values
+      this.data = this.newHousingForm.getRawValue();
+
+      // Close the dialog with the updated 'data'
+      this.dialogRef.close(this.data);
+    }
+  }
 }

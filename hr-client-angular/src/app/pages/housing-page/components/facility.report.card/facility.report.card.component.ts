@@ -53,6 +53,7 @@ export class FacilityReportCardComponent implements OnInit {
   }
 
   openAddCommentDialog(): void {
+    // console.log(this.newComment.description);
     const dialogRef = this.dialog.open(AddCommentDialogComponent, {
       data: this.newComment, 
       height: '300px',
@@ -60,20 +61,22 @@ export class FacilityReportCardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      // console.log('The dialog was closed');
+      // console.log('Result: ' + result);
       if (result) {
         this.newComment = result;
         this.addComment();
       } else {
         this.newComment = this.newCommentInit;
       }
-      console.log(this.newComment);
+      // console.log(this.newComment);
     });
   }
 
   addComment(): void {
     if (this.report) {
       this.facilityReportService.addComment({ ...this.newComment, facilityReportId: this.report._id });
+      // console.log({ ...this.newComment, facilityReportId: this.report._id })
     }
   }
 

@@ -14,5 +14,5 @@
 
 <mat-dialog-actions>
   <button mat-button (click)="onCancelClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="data" [disabled]="commentForm.invalid">Submit</button>
+  <button mat-button (click)="onSubmit()" [disabled]="commentForm.invalid">Submit</button>
 </mat-dialog-actions>
