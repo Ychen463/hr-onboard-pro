@@ -38,13 +38,8 @@ export class RegistrationTokenService {
       }
         
       private handleError(error: any): Observable<never> {
-        let errorMessage = 'Failed to generate token. Please try again later.';
-        if (error.status === 401) {
-          errorMessage = 'Unauthorized: Please log in to generate a token.';
-        } else if (error.status === 403) {
-          errorMessage = 'Forbidden: You do not have permission to generate a token.';
-        }
-        console.error('API error:', error);
+        let errorMessage = error.error.message;
+        console.error('API error:', error.error);
         return throwError(errorMessage);
       }
 
