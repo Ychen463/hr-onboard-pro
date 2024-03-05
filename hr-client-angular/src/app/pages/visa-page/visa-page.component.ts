@@ -92,7 +92,9 @@ isExpanded(row: any): boolean {
         this.visas = response;
         this.allDataSource.data = this.mapVisasToDisplayed(response);
         this.inPDataSource.data = this.mapVisasToDisplayed(response.filter(visa => 
-          !visa.visaStatus.endsWith('Approved') && !visa.visaStatus.endsWith('Rejected')));
+          !visa.docs.i20.status.endsWith('Approved')));
+
+          console.log(this.inPDataSource.data.length)
               } else {
         // Handle the case where response is undefined
         console.error('No data returned from the service');
@@ -131,13 +133,26 @@ isExpanded(row: any): boolean {
                       startDate: startDate,
             endDate: endDate,
             daysRemaining: daysRemaining,
-            nextStep: visa.visaStatus,
+            // nextStep: visa.visaStatus,
             visaStatus: visa.visaStatus,
             docs: {optEAD: visa.docs.optEAD.docUrl,
               optReceipt: visa.docs.optReceipt.docUrl,
               i20: visa.docs.i20.docUrl,
               i983:visa.docs.i983.docUrl
             } ,
+            nextStep: (() => {
+              if (visa.visaStatus === "OPT EAD-Approved") {
+                  return "OPT RECEIPT-Await";
+              } else if (visa.visaStatus === "OPT RECEIPT-Approved") {
+                  return "I983-Await";
+              } else if (visa.visaStatus === "I983-Approved") {
+                  return "I20-Await";
+              } else if (visa.visaStatus === "I20-Approved") {
+                  return "Completed";
+              } else {
+                  return visa.visaStatus;
+              }
+          })(),
             lastDocUrl: docUrl,
         };
     });
@@ -158,6 +173,10 @@ isExpanded(row: any): boolean {
     }
     
   }
+
+
+
+  
 
   openRejDialog(hrDecision: string, userAccountId: string, lastDocKey:string): void {
       this.dialog.open(VisaFeedbackDialogComponent, {
