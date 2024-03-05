@@ -9,7 +9,7 @@ textarea {
 /* Styling the feedback message */
 p {
   margin-top: 10px;
-  color: green;
+  color: rgb(5, 5, 5);
   font-weight: bold; 
 }
 

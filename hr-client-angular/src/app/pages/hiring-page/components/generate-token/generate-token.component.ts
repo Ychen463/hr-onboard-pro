@@ -46,13 +46,7 @@ export class GenerateTokenComponent implements OnInit {
         this.store.dispatch(RegistrationTokenActions.generateregistrationtokenfailure({ error }));
         console.error('Failed to generate token:', error);
         this.operationSuccess = false;
-        if (error.status === 401) {
-                this.tokenFeedbackMessage = 'Unauthorized: Please log in to generate a token.';
-              } else if (error.status === 403) {
-                this.tokenFeedbackMessage = 'Forbidden: You do not have permission to generate a token.';
-              } else {
-                this.tokenFeedbackMessage = 'Failed to generate token. Please try again later.';
-              }
+        this.tokenFeedbackMessage = error;
       }
     });
     

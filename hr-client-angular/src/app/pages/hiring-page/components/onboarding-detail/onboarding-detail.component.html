@@ -18,6 +18,7 @@
     </span>
   </div>
 
+
   <div class="example-button-row">
     <!-- <button mat-raised-button color="primary" (click)="handleObUpdate(onboardingData.userAccountId, 'Approved')">
       Approved
@@ -26,29 +27,23 @@
       Rejected
     </button> -->
 
-    <button
-      mat-stroked-button
-      color="accent"
-      (click)="handleObUpdate(onboardingData.userAccountId, 'Approved')"
-      style="margin-right: 3px"
-      [disabled]="
-        onboardingData.onboardingStatus === 'Completed' ||
-        onboardingData.onboardingStatus === 'Rejected'
-      "
-    >
-      Approve
-    </button>
-    <button
-      mat-stroked-button
-      color="primary"
-      (click)="openRejectConfirmationDialog(onboardingData.userAccountId)"
-      [disabled]="
-        onboardingData.onboardingStatus === 'Completed' ||
-        onboardingData.onboardingStatus === 'Rejected'
-      "
-    >
-      Reject
-    </button>
+    <button 
+  mat-stroked-button 
+  color="accent" 
+  (click)="handleObUpdate(onboardingData.userAccountId, 'Approved')"
+  style="margin-right: 3px;"
+  [disabled]="onboardingData.onboardingStatus === 'Completed' || onboardingData.onboardingStatus === 'Rejected'">
+  Approve
+  </button>
+  <button 
+    mat-stroked-button 
+    color="primary" 
+    (click)="handleObUpdate(onboardingData.userAccountId, 'Rejected')"
+    [disabled]="onboardingData.onboardingStatus === 'Completed' || onboardingData.onboardingStatus === 'Rejected'">
+    Reject
+  </button>
+
+
   </div>
 </div>
 

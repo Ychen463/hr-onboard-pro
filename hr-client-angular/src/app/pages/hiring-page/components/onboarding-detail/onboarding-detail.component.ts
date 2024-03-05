@@ -113,17 +113,17 @@ export class OnboardingDetailComponent implements OnInit, OnDestroy {
   }
 
   handleObUpdate(userAccountId: string, hrDecision: string): void {
-    if (hrDecision === 'Approved') {
-      this.onboardingDetailService.updateOnboarding(userAccountId, hrDecision).subscribe({
-        next: () => {
-          this.handleSuccessUpdate(userAccountId, 'approved');
-        },
-        error: (error) => this.handleUpdateError(error),
+    this.dialog.open(RejectFeedbackDialogComponent, {
+        width: '500px',
+        height: 'auto',
+        data: { userAccountId, hrDecision }
+
       });
-    } else if (hrDecision === 'Rejected') {
-      this.openRejectConfirmationDialog(userAccountId);
-    }
+    
   }
+
+  
+
 
   private handleSuccessUpdate(userAccountId: string, action: string) {
     this.store.dispatch(updateOnboardingSuccess({ userAccountId, onboardingStatus: action }));
@@ -140,11 +140,5 @@ export class OnboardingDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  openRejectConfirmationDialog(userAccountId: string): void {
-    const dialogRef = this.dialog.open(RejectFeedbackDialogComponent, {
-      width: '500px',
-      height: 'auto',
-      data: { userAccountId },
-    });
-  }
+
 }
