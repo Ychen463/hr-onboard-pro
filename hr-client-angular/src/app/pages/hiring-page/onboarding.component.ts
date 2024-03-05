@@ -78,7 +78,6 @@ export class OnboardingComponent implements OnInit,OnDestroy {
     this.OnbdataSource = new MatTableDataSource<DisplayedOnboarding>();
     this.onboardingData$ = this.store.select((state) => state.onboarding['Onboarding']);
 
-
   }
 
 ngOnInit(): void {
