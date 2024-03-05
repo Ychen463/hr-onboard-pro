@@ -66,24 +66,18 @@ const getCurrentStep = async (req, res) => {
     // currentVisa = visa.docs[currentStep] ? visa.docs[currentStep] : {}
     // currentVisa = visa.docs[currentStep]
     // console.log(currentStep)
-    console.log(visa.docs[currentStep])
-    console.log(visa.docs[currentStep].status)
+    console.log(visa.docs[currentStep]);
+    console.log(visa.docs[currentStep].status);
 
     return res.status(200).json({
       message: responseMessage,
-      visa:{
+      visa: {
         currentStep: visa.docs[currentStep].status.split('-')[0],
         currentStatus: visa.docs[currentStep].status.split('-')[1],
         rejFeedback: visa.docs[currentStep].rejFeedback,
         docId: visa.docs[currentStep].docId,
         docUrl: visa.docs[currentStep].docUrl,
-      }
-        // currentStep: stepNames[i],
-        // currentStatus: currentVisa.status,
-        // feedback:  currentVisa.feedback ?   currentVisa.feedback : "",
-        // docId: currentVisa.feedback ?   currentVisa.docId: "",
-        // docUrl: currentVisa.docUrl
-      // nextStep: nextStep && nextStep !== currentStep ? visa.docs[nextStep] : null,
+      },
     });
   } catch (error) {
     console.error('Error fetching current step:', error);
@@ -103,7 +97,7 @@ const updateDoc = async (req, res) => {
   const { docUrl } = req.body;
   const docTypeName = docTypeToDocTypeName[docType];
 
-  if (!validator.isURL(docUrl, { protocols: ['http','https'], require_protocol: true })) {
+  if (!validator.isURL(docUrl, { protocols: ['http', 'https'], require_protocol: true })) {
     return res.status(400).json({ message: 'Invalid URL format.' });
   }
 
@@ -112,7 +106,6 @@ const updateDoc = async (req, res) => {
     if (!visa) {
       return res.status(404).json({ message: 'Visa record not found.' });
     }
-    
 
     // Document sequence
     const steps = ['optReceipt', 'optEAD', 'i983', 'i20'];
@@ -157,10 +150,10 @@ const updateDoc = async (req, res) => {
       message: `${docTypeName} updated successfully.`,
       visa: {
         currentStep: docTypeName,
-        currentStatus: "Pending",
-        feedback: "",
+        currentStatus: 'Pending',
+        feedback: '',
         docId: `${userAccountId}_${docType}`,
-        docUrl: docUrl
+        docUrl: docUrl,
       },
     });
   } catch (error) {
@@ -252,17 +245,17 @@ const getWithOnboardingAll = async (req, res) => {
     const visas = await Visa.aggregate([
       {
         $lookup: {
-          from: "onboardings",
-          localField: "userAccountId",
-          foreignField: "userAccountId",
-          as: "onboardingInfo"
-        }
+          from: 'onboardings',
+          localField: 'userAccountId',
+          foreignField: 'userAccountId',
+          as: 'onboardingInfo',
+        },
       },
       {
         $match: {
-          "onboardingInfo": { $ne: [] } 
-        }
-      }
+          onboardingInfo: { $ne: [] },
+        },
+      },
     ]);
 
     return res.status(200).json(visas);
