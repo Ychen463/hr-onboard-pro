@@ -62,10 +62,10 @@
             {{ row.nextStep.split('-')[0] }}
             <a
               mat-icon-button
-              [href]="'your-link-here'"
+              [href]="row.lastDocUrl"
               *ngIf="row.nextStep.split('-')[1] === 'Pending'"
-              aria-label="Example icon button with a open in new tab icon"
-            >
+              target="_blank"
+              >
               <mat-icon>open_in_new</mat-icon>
             </a>
           </td>

@@ -11,6 +11,7 @@ export interface DisplayedVisa {
                 optEAD?: string | null,
                 i20?: string | null,
                 i983?: string | null,
-        }
-        lastDocUploadedKey: string | undefined;
+        },
+        lastDocUploadedKey: string | undefined,
+        lastDocUrl : string;
       }
