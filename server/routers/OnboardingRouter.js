@@ -5,6 +5,7 @@ import {
   hrUpdateDecision,
   viewOnboardingApplicationsByStatus,
   getAllTokens,
+  updateUserOnboarding,
 } from '../controllers/OnboardingController.js';
 import jwtVerifyToken from '../middlewares/AuthMiddleware.js';
 import checkRole from '../middlewares/CheckRoleMiddleware.js';
@@ -12,6 +13,8 @@ import checkRole from '../middlewares/CheckRoleMiddleware.js';
 const router = express.Router();
 // Emp
 router.post('/onboarding', jwtVerifyToken, checkRole(['employee']), applyUserOnboarding);
+router.post('/onboardin/update', jwtVerifyToken, checkRole(['employee']), updateUserOnboarding);
+
 router.get(
   '/onboarding/:userAccountId',
   jwtVerifyToken,
