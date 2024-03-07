@@ -123,14 +123,14 @@ isExpanded(row: any): boolean {
             return {
             lastDocUploadedKey : key,
             userAccountId: visa.userAccountId,
-            name: `${visa.onboardingInfo[0].personalInfo.firstName} 
-            ${visa.onboardingInfo[0].personalInfo.middleName} 
-            ${visa.onboardingInfo[0].personalInfo.lastName} 
-            (${visa.onboardingInfo[0].personalInfo.preferredName})`,
+            name: `${visa.onboardingInfo[0].personalInfo.firstName}
+${visa.onboardingInfo[0].personalInfo.middleName ? visa.onboardingInfo[0].personalInfo.middleName + ' ' : ''}${visa.onboardingInfo[0].personalInfo.lastName}
+${visa.onboardingInfo[0].personalInfo.preferredName ? '(' + visa.onboardingInfo[0].personalInfo.preferredName + ')' : ''}`,
+
             visaTitle: visa.onboardingInfo[0].citizenshipStatus.workAuthorization 
             ? visa.onboardingInfo[0].citizenshipStatus.workAuthorization 
             : visa.onboardingInfo[0].citizenshipStatus.workAuthorizationOtherTitle ?? '',
-                      startDate: startDate,
+            startDate: startDate,
             endDate: endDate,
             daysRemaining: daysRemaining,
             // nextStep: visa.visaStatus,
