@@ -1,0 +1,52 @@
+h1 {
+  margin: 15px;
+}
+
+mat-card {
+  display: flex;
+  width: auto;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.flex-right {
+  justify-content: flex-end;
+}
+
+.flexbox-baseline {
+  align-items: baseline;
+}
+
+.flexbox-v {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexbox-h {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-col-1 {
+  display: flex;
+  flex-grow: 1;
+  margin: 20px;
+}
+
+.flex-col-2 {
+  display: flex;
+  flex-grow: 2;
+  margin: 20px;
+}
+
+.flex-col-even {
+  flex: 1 1 auto;
+}
+
+.flex-col {
+  margin: 20px;
+}
+
+.flex-row {
+  margin: 20px;
+}

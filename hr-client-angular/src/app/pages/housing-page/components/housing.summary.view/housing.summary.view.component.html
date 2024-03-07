@@ -1,0 +1,32 @@
+<button mat-raised-button color="primary" (click)="openDialog()">Add Housing</button>
+
+<ng-container *ngFor="let summary of this.dataSource.data.slice(
+  dataSource.paginator?dataSource.paginator.pageIndex * dataSource.paginator.pageSize:pageIndex * pageSize,
+  dataSource.paginator?(dataSource.paginator.pageIndex + 1) * dataSource.paginator.pageSize:(pageIndex + 1) * pageSize
+)">
+  <mat-card>
+    <mat-card-title>
+      {{ summary.name }}
+    </mat-card-title>
+    <br />
+    <mat-card-subtitle> Address </mat-card-subtitle>
+    <p>{{ summary.address }}</p>
+    <br />
+
+    <mat-card-subtitle> Landlord </mat-card-subtitle>
+    <p>Full name: {{ summary.landlord.fullName }}</p>
+    <p>Phone number: {{ summary.landlord.phoneNumber }}</p>
+    <p>Email: {{ summary.landlord.email }}</p>
+    <br />
+
+    <mat-card-subtitle> Number of Residents </mat-card-subtitle>
+    <p>{{ summary.residents }}</p>
+    <br />
+
+    <mat-card-actions>
+      <button mat-button color="primary" (click)="navigateToDetails(summary._id)">View Details</button>
+    </mat-card-actions>
+  </mat-card>
+</ng-container>
+
+<mat-paginator [pageSizeOptions]="[2, 5, 10, 25]" showFirstLastButtons></mat-paginator>

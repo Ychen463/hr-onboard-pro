@@ -1,0 +1,49 @@
+<mat-card-title-group *ngIf="(onboarding$ | async) as onboarding">
+  <mat-card-title>{{ hrDecision === 'Approved' ? 'Approve Document' : 'Rejecting Feedback' }}</mat-card-title>
+</mat-card-title-group>
+<mat-divider></mat-divider>
+<div>{{ feedbackMessage }}</div>
+
+<div *ngIf="onboarding$ | async as onboarding">
+  <p>Name: {{ onboarding.personalInfo.firstName }} {{ onboarding.personalInfo.middleName }} {{ onboarding.personalInfo.lastName }}</p>
+  <p>Email: {{ onboarding.email }}</p>
+  <p>Work Authorization: {{ onboarding.citizenshipStatus.workAuthorization }}</p>
+  <p>Start Date: {{ onboarding.citizenshipStatus.startEndDate.startDate  | date: 'yyyy-MM-dd' }}</p>
+  <p>End Date: {{ onboarding.citizenshipStatus.startEndDate.endDate  | date: 'yyyy-MM-dd' }}</p>
+<br>
+<hr style="border: 1px solid #e0e0e0; margin-top: 20px; margin-bottom: 20px;">
+  <ng-container *ngIf="hrDecision === 'Approved'; else rejectFeedback">
+    <!-- Content for Approved case -->
+    <!-- Display a message for Approved -->
+    <p>Comfirm Approval of this Visa Document.</p>
+    <!-- Buttons for confirm and cancel -->
+    <div class="actions" align="start">
+      <button mat-flat-button color="primary" class="wide-button" (click)="submitForm()">
+        Confirm
+      </button>
+      <button mat-button type="button" class="wide-button" (click)="closeDialog()">
+        Cancel
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-template #rejectFeedback>
+    <!-- Content for Rejected case -->
+    <!-- Display the text area for feedback -->
+    <p>Rejecting Feedback</p>
+    <form [formGroup]="rejForm" (ngSubmit)="submitForm()">
+      <mat-form-field>
+        <textarea matInput formControlName="rejFeedback" placeholder="Enter your feedback here"></textarea>
+      </mat-form-field>
+      <!-- Buttons for send and cancel -->
+      <div class="actions" align="start">
+        <button mat-flat-button color="primary" class="wide-button" type="submit">
+          Send
+        </button>
+        <button mat-button type="button" class="wide-button" (click)="closeDialog()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </ng-template>
+</div>

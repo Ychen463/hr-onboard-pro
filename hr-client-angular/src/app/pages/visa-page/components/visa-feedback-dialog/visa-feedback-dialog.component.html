@@ -1,0 +1,59 @@
+<mat-card-title-group>
+  <div *ngIf="(visa$ | async) as visa">
+      <p>User Account ID: {{ visa.userAccountId }}</p> 
+    
+      <ng-container *ngFor="let info of visa.onboardingInfo">
+        <div *ngIf="info.personalInfo">
+          <p>Last Name: {{ info.personalInfo.lastName }}</p>
+          <p>First Name: {{ info.personalInfo.firstName }}</p>
+          <p>Contact Email: {{ info.email }}</p>
+        </div>
+      </ng-container>
+    
+      <table>
+          <ng-container *ngFor="let key of getDocumentKeys(visa.docs)">
+            <ng-container *ngIf="visa.docs[key]">
+              <tr>
+                <td>
+                  <a [href]="visa.docs[key].docUrl" target="_blank">{{ key }}</a>
+                </td>
+                <td>{{ visa.docs[key].status }}</td>
+                <td>{{ visa.docs[key].createdDatetime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </table>
+        
+        <br><br><br>
+  </div>
+    
+  <mat-card-title>{{ hrDecision === 'Approved' ? 'Approve Document' : 'Rejecting Feedback' }}</mat-card-title>
+</mat-card-title-group>
+<mat-divider></mat-divider>
+<div >{{ feedbackMessage }}</div>
+
+<div *ngIf="hrDecision === 'Approved'; else rejectFeedback">
+  <!-- Content for Approved case -->
+  <!-- Display a message for Approved -->
+  <p> Approved this Visa Document.</p>
+  <!-- Buttons for confirm and cancel -->
+  <div class="actions" align="start">
+    <button mat-flat-button color="primary" class="wide-button" (click)="confirmAction()">Confirm</button>
+    <button mat-button type="button" class="wide-button" (click)="closeDialog()">Cancel</button>
+  </div>
+</div>
+
+<ng-template #rejectFeedback>
+  <!-- Content for Rejected case -->
+  <!-- Display the text area for feedback -->
+  <form [formGroup]="rejForm" (ngSubmit)="submitForm()">
+    <mat-form-field>
+      <textarea matInput formControlName="rejFeedback" placeholder="Enter your feedback here"></textarea>
+    </mat-form-field>
+    <!-- Buttons for send and cancel -->
+    <div class="actions" align="start">
+      <button mat-flat-button color="primary" class="wide-button" type="submit">Send</button>
+      <button mat-button type="button" class="wide-button" (click)="closeDialog()">Cancel</button>
+    </div>
+  </form>
+</ng-template>

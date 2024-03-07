@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Add Comment</h2>
+<mat-dialog-content>
+  <form [formGroup]="commentForm">
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+    <div *ngIf="commentForm.get('description')?.invalid && (commentForm.get('description')?.dirty || commentForm.get('description')?.touched)">
+      <div *ngIf="commentForm.get('description')?.errors?.['required']">Description is required.</div>
+    </div>
+  </form>
+  <br/>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()">Cancel</button>
+  <button mat-button (click)="onSubmit()" [disabled]="commentForm.invalid">Submit</button>
+</mat-dialog-actions>

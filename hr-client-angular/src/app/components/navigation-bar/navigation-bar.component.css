@@ -1,0 +1,29 @@
+app.component.css .router-outlet-container {
+  padding: 20px;
+}
+.example-container {
+  min-height: 100vh;
+}
+
+.sidenav {
+  width: 250px;
+}
+
+.sidenav-header {
+  padding: 10px;
+  text-align: center;
+}
+
+.logo {
+  max-width: 100%;
+  height: auto;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.active-link {
+  background-color: rgba(123, 97, 255, 0.12);
+  color: #3f51b5;
+}
