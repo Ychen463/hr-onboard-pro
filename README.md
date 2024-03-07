@@ -2,7 +2,7 @@
 
 ## Description
 
-MERNA Full Stack Employee/HR website portal for managing the new employee onboarding process
+HR Onboard Pro is a comprehensive web application designed to streamline the employee onboarding and management process for HR professionals. Built with React for employee-facing interfaces, Angular for HR-facing interfaces, and backed by Express.js and Node.js, HR Onboard Pro offers a robust and scalable solution for organizations of all sizes.
 
 ## Github Workflow Guideline
 
@@ -170,3 +170,4 @@ Execute the following command to format all .js files in your server folder:
 After setting up ESLint and Prettier together, you can run ESLint with the --fix option to automatically fix certain issues, including those that can be formatted by Prettier:
 
 `eslint --fix "src/**/*.{js,jsx,ts,tsx}"`
+
